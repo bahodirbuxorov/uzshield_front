@@ -2,114 +2,139 @@
 
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { Play, Clock, Users } from 'lucide-react'
+import { Plus, BookOpen, Clock, Users, CheckCircle, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Skeleton } from '@/components/ui/skeleton'
 import { PageHeader } from '@/components/shared/PageHeader'
-import { MOCK_TRAINING_MODULES } from '@/lib/constants/mockData'
+import { useTrainingTemplates, useTrainingStatistics } from '@/lib/hooks/useTraining'
 
 export default function TrainingPage() {
   const t = useTranslations('training')
-  const [selectedModule, setSelectedModule] = useState<typeof MOCK_TRAINING_MODULES[0] | null>(null)
+  const [showAll, setShowAll] = useState(false)
+
+  const { data: templatesData, isLoading: tplLoading } = useTrainingTemplates()
+  const { data: stats } = useTrainingStatistics()
+
+  const templates = templatesData?.data ?? []
+  const visible = showAll ? templates : templates.slice(0, 6)
 
   return (
     <div className="page-container">
-      <PageHeader title={t('title')} />
+      <PageHeader
+        title={t('title')}
+        actions={
+          <Button id="add-template-btn" variant="outline" size="sm">
+            <Plus style={{ width: 16, height: 16 }} />
+            Yangi shablon
+          </Button>
+        }
+      />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5">
-        {MOCK_TRAINING_MODULES.map((mod) => {
-          const moduleKey = `modules.${mod.key}` as Parameters<typeof t>[0]
-          return (
-            <Card key={mod.id} className="hover:shadow-card-hover transition-shadow duration-200 overflow-hidden">
-              {/* Color bar */}
-              <div className="h-1.5 w-full" style={{ backgroundColor: mod.color }} />
-              <CardContent className="p-6 space-y-4">
-                <div className="flex items-start gap-4">
-                  <div
-                    className="flex items-center justify-center w-12 h-12 rounded-2xl text-2xl shrink-0"
-                    style={{ backgroundColor: mod.color + '15' }}
-                  >
-                    {mod.icon}
+      {/* Stats row */}
+      {stats && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 16 }}>
+          {[
+            { label: 'Shablonlar', value: stats.total_templates, color: 'var(--accent)', Icon: BookOpen },
+            { label: 'Topshiriqlar', value: stats.total_assignments, color: 'var(--text-primary)', Icon: Users },
+            { label: 'Bajarildi', value: stats.completed_assignments, color: 'var(--success)', Icon: CheckCircle },
+            { label: 'Kutilmoqda', value: stats.pending_assignments, color: 'var(--warning)', Icon: AlertCircle },
+            {
+              label: 'O\'rtacha ball',
+              value: stats.avg_score != null ? stats.avg_score.toFixed(1) : '—',
+              color: 'var(--accent)',
+              Icon: CheckCircle,
+            },
+          ].map((s) => (
+            <div
+              key={s.label}
+              style={{
+                backgroundColor: 'white',
+                border: '1px solid var(--border)',
+                borderRadius: 12,
+                padding: '16px 20px',
+                textAlign: 'center',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+              }}
+            >
+              <s.Icon style={{ width: 20, height: 20, color: s.color, margin: '0 auto 8px' }} />
+              <p style={{ fontSize: 22, fontWeight: 700, color: s.color, margin: '0 0 4px', fontFamily: 'var(--font-display)' }}>
+                {s.value}
+              </p>
+              <p style={{ fontSize: 12, color: 'var(--muted)', margin: 0 }}>{s.label}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Templates grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
+        {tplLoading
+          ? [...Array(4)].map((_, i) => <Skeleton key={i} style={{ height: 180 }} />)
+          : visible.length === 0
+          ? (
+            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '48px 0', color: 'var(--muted)', fontSize: 14 }}>
+              Trening shablonlari yo&apos;q
+            </div>
+          )
+          : visible.map((tpl) => (
+            <Card key={tpl.id} style={{ overflow: 'hidden' }}>
+              {/* top bar */}
+              <div style={{ height: 4, backgroundColor: tpl.ai_generated ? 'var(--accent)' : 'var(--success)' }} />
+              <CardHeader style={{ paddingBottom: 8 }}>
+                <CardTitle style={{ fontSize: 15, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{tpl.title}</span>
+                  <Badge variant={tpl.ai_generated ? 'secondary' : 'outline'} style={{ flexShrink: 0, fontSize: 10 }}>
+                    {tpl.ai_generated ? '🤖 AI' : 'Manual'}
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent style={{ paddingTop: 0 }}>
+                <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: '0 0 12px', lineClamp: 3, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>
+                  {tpl.content}
+                </p>
+
+                {tpl.topics.length > 0 && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 12 }}>
+                    {tpl.topics.slice(0, 3).map((topic) => (
+                      <Badge key={topic} variant="outline" style={{ fontSize: 10 }}>
+                        {topic}
+                      </Badge>
+                    ))}
+                    {tpl.topics.length > 3 && (
+                      <Badge variant="outline" style={{ fontSize: 10, color: 'var(--muted)' }}>
+                        +{tpl.topics.length - 3}
+                      </Badge>
+                    )}
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-display)' }}>
-                      {t(moduleKey)}
-                    </h3>
-                    <div className="flex items-center gap-4 mt-2 text-xs text-[var(--muted)]">
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5" />
-                        {mod.duration} {t('minutes')}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Users className="w-3.5 h-3.5" />
-                        {mod.totalEmployees} employees
-                      </span>
-                    </div>
-                  </div>
+                )}
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 12, color: 'var(--muted)' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <Clock style={{ width: 13, height: 13 }} />
+                    {new Date(tpl.created_at).toLocaleDateString('uz-UZ')}
+                  </span>
+                  {tpl.employee_id && (
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <Users style={{ width: 13, height: 13 }} />
+                      Employee #{tpl.employee_id}
+                    </span>
+                  )}
                 </div>
-
-                <div>
-                  <div className="flex justify-between text-xs text-[var(--muted)] mb-1.5">
-                    <span>{t('completionRate')}</span>
-                    <span className="font-semibold" style={{ color: mod.color }}>{mod.completionRate}%</span>
-                  </div>
-                  <Progress value={mod.completionRate} className="h-2" />
-                </div>
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full text-sm"
-                  id={`start-module-${mod.id}`}
-                  onClick={() => setSelectedModule(mod)}
-                >
-                  <Play className="w-4 h-4" />
-                  {t('startModule')}
-                </Button>
               </CardContent>
             </Card>
-          )
-        })}
+          ))
+        }
       </div>
 
-      {/* Module Dialog */}
-      <Dialog open={!!selectedModule} onOpenChange={() => setSelectedModule(null)}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
-            <DialogTitle>
-              {selectedModule && t(`modules.${selectedModule.key}` as Parameters<typeof t>[0])}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            {/* Video placeholder */}
-            <div className="aspect-video bg-[var(--surface-secondary)] rounded-xl flex items-center justify-center border border-[var(--border)]">
-              <div className="text-center text-[var(--muted)]">
-                <Play className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                <p className="text-sm">{t('watchVideo')}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Badge variant="secondary">
-                <Clock className="w-3.5 h-3.5 mr-1" />
-                {selectedModule?.duration} {t('minutes')}
-              </Badge>
-              <Badge variant="success">{selectedModule?.completionRate}% {t('completionRate')}</Badge>
-            </div>
-            <Button className="w-full" id="begin-module-dialog">
-              <Play className="w-4 h-4" />
-              {t('startModule')}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {templates.length > 6 && (
+        <div style={{ textAlign: 'center' }}>
+          <Button variant="outline" onClick={() => setShowAll(!showAll)}>
+            {showAll ? 'Kamroq ko\'rsatish' : `Ko'proq ko'rsatish (${templates.length - 6} ta)`}
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

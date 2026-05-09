@@ -1,36 +1,61 @@
 /** Risk classification for an employee */
 export type RiskLevel = 'low' | 'medium' | 'high' | 'critical'
 
-/** Full employee record */
+/** Full employee record — matches API response */
 export interface Employee {
-  id: string
+  id: number
+  department_id: number | null
   name: string
   email: string
-  phone?: string
-  department: string
-  position: string
-  riskScore: number // 0–100
-  riskLevel: RiskLevel
+  phone: string | null
+  age: number | null
+  position: string | null
   status: 'active' | 'inactive'
-  lastActivity: string | null
-  campaignsParticipated: number
-  trainingsCompleted: number
-  joinedAt: string
-  avatarUrl?: string
+  created_at: string
+  updated_at: string
+  /** Optional relation — populated when department is eager-loaded */
+  department?: Department
 }
 
-/** Employee row for table views */
-export type EmployeeSummary = Pick<
-  Employee,
-  | 'id'
-  | 'name'
-  | 'email'
-  | 'department'
-  | 'riskScore'
-  | 'riskLevel'
-  | 'status'
-  | 'lastActivity'
->
+/** Department relation embedded in Employee */
+export interface Department {
+  id: number
+  company_id: number | null
+  name: string
+  description: string | null
+  created_at: string
+  updated_at: string
+}
+
+/** Paginated API response wrapper */
+export interface PaginatedResponse<T> {
+  data: T[]
+  meta?: {
+    current_page: number
+    last_page: number
+    per_page: number
+    total: number
+    from: number | null
+    to: number | null
+  }
+  links?: {
+    first: string | null
+    last: string | null
+    prev: string | null
+    next: string | null
+  }
+}
+
+/** Per-employee statistics from /api/employees/{id}/statistics */
+export interface EmployeeStatistics {
+  employee_id: number
+  campaigns_count: number
+  clicked_count: number
+  trained_count: number
+  click_rate: number | null
+  training_rate: number | null
+  risk_score: number | null
+}
 
 /** A record of an employee participating in a campaign */
 export interface EmployeeCampaignRecord {

@@ -16,7 +16,7 @@ import {
 } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import type { ChartDataPoint, RiskDistribution } from '@/lib/types/report'
+import type { AnalyticsDashboard } from '@/lib/api/reports'
 
 const RISK_COLORS: Record<string, string> = {
   low: '#00B37E',
@@ -26,8 +26,8 @@ const RISK_COLORS: Record<string, string> = {
 }
 
 interface RiskChartProps {
-  trendData: ChartDataPoint[]
-  riskData: RiskDistribution[]
+  trendData: NonNullable<AnalyticsDashboard['campaign_trend']>
+  riskData: AnalyticsDashboard['risk_distribution'] | null
   loading?: boolean
 }
 
@@ -46,6 +46,14 @@ export function RiskChart({ trendData, riskData, loading }: RiskChartProps) {
       </div>
     )
   }
+
+  const totalRiskCount = riskData ? (riskData.low + riskData.medium + riskData.high + riskData.critical) : 0
+  const riskArray = riskData && totalRiskCount > 0 ? [
+    { level: 'low', count: riskData.low, percentage: Math.round((riskData.low / totalRiskCount) * 100) },
+    { level: 'medium', count: riskData.medium, percentage: Math.round((riskData.medium / totalRiskCount) * 100) },
+    { level: 'high', count: riskData.high, percentage: Math.round((riskData.high / totalRiskCount) * 100) },
+    { level: 'critical', count: riskData.critical, percentage: Math.round((riskData.critical / totalRiskCount) * 100) },
+  ].filter(r => r.count > 0) : []
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -67,7 +75,7 @@ export function RiskChart({ trendData, riskData, loading }: RiskChartProps) {
               <Legend wrapperStyle={{ fontSize: 12 }} />
               <Line
                 type="monotone"
-                dataKey="clickRate"
+                dataKey="click_rate"
                 stroke="var(--danger)"
                 strokeWidth={2.5}
                 dot={{ r: 4, fill: 'var(--danger)' }}
@@ -75,7 +83,7 @@ export function RiskChart({ trendData, riskData, loading }: RiskChartProps) {
               />
               <Line
                 type="monotone"
-                dataKey="trainedRate"
+                dataKey="training_rate"
                 stroke="var(--success)"
                 strokeWidth={2.5}
                 dot={{ r: 4, fill: 'var(--success)' }}
@@ -96,7 +104,7 @@ export function RiskChart({ trendData, riskData, loading }: RiskChartProps) {
             <ResponsiveContainer width={180} height={180}>
               <PieChart>
                 <Pie
-                  data={riskData}
+                  data={riskArray}
                   dataKey="count"
                   nameKey="level"
                   cx="50%"
@@ -105,7 +113,7 @@ export function RiskChart({ trendData, riskData, loading }: RiskChartProps) {
                   outerRadius={80}
                   paddingAngle={3}
                 >
-                  {riskData.map((entry) => (
+                  {riskArray.map((entry) => (
                     <Cell key={entry.level} fill={RISK_COLORS[entry.level]} />
                   ))}
                 </Pie>
@@ -116,7 +124,9 @@ export function RiskChart({ trendData, riskData, loading }: RiskChartProps) {
               </PieChart>
             </ResponsiveContainer>
             <div className="space-y-2 flex-1">
-              {riskData.map((entry) => (
+              {riskArray.length === 0 ? (
+                <div className="text-sm text-[var(--muted)]">Ma&apos;lumot yo&apos;q</div>
+              ) : riskArray.map((entry) => (
                 <div key={entry.level} className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
                     <div

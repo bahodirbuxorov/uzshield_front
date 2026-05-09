@@ -80,7 +80,7 @@ export default function TemplatesPage() {
   )
 
   const filtered = (templates ?? []).filter(
-    (tmpl) =>
+    (tmpl: PhishingTemplate) =>
       !search ||
       tmpl.name.toLowerCase().includes(search.toLowerCase()) ||
       tmpl.subject.toLowerCase().includes(search.toLowerCase())
@@ -171,7 +171,7 @@ export default function TemplatesPage() {
         <EmptyState icon={<FileText style={{ width: 32, height: 32 }} />} title={t('noTemplates')} />
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
-          {filtered.map((tmpl) => {
+          {filtered.map((tmpl: PhishingTemplate) => {
             const ChIcon = CHANNEL_ICON[tmpl.channel] ?? Mail
             return (
               <Card

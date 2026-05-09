@@ -23,6 +23,7 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 import { useAuthStore } from '@/lib/store/useAuthStore'
 import { cn } from '@/lib/utils/cn'
 import { useCampaigns } from '@/lib/hooks/useCampaigns'
+import { logout } from '@/lib/api/auth'
 
 interface NavItem {
   key: string
@@ -38,8 +39,13 @@ export function Sidebar() {
   const { user, clearAuth } = useAuthStore()
   const [collapsed, setCollapsed] = useState(false)
 
-  const { data: campaignData } = useCampaigns(1, 100, 'active', 'all')
-  const activeCampaignCount = campaignData?.total ?? 0
+  const handleLogout = async () => {
+    try { await logout() } catch { /* ignore network errors on logout */ }
+    clearAuth()
+  }
+
+  const { data: campaignData } = useCampaigns({ status: 'active' })
+  const activeCampaignCount = campaignData?.meta?.total ?? 0
 
   const navItems: NavItem[] = [
     { key: 'dashboard', href: `/${locale}/dashboard`, icon: LayoutDashboard },
@@ -236,7 +242,7 @@ export function Sidebar() {
                       whiteSpace: 'nowrap',
                     }}
                   >
-                    {user?.companyName}
+                    {user?.roles?.[0]?.replace('_', ' ') ?? ''}
                   </p>
                 </div>
               </motion.div>
@@ -261,7 +267,7 @@ export function Sidebar() {
           {/* Logout */}
           <button
             id="sidebar-logout"
-            onClick={clearAuth}
+            onClick={handleLogout}
             aria-label={t('logout')}
             style={{
               display: 'flex',

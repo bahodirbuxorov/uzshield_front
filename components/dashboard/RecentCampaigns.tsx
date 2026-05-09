@@ -78,13 +78,13 @@ export function RecentCampaigns({ campaigns, loading }: RecentCampaignsProps) {
                   </td>
                   <td className="px-4 py-3 hidden sm:table-cell">
                     <div className="flex gap-1 flex-wrap">
-                      {campaign.channels.map((ch) => (
+                      {(campaign.channels ?? []).map((ch) => (
                         <Badge key={ch} variant="outline" className="capitalize text-xs">{ch}</Badge>
                       ))}
                     </div>
                   </td>
                   <td className="px-4 py-3 hidden md:table-cell font-semibold text-[var(--text-primary)]">
-                    {fmtPercent(campaign.clickRate)}
+                    {campaign.clickRate != null ? fmtPercent(campaign.clickRate) : '0%'}
                   </td>
                   <td className="px-4 py-3">
                     <Badge variant={STATUS_VARIANT[campaign.status]}>

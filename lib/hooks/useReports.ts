@@ -1,19 +1,48 @@
-import { useQuery } from '@tanstack/react-query'
-import { fetchReport } from '@/lib/api/reports'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+  fetchReports,
+  fetchReportById,
+  fetchAnalytics,
+  generateReport,
+} from '@/lib/api/reports'
 
-/** Query key factory for reports */
 export const reportKeys = {
   all: ['reports'] as const,
-  detail: (dateRange: string) => [...reportKeys.all, dateRange] as const,
+  list: () => [...reportKeys.all, 'list'] as const,
+  detail: (id: number) => [...reportKeys.all, 'detail', id] as const,
+  analytics: (company_id?: number) => [...reportKeys.all, 'analytics', company_id] as const,
 }
 
-/**
- * Fetch analytics report for a given date range.
- * @param dateRange key like 'last7', 'last30', 'last90', or 'custom'
- */
-export function useReport(dateRange = 'last30') {
+/** List all generated reports */
+export function useReports() {
   return useQuery({
-    queryKey: reportKeys.detail(dateRange),
-    queryFn: () => fetchReport(dateRange),
+    queryKey: reportKeys.list(),
+    queryFn: fetchReports,
+  })
+}
+
+/** Fetch a single report */
+export function useReport(id: number) {
+  return useQuery({
+    queryKey: reportKeys.detail(id),
+    queryFn: () => fetchReportById(id),
+    enabled: !!id,
+  })
+}
+
+/** Analytics dashboard data */
+export function useAnalytics(company_id?: number) {
+  return useQuery({
+    queryKey: reportKeys.analytics(company_id),
+    queryFn: () => fetchAnalytics(company_id),
+  })
+}
+
+/** Generate a new report */
+export function useGenerateReport() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: generateReport,
+    onSuccess: () => qc.invalidateQueries({ queryKey: reportKeys.all }),
   })
 }

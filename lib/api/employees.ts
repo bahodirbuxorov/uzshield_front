@@ -1,79 +1,83 @@
-import { MOCK_API_DELAY } from '@/lib/constants'
-import {
-  MOCK_EMPLOYEES,
-  MOCK_EMPLOYEE_CAMPAIGNS,
-  MOCK_EMPLOYEE_TRAININGS,
-  MOCK_EMPLOYEE_ACTIVITIES,
-} from '@/lib/constants/mockData'
-import type { Employee, EmployeeCampaignRecord, TrainingRecord, EmployeeActivity } from '@/lib/types/employee'
+import api from '@/lib/api/axios'
+import type { Employee, PaginatedResponse, EmployeeStatistics } from '@/lib/types/employee'
 
-const delay = () => new Promise<void>((r) => setTimeout(r, MOCK_API_DELAY))
+/** Query params for listing employees */
+export interface EmployeeListParams {
+  department_id?: number
+  status?: 'active' | 'inactive'
+  search?: string
+}
 
 /**
- * Fetch paginated employee list with optional search/dept filter.
+ * List employees with optional filters.
+ * GET /api/employees
  */
 export async function fetchEmployees(
-  page = 1,
-  pageSize = 10,
-  search = '',
-  department = ''
-): Promise<{ data: Employee[]; total: number }> {
-  await delay()
-  let data = [...MOCK_EMPLOYEES]
-  if (search) {
-    const q = search.toLowerCase()
-    data = data.filter(
-      (e) => e.name.toLowerCase().includes(q) || e.email.toLowerCase().includes(q)
-    )
-  }
-  if (department && department !== 'all') {
-    data = data.filter((e) => e.department === department)
-  }
-  const total = data.length
-  return { data: data.slice((page - 1) * pageSize, page * pageSize), total }
+  params: EmployeeListParams = {}
+): Promise<PaginatedResponse<Employee>> {
+  const response = await api.get<PaginatedResponse<Employee>>('/api/employees', { params })
+  return response.data
 }
 
 /**
- * Fetch a single employee by ID.
+ * Get a single employee by ID.
+ * GET /api/employees/{employee}
  */
-export async function fetchEmployeeById(id: string): Promise<Employee> {
-  await delay()
-  const emp = MOCK_EMPLOYEES.find((e) => e.id === id)
-  if (!emp) throw new Error(`Employee ${id} not found`)
-  return emp
+export async function fetchEmployeeById(id: number): Promise<Employee> {
+  const response = await api.get<{ data: Employee }>(`/api/employees/${id}`)
+  return response.data.data
 }
 
 /**
- * Fetch campaign participation history for an employee.
+ * Create a new employee.
+ * POST /api/employees
  */
-export async function fetchEmployeeCampaigns(employeeId: string): Promise<EmployeeCampaignRecord[]> {
-  await delay()
-  void employeeId
-  return MOCK_EMPLOYEE_CAMPAIGNS
+export async function createEmployee(payload: {
+  department_id: number
+  name: string
+  email: string
+  phone?: string
+  age?: number
+  position?: string
+  status?: 'active' | 'inactive'
+}): Promise<Employee> {
+  const response = await api.post<{ data: Employee }>('/api/employees', payload)
+  return response.data.data
 }
 
 /**
- * Fetch training completion records for an employee.
+ * Update an employee.
+ * PUT /api/employees/{employee}
  */
-export async function fetchEmployeeTrainings(employeeId: string): Promise<TrainingRecord[]> {
-  await delay()
-  void employeeId
-  return MOCK_EMPLOYEE_TRAININGS
+export async function updateEmployee(
+  id: number,
+  payload: Partial<{
+    department_id: number
+    name: string
+    email: string
+    phone: string
+    age: number
+    position: string
+    status: 'active' | 'inactive'
+  }>
+): Promise<Employee> {
+  const response = await api.put<{ data: Employee }>(`/api/employees/${id}`, payload)
+  return response.data.data
 }
 
 /**
- * Fetch activity timeline for an employee.
+ * Delete an employee.
+ * DELETE /api/employees/{employee}
  */
-export async function fetchEmployeeActivities(employeeId: string): Promise<EmployeeActivity[]> {
-  await delay()
-  void employeeId
-  return MOCK_EMPLOYEE_ACTIVITIES
+export async function deleteEmployee(id: number): Promise<void> {
+  await api.delete(`/api/employees/${id}`)
 }
 
 /**
- * Delete employees by IDs.
+ * Get per-employee statistics.
+ * GET /api/employees/{employee}/statistics
  */
-export async function deleteEmployees(ids: string[]): Promise<void> {
-  await delay()
-  void ids
+export async function fetchEmployeeStatistics(id: number): Promise<EmployeeStatistics> {
+  const response = await api.get<{ data: EmployeeStatistics }>(`/api/employees/${id}/statistics`)
+  return response.data.data
 }

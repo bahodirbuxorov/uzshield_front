@@ -195,7 +195,7 @@ export default function LoginPage() {
           style={{ backgroundColor: 'var(--surface-secondary)', color: 'var(--text-secondary)' }}
         >
           <span className="font-medium">Demo: </span>
-          admin@uzshield.uz / password123
+          super@oxupax.local / password
         </div>
       </div>
     </motion.div>

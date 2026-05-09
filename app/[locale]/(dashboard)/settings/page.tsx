@@ -2,18 +2,21 @@
 
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
-import { Key, RefreshCw, Bell, Globe, CreditCard, Building2, Users } from 'lucide-react'
+import { Key, RefreshCw, Bell, Globe, CreditCard, Building2, Users, Shield } from 'lucide-react'
 import { toast } from 'sonner'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { PageHeader } from '@/components/shared/PageHeader'
 
-const TABS = ['company', 'employees', 'notifications', 'integration', 'billing'] as const
+import { UsersTab } from '@/components/settings/UsersTab'
+
+const TABS = ['company', 'users', 'employees', 'notifications', 'integration', 'billing'] as const
 type TabKey = typeof TABS[number]
 
 const TAB_ICONS: Record<TabKey, React.ElementType> = {
   company: Building2,
+  users: Shield,
   employees: Users,
   notifications: Bell,
   integration: Globe,
@@ -128,6 +131,8 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
       )}
+
+      {activeTab === 'users' && <UsersTab />}
 
       {activeTab === 'employees' && (
         <Card>

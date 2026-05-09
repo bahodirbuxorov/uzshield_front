@@ -127,7 +127,7 @@ export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
 
           {/* Channel badges + difficulty */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-            {campaign.channels.map((ch) => {
+            {(campaign.channels ?? []).map((ch) => {
               const Icon = CHANNEL_ICONS[ch]
               return (
                 <div
@@ -169,9 +169,9 @@ export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
             }}
           >
             {[
-              { Icon: Send, label: t('form.sent'), value: campaign.sentCount, color: 'var(--text-primary)' },
-              { Icon: MousePointer, label: t('form.clicked'), value: fmtPercent(campaign.clickRate), color: 'var(--danger)' },
-              { Icon: GraduationCap, label: t('form.trained'), value: campaign.completedTrainingCount, color: 'var(--success)' },
+              { Icon: Send, label: t('form.sent'), value: campaign.sentCount ?? 0, color: 'var(--text-primary)' },
+              { Icon: MousePointer, label: t('form.clicked'), value: campaign.clickRate != null ? fmtPercent(campaign.clickRate) : '0%', color: 'var(--danger)' },
+              { Icon: GraduationCap, label: t('form.trained'), value: campaign.completedTrainingCount ?? 0, color: 'var(--success)' },
             ].map(({ Icon, label, value, color }) => (
               <div key={label} style={{ textAlign: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 3, marginBottom: 4 }}>
@@ -187,10 +187,9 @@ export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
             ))}
           </div>
 
-          {/* Footer */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
             <p style={{ fontSize: 11, color: 'var(--muted)', margin: 0 }}>
-              {formatDate(campaign.startedAt || campaign.createdAt)}
+              {formatDate(campaign.startedAt || campaign.starts_at || campaign.created_at)}
             </p>
             <Link
               href={`/${locale}/campaigns/${campaign.id}`}

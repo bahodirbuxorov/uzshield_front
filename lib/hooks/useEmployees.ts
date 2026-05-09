@@ -1,34 +1,34 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   fetchEmployees,
   fetchEmployeeById,
-  fetchEmployeeCampaigns,
-  fetchEmployeeTrainings,
-  fetchEmployeeActivities,
+  fetchEmployeeStatistics,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee,
 } from '@/lib/api/employees'
+import type { EmployeeListParams } from '@/lib/api/employees'
 
 /** Query key factory for employees */
 export const employeeKeys = {
   all: ['employees'] as const,
-  list: (page: number, pageSize: number, search: string, department: string) =>
-    [...employeeKeys.all, 'list', page, pageSize, search, department] as const,
-  detail: (id: string) => [...employeeKeys.all, 'detail', id] as const,
-  campaigns: (id: string) => [...employeeKeys.all, 'campaigns', id] as const,
-  trainings: (id: string) => [...employeeKeys.all, 'trainings', id] as const,
-  activities: (id: string) => [...employeeKeys.all, 'activities', id] as const,
+  list: (params: EmployeeListParams) =>
+    [...employeeKeys.all, 'list', params] as const,
+  detail: (id: number) => [...employeeKeys.all, 'detail', id] as const,
+  statistics: (id: number) => [...employeeKeys.all, 'statistics', id] as const,
 }
 
-/** Fetch paginated employees */
-export function useEmployees(page: number, pageSize: number, search: string, department: string) {
+/** Fetch employees list with optional filters */
+export function useEmployees(params: EmployeeListParams = {}) {
   return useQuery({
-    queryKey: employeeKeys.list(page, pageSize, search, department),
-    queryFn: () => fetchEmployees(page, pageSize, search, department),
+    queryKey: employeeKeys.list(params),
+    queryFn: () => fetchEmployees(params),
     placeholderData: (prev) => prev,
   })
 }
 
 /** Fetch single employee */
-export function useEmployee(id: string) {
+export function useEmployee(id: number) {
   return useQuery({
     queryKey: employeeKeys.detail(id),
     queryFn: () => fetchEmployeeById(id),
@@ -36,29 +36,45 @@ export function useEmployee(id: string) {
   })
 }
 
-/** Fetch employee campaign history */
-export function useEmployeeCampaigns(id: string) {
+/** Fetch per-employee statistics */
+export function useEmployeeStatistics(id: number) {
   return useQuery({
-    queryKey: employeeKeys.campaigns(id),
-    queryFn: () => fetchEmployeeCampaigns(id),
+    queryKey: employeeKeys.statistics(id),
+    queryFn: () => fetchEmployeeStatistics(id),
     enabled: !!id,
   })
 }
 
-/** Fetch employee training records */
-export function useEmployeeTrainings(id: string) {
-  return useQuery({
-    queryKey: employeeKeys.trainings(id),
-    queryFn: () => fetchEmployeeTrainings(id),
-    enabled: !!id,
+/** Create a new employee */
+export function useCreateEmployee() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: createEmployee,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: employeeKeys.all })
+    },
   })
 }
 
-/** Fetch employee activity timeline */
-export function useEmployeeActivities(id: string) {
-  return useQuery({
-    queryKey: employeeKeys.activities(id),
-    queryFn: () => fetchEmployeeActivities(id),
-    enabled: !!id,
+/** Update an existing employee */
+export function useUpdateEmployee(id: number) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: Parameters<typeof updateEmployee>[1]) =>
+      updateEmployee(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: employeeKeys.all })
+    },
+  })
+}
+
+/** Delete an employee */
+export function useDeleteEmployee() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: deleteEmployee,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: employeeKeys.all })
+    },
   })
 }

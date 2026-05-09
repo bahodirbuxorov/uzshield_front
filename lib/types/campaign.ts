@@ -1,3 +1,5 @@
+import type { Campaign as ApiCampaign } from '@/lib/api/campaigns'
+
 /** Channel used to deliver a phishing simulation */
 export type CampaignChannel = 'email' | 'telegram' | 'sms'
 
@@ -10,24 +12,21 @@ export type Difficulty = 'easy' | 'medium' | 'hard'
 /** Template category */
 export type TemplateCategory = 'bank' | 'social' | 'corporate' | 'government'
 
-/** A phishing simulation campaign */
-export interface Campaign {
-  id: string
-  name: string
-  channels: CampaignChannel[]
-  status: CampaignStatus
-  totalEmployees: number
-  sentCount: number
-  clickedCount: number
-  completedTrainingCount: number
-  clickRate: number
-  templateId: string
-  templateName: string
-  difficulty: Difficulty
-  category: TemplateCategory
-  createdAt: string
-  startedAt: string | null
-  completedAt: string | null
+/** Re-export Campaign from API */
+export type Campaign = ApiCampaign & {
+  // Adding mock fields to satisfy existing UI until it's fully migrated
+  channels?: CampaignChannel[]
+  totalEmployees?: number
+  sentCount?: number
+  clickedCount?: number
+  completedTrainingCount?: number
+  clickRate?: number
+  templateId?: string
+  templateName?: string
+  difficulty?: Difficulty
+  category?: TemplateCategory
+  startedAt?: string | null
+  completedAt?: string | null
 }
 
 /** Summarised campaign row for list views */
@@ -39,8 +38,8 @@ export type CampaignSummary = Pick<
   | 'channels'
   | 'clickRate'
   | 'totalEmployees'
-  | 'createdAt'
-  | 'startedAt'
+  | 'created_at'
+  | 'starts_at'
 >
 
 /** Phishing template used in campaigns */

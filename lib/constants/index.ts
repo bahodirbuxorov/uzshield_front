@@ -4,7 +4,7 @@ export const PAGE_SIZE_OPTIONS = [10, 25, 50]
 
 /** API base URL */
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8090'
 
 /** Mock auth credentials */
 export const MOCK_AUTH_EMAIL = 'admin@uzshield.uz'

@@ -15,7 +15,7 @@ import { ChannelSelector } from '@/components/campaigns/ChannelSelector'
 import { useCreateCampaign } from '@/lib/hooks/useCampaigns'
 import { useTemplates } from '@/lib/hooks/useCampaigns'
 import { campaignStep1Schema, type CampaignStep1Values } from '@/lib/utils/validators'
-import type { CampaignChannel } from '@/lib/types/campaign'
+import type { CampaignChannel, PhishingTemplate } from '@/lib/types/campaign'
 import Link from 'next/link'
 
 const TOTAL_STEPS = 3
@@ -53,8 +53,16 @@ export default function NewCampaignPage() {
 
   const onLaunch = async () => {
     if (!step1Values || !selectedTemplateId) return
+    const tmpl = templates?.find((t: PhishingTemplate) => t.id === selectedTemplateId)
+    if (!tmpl) return
+    
     try {
-      await createCampaign({ ...step1Values, templateId: selectedTemplateId })
+      await createCampaign({ 
+        name: step1Values.name,
+        type: 'phishing_simulation',
+        template_subject: tmpl.subject,
+        template_body: tmpl.previewText,
+      })
       toast.success('Campaign launched successfully!')
       router.push(`/${locale}/campaigns`)
     } catch {
@@ -253,7 +261,7 @@ export default function NewCampaignPage() {
                     marginBottom: 16,
                   }}
                 >
-                  {(templates ?? []).map((tmpl) => (
+                  {(templates ?? []).map((tmpl: PhishingTemplate) => (
                     <button
                       key={tmpl.id}
                       type="button"
@@ -335,7 +343,7 @@ export default function NewCampaignPage() {
                     },
                     {
                       label: t('form.selectTemplate'),
-                      value: (templates ?? []).find((tmpl) => tmpl.id === selectedTemplateId)?.name ?? '—',
+                      value: (templates ?? []).find((tmpl: PhishingTemplate) => tmpl.id === selectedTemplateId)?.name ?? '—',
                     },
                     { label: t('form.schedule'), value: t('form.immediately') },
                   ].map((row, i) => (

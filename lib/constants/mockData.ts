@@ -6,33 +6,34 @@ import type { Report, ChartDataPoint, RiskDistribution, DepartmentRisk, ChannelE
 // EMPLOYEES
 // ───────────────────────────────────────────────
 export const MOCK_EMPLOYEES: Employee[] = [
-  { id: 'e1', name: 'Abdullayev Jasur', email: 'jasur@acme.uz', department: 'IT', position: 'Backend Developer', riskScore: 72, riskLevel: 'high', status: 'active', lastActivity: '2025-03-28T10:30:00Z', campaignsParticipated: 5, trainingsCompleted: 2, joinedAt: '2023-01-15' },
-  { id: 'e2', name: 'Xolmatova Malika', email: 'malika@acme.uz', department: 'HR', position: 'HR Manager', riskScore: 41, riskLevel: 'medium', status: 'active', lastActivity: '2025-03-27T14:00:00Z', campaignsParticipated: 4, trainingsCompleted: 3, joinedAt: '2023-03-10' },
-  { id: 'e3', name: "Toshqo'ziyev Sherzod", email: 'sherzod@acme.uz', department: 'Finance', position: 'Accountant', riskScore: 88, riskLevel: 'critical', status: 'active', lastActivity: '2025-03-25T09:15:00Z', campaignsParticipated: 6, trainingsCompleted: 1, joinedAt: '2022-11-20' },
-  { id: 'e4', name: 'Nazarova Nilufar', email: 'nilufar@acme.uz', department: 'Marketing', position: 'SMM Specialist', riskScore: 18, riskLevel: 'low', status: 'active', lastActivity: '2025-03-29T11:45:00Z', campaignsParticipated: 3, trainingsCompleted: 4, joinedAt: '2023-06-01' },
-  { id: 'e5', name: 'Rakhimov Bobur', email: 'bobur@acme.uz', department: 'Sales', position: 'Sales Manager', riskScore: 65, riskLevel: 'high', status: 'active', lastActivity: '2025-03-26T16:00:00Z', campaignsParticipated: 7, trainingsCompleted: 2, joinedAt: '2022-08-14' },
-  { id: 'e6', name: "Yo'ldosheva Kamola", email: 'kamola@acme.uz', department: 'Legal', position: 'Lawyer', riskScore: 30, riskLevel: 'low', status: 'active', lastActivity: '2025-03-28T13:00:00Z', campaignsParticipated: 2, trainingsCompleted: 3, joinedAt: '2024-01-08' },
-  { id: 'e7', name: 'Mirzayev Dilshod', email: 'dilshod@acme.uz', department: 'IT', position: 'DevOps Engineer', riskScore: 55, riskLevel: 'medium', status: 'active', lastActivity: '2025-03-27T08:30:00Z', campaignsParticipated: 4, trainingsCompleted: 3, joinedAt: '2023-04-22' },
-  { id: 'e8', name: 'Hasanova Zulfiya', email: 'zulfiya@acme.uz', department: 'Finance', position: 'CFO', riskScore: 48, riskLevel: 'medium', status: 'active', lastActivity: '2025-03-29T09:00:00Z', campaignsParticipated: 3, trainingsCompleted: 4, joinedAt: '2021-07-30' },
-  { id: 'e9', name: 'Sultonov Eldor', email: 'eldor@acme.uz', department: 'Sales', position: 'Sales Rep', riskScore: 78, riskLevel: 'high', status: 'active', lastActivity: '2025-03-24T15:30:00Z', campaignsParticipated: 5, trainingsCompleted: 1, joinedAt: '2023-09-11' },
-  { id: 'e10', name: 'Qodirov Mansur', email: 'mansur@acme.uz', department: 'Management', position: 'CEO', riskScore: 22, riskLevel: 'low', status: 'active', lastActivity: '2025-03-30T10:00:00Z', campaignsParticipated: 2, trainingsCompleted: 5, joinedAt: '2020-01-01' },
-  { id: 'e11', name: 'Ismailova Feruza', email: 'feruza@acme.uz', department: 'Marketing', position: 'Content Manager', riskScore: 35, riskLevel: 'low', status: 'active', lastActivity: '2025-03-28T12:00:00Z', campaignsParticipated: 3, trainingsCompleted: 4, joinedAt: '2023-02-14' },
-  { id: 'e12', name: 'Tursunov Akbar', email: 'akbar@acme.uz', department: 'IT', position: 'QA Engineer', riskScore: 60, riskLevel: 'medium', status: 'inactive', lastActivity: '2025-03-10T10:00:00Z', campaignsParticipated: 4, trainingsCompleted: 2, joinedAt: '2022-12-01' },
-  { id: 'e13', name: 'Baxtiyorova Shahlo', email: 'shahlo@acme.uz', department: 'HR', position: 'Recruiter', riskScore: 43, riskLevel: 'medium', status: 'active', lastActivity: '2025-03-27T14:30:00Z', campaignsParticipated: 2, trainingsCompleted: 3, joinedAt: '2024-03-01' },
-  { id: 'e14', name: 'Ergashev Firdavs', email: 'firdavs@acme.uz', department: 'Legal', position: 'Legal Advisor', riskScore: 27, riskLevel: 'low', status: 'active', lastActivity: '2025-03-29T11:00:00Z', campaignsParticipated: 1, trainingsCompleted: 4, joinedAt: '2023-11-20' },
-  { id: 'e15', name: 'Jumayeva Dilnoza', email: 'dilnoza@acme.uz', department: 'Finance', position: 'Financial Analyst', riskScore: 52, riskLevel: 'medium', status: 'active', lastActivity: '2025-03-26T09:00:00Z', campaignsParticipated: 3, trainingsCompleted: 3, joinedAt: '2023-05-15' },
+  { id: 1, department_id: 1, name: 'Abdullayev Jasur', email: 'jasur@acme.uz', phone: null, age: 28, position: 'Backend Developer', status: 'active', created_at: '2023-01-15T00:00:00Z', updated_at: '2025-03-28T10:30:00Z', department: { id: 1, company_id: 1, name: 'IT', description: null, created_at: '2023-01-01T00:00:00Z', updated_at: '2023-01-01T00:00:00Z' } },
+  { id: 2, department_id: 2, name: 'Xolmatova Malika', email: 'malika@acme.uz', phone: null, age: 32, position: 'HR Manager', status: 'active', created_at: '2023-03-10T00:00:00Z', updated_at: '2025-03-27T14:00:00Z', department: { id: 2, company_id: 1, name: 'HR', description: null, created_at: '2023-01-01T00:00:00Z', updated_at: '2023-01-01T00:00:00Z' } },
+  { id: 3, department_id: 3, name: "Toshqo'ziyev Sherzod", email: 'sherzod@acme.uz', phone: null, age: 35, position: 'Accountant', status: 'active', created_at: '2022-11-20T00:00:00Z', updated_at: '2025-03-25T09:15:00Z', department: { id: 3, company_id: 1, name: 'Finance', description: null, created_at: '2023-01-01T00:00:00Z', updated_at: '2023-01-01T00:00:00Z' } },
+  { id: 4, department_id: 4, name: 'Nazarova Nilufar', email: 'nilufar@acme.uz', phone: null, age: 26, position: 'SMM Specialist', status: 'active', created_at: '2023-06-01T00:00:00Z', updated_at: '2025-03-29T11:45:00Z', department: { id: 4, company_id: 1, name: 'Marketing', description: null, created_at: '2023-01-01T00:00:00Z', updated_at: '2023-01-01T00:00:00Z' } },
+  { id: 5, department_id: 5, name: 'Rakhimov Bobur', email: 'bobur@acme.uz', phone: null, age: 30, position: 'Sales Manager', status: 'active', created_at: '2022-08-14T00:00:00Z', updated_at: '2025-03-26T16:00:00Z', department: { id: 5, company_id: 1, name: 'Sales', description: null, created_at: '2023-01-01T00:00:00Z', updated_at: '2023-01-01T00:00:00Z' } },
+  { id: 6, department_id: 6, name: "Yo'ldosheva Kamola", email: 'kamola@acme.uz', phone: null, age: 29, position: 'Lawyer', status: 'active', created_at: '2024-01-08T00:00:00Z', updated_at: '2025-03-28T13:00:00Z', department: { id: 6, company_id: 1, name: 'Legal', description: null, created_at: '2023-01-01T00:00:00Z', updated_at: '2023-01-01T00:00:00Z' } },
+  { id: 7, department_id: 1, name: 'Mirzayev Dilshod', email: 'dilshod@acme.uz', phone: null, age: 31, position: 'DevOps Engineer', status: 'active', created_at: '2023-04-22T00:00:00Z', updated_at: '2025-03-27T08:30:00Z', department: { id: 1, company_id: 1, name: 'IT', description: null, created_at: '2023-01-01T00:00:00Z', updated_at: '2023-01-01T00:00:00Z' } },
+  { id: 8, department_id: 3, name: 'Hasanova Zulfiya', email: 'zulfiya@acme.uz', phone: null, age: 40, position: 'CFO', status: 'active', created_at: '2021-07-30T00:00:00Z', updated_at: '2025-03-29T09:00:00Z', department: { id: 3, company_id: 1, name: 'Finance', description: null, created_at: '2023-01-01T00:00:00Z', updated_at: '2023-01-01T00:00:00Z' } },
+  { id: 9, department_id: 5, name: 'Sultonov Eldor', email: 'eldor@acme.uz', phone: null, age: 27, position: 'Sales Rep', status: 'active', created_at: '2023-09-11T00:00:00Z', updated_at: '2025-03-24T15:30:00Z', department: { id: 5, company_id: 1, name: 'Sales', description: null, created_at: '2023-01-01T00:00:00Z', updated_at: '2023-01-01T00:00:00Z' } },
+  { id: 10, department_id: 7, name: 'Qodirov Mansur', email: 'mansur@acme.uz', phone: null, age: 45, position: 'CEO', status: 'active', created_at: '2020-01-01T00:00:00Z', updated_at: '2025-03-30T10:00:00Z', department: { id: 7, company_id: 1, name: 'Management', description: null, created_at: '2023-01-01T00:00:00Z', updated_at: '2023-01-01T00:00:00Z' } },
+  { id: 11, department_id: 4, name: 'Ismailova Feruza', email: 'feruza@acme.uz', phone: null, age: 25, position: 'Content Manager', status: 'active', created_at: '2023-02-14T00:00:00Z', updated_at: '2025-03-28T12:00:00Z', department: { id: 4, company_id: 1, name: 'Marketing', description: null, created_at: '2023-01-01T00:00:00Z', updated_at: '2023-01-01T00:00:00Z' } },
+  { id: 12, department_id: 1, name: 'Tursunov Akbar', email: 'akbar@acme.uz', phone: null, age: 29, position: 'QA Engineer', status: 'inactive', created_at: '2022-12-01T00:00:00Z', updated_at: '2025-03-10T10:00:00Z', department: { id: 1, company_id: 1, name: 'IT', description: null, created_at: '2023-01-01T00:00:00Z', updated_at: '2023-01-01T00:00:00Z' } },
+  { id: 13, department_id: 2, name: 'Baxtiyorova Shahlo', email: 'shahlo@acme.uz', phone: null, age: 28, position: 'Recruiter', status: 'active', created_at: '2024-03-01T00:00:00Z', updated_at: '2025-03-27T14:30:00Z', department: { id: 2, company_id: 1, name: 'HR', description: null, created_at: '2023-01-01T00:00:00Z', updated_at: '2023-01-01T00:00:00Z' } },
+  { id: 14, department_id: 6, name: 'Ergashev Firdavs', email: 'firdavs@acme.uz', phone: null, age: 33, position: 'Legal Advisor', status: 'active', created_at: '2023-11-20T00:00:00Z', updated_at: '2025-03-29T11:00:00Z', department: { id: 6, company_id: 1, name: 'Legal', description: null, created_at: '2023-01-01T00:00:00Z', updated_at: '2023-01-01T00:00:00Z' } },
+  { id: 15, department_id: 3, name: 'Jumayeva Dilnoza', email: 'dilnoza@acme.uz', phone: null, age: 31, position: 'Financial Analyst', status: 'active', created_at: '2023-05-15T00:00:00Z', updated_at: '2025-03-26T09:00:00Z', department: { id: 3, company_id: 1, name: 'Finance', description: null, created_at: '2023-01-01T00:00:00Z', updated_at: '2023-01-01T00:00:00Z' } },
 ]
+
 
 // ───────────────────────────────────────────────
 // CAMPAIGNS
 // ───────────────────────────────────────────────
-export const MOCK_CAMPAIGNS: Campaign[] = [
-  { id: 'c1', name: 'Ipak Yo\'li Bank Fishing', channels: ['email'], status: 'active', totalEmployees: 120, sentCount: 120, clickedCount: 34, completedTrainingCount: 28, clickRate: 28.3, templateId: 't1', templateName: 'Bank Notification', difficulty: 'medium', category: 'bank', createdAt: '2025-03-01T08:00:00Z', startedAt: '2025-03-05T09:00:00Z', completedAt: null },
-  { id: 'c2', name: 'Telegram Gift Scam Test', channels: ['telegram'], status: 'completed', totalEmployees: 85, sentCount: 85, clickedCount: 12, completedTrainingCount: 81, clickRate: 14.1, templateId: 't4', templateName: 'Telegram Prize', difficulty: 'easy', category: 'social', createdAt: '2025-02-10T08:00:00Z', startedAt: '2025-02-12T09:00:00Z', completedAt: '2025-02-25T17:00:00Z' },
-  { id: 'c3', name: 'IT Helpdesk Impersonation', channels: ['email', 'sms'], status: 'paused', totalEmployees: 56, sentCount: 56, clickedCount: 22, completedTrainingCount: 15, clickRate: 39.3, templateId: 't2', templateName: 'IT Support Reset', difficulty: 'hard', category: 'corporate', createdAt: '2025-03-15T08:00:00Z', startedAt: '2025-03-16T09:00:00Z', completedAt: null },
-  { id: 'c4', name: 'Tax Office SMS Alert', channels: ['sms'], status: 'draft', totalEmployees: 200, sentCount: 0, clickedCount: 0, completedTrainingCount: 0, clickRate: 0, templateId: 't6', templateName: 'Tax Authority', difficulty: 'medium', category: 'government', createdAt: '2025-03-28T08:00:00Z', startedAt: null, completedAt: null },
-  { id: 'c5', name: 'Password Reset Q1', channels: ['email'], status: 'completed', totalEmployees: 150, sentCount: 150, clickedCount: 18, completedTrainingCount: 145, clickRate: 12.0, templateId: 't3', templateName: 'Password Expiry', difficulty: 'easy', category: 'corporate', createdAt: '2025-01-08T08:00:00Z', startedAt: '2025-01-10T09:00:00Z', completedAt: '2025-01-31T17:00:00Z' },
-  { id: 'c6', name: 'Social Media Login Lure', channels: ['telegram', 'sms'], status: 'active', totalEmployees: 75, sentCount: 75, clickedCount: 29, completedTrainingCount: 18, clickRate: 38.7, templateId: 't5', templateName: 'Instagram Verify', difficulty: 'hard', category: 'social', createdAt: '2025-03-20T08:00:00Z', startedAt: '2025-03-22T09:00:00Z', completedAt: null },
+export const MOCK_CAMPAIGNS: any[] = [
+  { id: 1, name: 'Ipak Yo\'li Bank Fishing', channels: ['email'], status: 'active', totalEmployees: 120, sentCount: 120, clickedCount: 34, completedTrainingCount: 28, clickRate: 28.3, templateId: 't1', templateName: 'Bank Notification', difficulty: 'medium', category: 'bank', created_at: '2025-03-01T08:00:00Z', starts_at: '2025-03-05T09:00:00Z', ends_at: null },
+  { id: 2, name: 'Telegram Gift Scam Test', channels: ['telegram'], status: 'completed', totalEmployees: 85, sentCount: 85, clickedCount: 12, completedTrainingCount: 81, clickRate: 14.1, templateId: 't4', templateName: 'Telegram Prize', difficulty: 'easy', category: 'social', created_at: '2025-02-10T08:00:00Z', starts_at: '2025-02-12T09:00:00Z', ends_at: '2025-02-25T17:00:00Z' },
+  { id: 3, name: 'IT Helpdesk Impersonation', channels: ['email', 'sms'], status: 'paused', totalEmployees: 56, sentCount: 56, clickedCount: 22, completedTrainingCount: 15, clickRate: 39.3, templateId: 't2', templateName: 'IT Support Reset', difficulty: 'hard', category: 'corporate', created_at: '2025-03-15T08:00:00Z', starts_at: '2025-03-16T09:00:00Z', ends_at: null },
+  { id: 4, name: 'Tax Office SMS Alert', channels: ['sms'], status: 'draft', totalEmployees: 200, sentCount: 0, clickedCount: 0, completedTrainingCount: 0, clickRate: 0, templateId: 't6', templateName: 'Tax Authority', difficulty: 'medium', category: 'government', created_at: '2025-03-28T08:00:00Z', starts_at: null, ends_at: null },
+  { id: 5, name: 'Password Reset Q1', channels: ['email'], status: 'completed', totalEmployees: 150, sentCount: 150, clickedCount: 18, completedTrainingCount: 145, clickRate: 12.0, templateId: 't3', templateName: 'Password Expiry', difficulty: 'easy', category: 'corporate', created_at: '2025-01-08T08:00:00Z', starts_at: '2025-01-10T09:00:00Z', ends_at: '2025-01-31T17:00:00Z' },
+  { id: 6, name: 'Social Media Login Lure', channels: ['telegram', 'sms'], status: 'active', totalEmployees: 75, sentCount: 75, clickedCount: 29, completedTrainingCount: 18, clickRate: 38.7, templateId: 't5', templateName: 'Instagram Verify', difficulty: 'hard', category: 'social', created_at: '2025-03-20T08:00:00Z', starts_at: '2025-03-22T09:00:00Z', ends_at: null },
 ]
 
 // ───────────────────────────────────────────────
@@ -99,15 +100,16 @@ export const MOCK_REPORT: Report = {
 // CAMPAIGN RESULTS
 // ───────────────────────────────────────────────
 export const MOCK_CAMPAIGN_RESULTS: CampaignResult[] = MOCK_EMPLOYEES.slice(0, 10).map((emp) => ({
-  employeeId: emp.id,
+  employeeId: String(emp.id),
   employeeName: emp.name,
   email: emp.email,
-  department: emp.department,
+  department: emp.department?.name ?? '',
   sentAt: '2025-03-05T09:05:00Z',
-  clickedAt: emp.riskScore > 60 ? '2025-03-05T09:12:00Z' : null,
-  trainedAt: emp.riskScore < 50 ? '2025-03-06T10:00:00Z' : null,
-  riskScore: emp.riskScore,
+  clickedAt: null,
+  trainedAt: null,
+  riskScore: 0,
 }))
+
 
 // ───────────────────────────────────────────────
 // TIMELINE EVENTS

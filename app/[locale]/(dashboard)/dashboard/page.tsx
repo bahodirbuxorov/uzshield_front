@@ -6,23 +6,21 @@ import { StatsCard } from '@/components/dashboard/StatsCard'
 import { RiskChart } from '@/components/dashboard/RiskChart'
 import { RecentCampaigns } from '@/components/dashboard/RecentCampaigns'
 import { TopVulnerableEmployees } from '@/components/dashboard/TopVulnerableEmployees'
-import { useReport } from '@/lib/hooks/useReports'
+import { useAnalytics } from '@/lib/hooks/useReports'
 import { useCampaigns } from '@/lib/hooks/useCampaigns'
 import { useEmployees } from '@/lib/hooks/useEmployees'
 
 export default function DashboardPage() {
   const t = useTranslations('dashboard')
 
-  const { data: report, isLoading: reportLoading } = useReport('last30')
-  const { data: campaignData, isLoading: campaignLoading } = useCampaigns(1, 5, 'all', 'all')
-  const { data: employeeData, isLoading: employeeLoading } = useEmployees(1, 100, '', '')
+  const { data: analytics, isLoading: analyticsLoading } = useAnalytics()
+  const { data: campaignData, isLoading: campaignLoading } = useCampaigns()
+  const { data: employeeData, isLoading: employeeLoading } = useEmployees({ status: 'active' })
 
-  const topVulnerable = [...(employeeData?.data ?? [])]
-    .sort((a, b) => b.riskScore - a.riskScore)
-    .slice(0, 5)
+  const topVulnerable = (employeeData?.data ?? []).slice(0, 5)
 
   const activeCampaigns = (campaignData?.data ?? []).filter((c) => c.status === 'active').length
-  const totalEmployees = employeeData?.total ?? 0
+  const totalEmployees = employeeData?.meta?.total ?? (employeeData?.data ?? []).length
 
   return (
     <div className="page-container">
@@ -56,33 +54,33 @@ export default function DashboardPage() {
         />
         <StatsCard
           title={t('avgRiskScore')}
-          value={report ? `${report.overallClickRate.toFixed(1)}%` : '–'}
+          value={analytics?.overall_click_rate != null ? `${analytics.overall_click_rate.toFixed(1)}%` : '–'}
           trend={-3.2}
           trendLabel={t('vsLastMonth')}
           icon={AlertTriangle}
           iconBg="bg-[var(--warning-light)]"
           iconColor="text-amber-500"
-          loading={reportLoading}
+          loading={analyticsLoading}
           index={2}
         />
         <StatsCard
           title={t('trainingsThisMonth')}
-          value={report ? `${report.overallTrainingRate.toFixed(0)}%` : '–'}
+          value={analytics?.overall_training_rate != null ? `${analytics.overall_training_rate.toFixed(0)}%` : '–'}
           trend={8}
           trendLabel={t('vsLastMonth')}
           icon={GraduationCap}
           iconBg="bg-purple-50"
           iconColor="text-purple-600"
-          loading={reportLoading}
+          loading={analyticsLoading}
           index={3}
         />
       </div>
 
       {/* Charts */}
       <RiskChart
-        trendData={report?.clickRateTrend ?? []}
-        riskData={report?.riskDistribution ?? []}
-        loading={reportLoading}
+        trendData={analytics?.campaign_trend ?? []}
+        riskData={analytics?.risk_distribution ?? null}
+        loading={analyticsLoading}
       />
 
       {/* Bottom Row - responsive 3-col layout */}

@@ -24,9 +24,11 @@ export default function CampaignsPage() {
   const { statusFilter, channelFilter, currentPage, setStatusFilter, setChannelFilter, setCurrentPage } = useCampaignStore()
   const [search, setSearch] = useState('')
 
-  const { data, isLoading } = useCampaigns(currentPage, DEFAULT_PAGE_SIZE, statusFilter, channelFilter)
+  const { data, isLoading } = useCampaigns(
+    statusFilter !== 'all' ? { status: statusFilter } : undefined
+  )
 
-  const totalPages = Math.ceil((data?.total ?? 0) / DEFAULT_PAGE_SIZE)
+  const totalPages = Math.ceil((data?.meta?.total ?? (data?.data ?? []).length) / DEFAULT_PAGE_SIZE)
 
   const filtered = (data?.data ?? []).filter((c) =>
     !search || c.name.toLowerCase().includes(search.toLowerCase())

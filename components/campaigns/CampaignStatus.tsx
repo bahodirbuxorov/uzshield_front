@@ -4,6 +4,7 @@ import type { CampaignStatus } from '@/lib/types/campaign'
 
 const STATUS_VARIANT: Record<CampaignStatus, 'success' | 'warning' | 'secondary' | 'default'> = {
   active: 'success',
+  running: 'success',
   paused: 'warning',
   completed: 'secondary',
   draft: 'default',

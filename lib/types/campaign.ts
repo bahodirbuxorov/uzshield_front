@@ -4,7 +4,7 @@ import type { Campaign as ApiCampaign } from '@/lib/api/campaigns'
 export type CampaignChannel = 'email' | 'telegram' | 'sms'
 
 /** Lifecycle state of a campaign */
-export type CampaignStatus = 'draft' | 'active' | 'paused' | 'completed'
+export type CampaignStatus = 'draft' | 'active' | 'paused' | 'completed' | 'running'
 
 /** Difficulty level for phishing templates */
 export type Difficulty = 'easy' | 'medium' | 'hard'

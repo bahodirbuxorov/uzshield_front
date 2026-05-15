@@ -11,6 +11,7 @@ export interface Employee {
   age: number | null
   position: string | null
   status: 'active' | 'inactive'
+  risk_score?: number
   created_at: string
   updated_at: string
   /** Optional relation — populated when department is eager-loaded */

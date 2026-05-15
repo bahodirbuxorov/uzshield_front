@@ -10,9 +10,11 @@ export interface Campaign {
   template_subject: string | null
   template_body: string | null
   landing_url: string | null
-  status: 'draft' | 'active' | 'completed' | 'paused'
+  status: 'draft' | 'active' | 'completed' | 'paused' | 'running'
   starts_at: string | null
   ends_at: string | null
+  launched_at: string | null
+  targets_count: number
   created_at: string
   updated_at: string
 }

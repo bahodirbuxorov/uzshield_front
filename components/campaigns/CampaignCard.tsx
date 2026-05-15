@@ -17,6 +17,7 @@ const CHANNEL_ICONS: Record<CampaignChannel, React.ElementType> = {
 
 const STATUS_COLORS: Record<CampaignStatus, { bg: string; text: string; label: string }> = {
   active: { bg: 'var(--success-light)', text: 'var(--success)', label: 'Faol' },
+  running: { bg: 'var(--success-light)', text: 'var(--success)', label: 'Faol' },
   paused: { bg: 'var(--warning-light)', text: 'var(--warning)', label: "To'xtatilgan" },
   completed: { bg: 'var(--surface-secondary)', text: 'var(--muted)', label: 'Yakunlangan' },
   draft: { bg: '#F1F5F9', text: '#475569', label: 'Qoralama' },
@@ -24,6 +25,7 @@ const STATUS_COLORS: Record<CampaignStatus, { bg: string; text: string; label: s
 
 const STATUS_STRIP: Record<CampaignStatus, string> = {
   active: 'var(--success)',
+  running: 'var(--success)',
   paused: 'var(--warning)',
   completed: 'var(--muted)',
   draft: 'var(--border)',
@@ -37,7 +39,7 @@ interface CampaignCardProps {
 export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
   const t = useTranslations('campaigns')
   const locale = useLocale()
-  const status = STATUS_COLORS[campaign.status]
+  const status = STATUS_COLORS[campaign.status] || STATUS_COLORS.draft
 
   return (
     <motion.div

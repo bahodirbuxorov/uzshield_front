@@ -52,7 +52,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span className="live-dot" style={{ width: 6, height: 6 }} />
-          uzshield · secure session
+          oxupax · secure session
         </div>
         <div style={{ marginTop: 4, color: 'var(--muted)', opacity: 0.6 }}>
           [ tls-1.3 / aes-256-gcm ]

@@ -125,7 +125,7 @@ export function Sidebar() {
                     lineHeight: 1,
                   }}
                 >
-                  UZ<span style={{ color: 'var(--accent)' }}>SHIELD</span>
+                  OXU<span style={{ color: 'var(--accent)' }}>PAX</span>
                 </span>
                 <span
                   style={{

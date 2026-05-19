@@ -74,7 +74,7 @@ export function Header() {
               letterSpacing: '0.08em',
             }}
           >
-            uzshield@console:~/
+            oxupax@console:~/
           </span>
           <span
             style={{

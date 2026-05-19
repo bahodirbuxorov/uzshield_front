@@ -45,19 +45,40 @@ export default function ReportsPage() {
         {summaryCards.map((s, i) => (
           <div
             key={i}
+            className="cyber-corners"
             style={{
-              backgroundColor: 'white',
+              position: 'relative',
+              backgroundColor: 'var(--surface)',
               border: '1px solid var(--border)',
-              borderRadius: 12,
+              borderRadius: 4,
               padding: 20,
               textAlign: 'center',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
             }}
           >
-            <p style={{ fontSize: 26, fontWeight: 700, color: s.color, margin: '0 0 4px', fontFamily: 'var(--font-display)' }}>
+            <p
+              style={{
+                fontSize: 26,
+                fontWeight: 700,
+                color: s.color,
+                margin: '0 0 6px',
+                fontFamily: 'var(--font-mono)',
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
               {s.value}
             </p>
-            <p style={{ fontSize: 12, color: 'var(--muted)', margin: 0 }}>{s.label}</p>
+            <p
+              style={{
+                fontSize: 10,
+                color: 'var(--muted)',
+                margin: 0,
+                fontFamily: 'var(--font-mono)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.14em',
+              }}
+            >
+              {s.label}
+            </p>
           </div>
         ))}
       </div>
@@ -78,7 +99,7 @@ export default function ReportsPage() {
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                   <XAxis dataKey="month" tick={{ fontSize: 11, fill: 'var(--muted)' }} />
                   <YAxis tick={{ fontSize: 11, fill: 'var(--muted)' }} unit="%" />
-                  <Tooltip contentStyle={{ borderRadius: 12, fontSize: 12 }} formatter={(v) => `${v}%`} />
+                  <Tooltip contentStyle={{ borderRadius: 4, fontSize: 12, backgroundColor: 'var(--surface-elevated)', border: '1px solid var(--border-strong)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }} formatter={(v) => `${v}%`} />
                   <Line type="monotone" dataKey="click_rate" stroke="var(--danger)" strokeWidth={2} dot={false} name="Click Rate" />
                   <Line type="monotone" dataKey="training_rate" stroke="var(--success)" strokeWidth={2} dot={false} name="Training" />
                 </LineChart>
@@ -101,7 +122,7 @@ export default function ReportsPage() {
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                   <XAxis dataKey="department" tick={{ fontSize: 10, fill: 'var(--muted)' }} />
                   <YAxis tick={{ fontSize: 11, fill: 'var(--muted)' }} />
-                  <Tooltip contentStyle={{ borderRadius: 12, fontSize: 12 }} />
+                  <Tooltip contentStyle={{ borderRadius: 4, fontSize: 12, backgroundColor: 'var(--surface-elevated)', border: '1px solid var(--border-strong)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }} />
                   <Bar dataKey="avg_risk_score" fill="var(--accent)" radius={[4, 4, 0, 0]} name="Risk Score" />
                 </BarChart>
               </ResponsiveContainer>
@@ -123,7 +144,7 @@ export default function ReportsPage() {
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                   <XAxis dataKey="department" tick={{ fontSize: 11, fill: 'var(--muted)' }} />
                   <YAxis tick={{ fontSize: 11, fill: 'var(--muted)' }} unit="%" />
-                  <Tooltip contentStyle={{ borderRadius: 12, fontSize: 12 }} formatter={(v) => `${v}%`} />
+                  <Tooltip contentStyle={{ borderRadius: 4, fontSize: 12, backgroundColor: 'var(--surface-elevated)', border: '1px solid var(--border-strong)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }} formatter={(v) => `${v}%`} />
                   <Bar dataKey="click_rate" fill="var(--danger)" radius={[4, 4, 0, 0]} name="Click Rate" />
                 </BarChart>
               </ResponsiveContainer>
@@ -151,7 +172,7 @@ export default function ReportsPage() {
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                   <XAxis dataKey="month" tick={{ fontSize: 11, fill: 'var(--muted)' }} />
                   <YAxis tick={{ fontSize: 11, fill: 'var(--muted)' }} unit="%" />
-                  <Tooltip contentStyle={{ borderRadius: 12, fontSize: 12 }} formatter={(v) => `${v}%`} />
+                  <Tooltip contentStyle={{ borderRadius: 4, fontSize: 12, backgroundColor: 'var(--surface-elevated)', border: '1px solid var(--border-strong)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }} formatter={(v) => `${v}%`} />
                   <Area type="monotone" dataKey="training_rate" stroke="var(--success)" strokeWidth={2} fill="url(#trainGrad)" name="Training Rate" />
                 </AreaChart>
               </ResponsiveContainer>
@@ -169,7 +190,20 @@ export default function ReportsPage() {
               <thead>
                 <tr style={{ borderBottom: '1px solid var(--border)', backgroundColor: 'var(--surface-secondary)' }}>
                   {['Department', 'Employees', 'Avg Risk', 'Click Rate', 'Training Rate'].map((h) => (
-                    <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: 11, fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>
+                    <th
+                      key={h}
+                      style={{
+                        padding: '12px 16px',
+                        textAlign: 'left',
+                        fontSize: 10,
+                        fontWeight: 600,
+                        color: 'var(--muted)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.14em',
+                        whiteSpace: 'nowrap',
+                        fontFamily: 'var(--font-mono)',
+                      }}
+                    >
                       {h}
                     </th>
                   ))}

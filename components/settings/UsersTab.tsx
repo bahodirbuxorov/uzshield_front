@@ -88,7 +88,19 @@ export function UsersTab() {
             <thead>
               <tr style={{ borderBottom: '1px solid var(--border)', backgroundColor: 'var(--surface-secondary)' }}>
                 {['Foydalanuvchi', 'Email', 'Rollar', 'Harakatlar'].map((h) => (
-                  <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: 11, fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase' }}>
+                  <th
+                    key={h}
+                    style={{
+                      padding: '12px 16px',
+                      textAlign: 'left',
+                      fontSize: 10,
+                      fontWeight: 600,
+                      color: 'var(--muted)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.14em',
+                      fontFamily: 'var(--font-mono)',
+                    }}
+                  >
                     {h}
                   </th>
                 ))}
@@ -102,7 +114,7 @@ export function UsersTab() {
                   <td style={{ padding: '12px 16px' }}>
                     <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
                       {u.roles?.map(r => (
-                        <Badge key={r.id} variant="outline" style={{ backgroundColor: '#F3F4F6' }}>{r.name}</Badge>
+                        <Badge key={r.id} variant="outline">{r.name}</Badge>
                       ))}
                     </div>
                   </td>
@@ -129,19 +141,19 @@ export function UsersTab() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div>
               <label style={{ display: 'block', fontSize: 13, marginBottom: 6 }}>Ism</label>
-              <input value={form.name} onChange={e => setForm({...form, name: e.target.value})} style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid var(--border)', outline: 'none' }} />
+              <input value={form.name} onChange={e => setForm({...form, name: e.target.value})} style={{ width: '100%', padding: '8px 12px', borderRadius: 4, border: '1px solid var(--border-strong)', outline: 'none', backgroundColor: 'var(--surface-secondary)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 13 }} />
             </div>
             <div>
               <label style={{ display: 'block', fontSize: 13, marginBottom: 6 }}>Email</label>
-              <input type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid var(--border)', outline: 'none' }} />
+              <input type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} style={{ width: '100%', padding: '8px 12px', borderRadius: 4, border: '1px solid var(--border-strong)', outline: 'none', backgroundColor: 'var(--surface-secondary)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 13 }} />
             </div>
             <div>
               <label style={{ display: 'block', fontSize: 13, marginBottom: 6 }}>Parol</label>
-              <input type="password" value={form.password} onChange={e => setForm({...form, password: e.target.value})} style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid var(--border)', outline: 'none' }} />
+              <input type="password" value={form.password} onChange={e => setForm({...form, password: e.target.value})} style={{ width: '100%', padding: '8px 12px', borderRadius: 4, border: '1px solid var(--border-strong)', outline: 'none', backgroundColor: 'var(--surface-secondary)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 13 }} />
             </div>
             <div>
               <label style={{ display: 'block', fontSize: 13, marginBottom: 6 }}>Rol</label>
-              <select value={form.role} onChange={e => setForm({...form, role: e.target.value})} style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid var(--border)', outline: 'none', backgroundColor: 'white' }}>
+              <select value={form.role} onChange={e => setForm({...form, role: e.target.value})} style={{ width: '100%', padding: '8px 12px', borderRadius: 4, border: '1px solid var(--border-strong)', outline: 'none', backgroundColor: 'var(--surface-secondary)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 13 }}>
                 {roles.map(r => <option key={r.id} value={r.name}>{r.name}</option>)}
                 {roles.length === 0 && <option value="company_admin">Company Admin</option>}
               </select>

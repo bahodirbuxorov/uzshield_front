@@ -193,7 +193,7 @@ export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
                 letterSpacing: '0.08em',
               }}
             >
-              {t('difficulty.' + campaign.difficulty as Parameters<typeof t>[0])}
+              {t(('difficulty.' + (campaign.difficulty ?? 'medium')) as Parameters<typeof t>[0])}
             </div>
           </div>
 

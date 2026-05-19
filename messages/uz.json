@@ -31,7 +31,8 @@
     "rows": "Qatorlar",
     "page": "Sahifa",
     "of": "/",
-    "total": "Jami"
+    "total": "Jami",
+    "add": "Qo'shish"
   },
   "nav": {
     "dashboard": "Bosh sahifa",
@@ -84,6 +85,7 @@
     "status": {
       "all": "Barcha holat",
       "active": "Faol",
+      "running": "Ishlamoqda",
       "draft": "Qoralama",
       "paused": "To'xtatilgan",
       "completed": "Yakunlangan"
@@ -136,6 +138,7 @@
     "title": "Xodimlar",
     "import": "Xodimlarni import qilish",
     "department": "Bo'lim",
+    "position": "Lavozim",
     "riskScore": "Xavf ball",
     "lastActivity": "Oxirgi faollik",
     "searchPlaceholder": "Xodim qidirish...",
@@ -215,6 +218,7 @@
     "title": "Sozlamalar",
     "tabs": {
       "company": "Kompaniya",
+      "users": "Foydalanuvchilar",
       "employees": "Xodimlar",
       "notifications": "Bildirishnomalar",
       "integration": "Integratsiya",

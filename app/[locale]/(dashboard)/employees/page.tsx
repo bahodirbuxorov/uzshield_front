@@ -80,15 +80,16 @@ export default function EmployeesPage() {
               height: 36,
               paddingLeft: 36,
               paddingRight: 12,
-              fontSize: 14,
+              fontSize: 13,
+              fontFamily: 'var(--font-mono)',
               color: 'var(--text-primary)',
-              backgroundColor: 'white',
-              border: '1px solid var(--border)',
-              borderRadius: 8,
+              backgroundColor: 'var(--surface-secondary)',
+              border: '1px solid var(--border-strong)',
+              borderRadius: 4,
               outline: 'none',
             }}
-            onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px rgba(26,111,255,0.1)' }}
-            onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none' }}
+            onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px rgba(0,255,148,0.15)' }}
+            onBlur={(e) => { e.target.style.borderColor = 'var(--border-strong)'; e.target.style.boxShadow = 'none' }}
           />
         </div>
 
@@ -130,12 +131,13 @@ export default function EmployeesPage() {
 
       {/* Table */}
       <div
+        className="cyber-corners"
         style={{
-          backgroundColor: 'white',
-          borderRadius: 12,
+          position: 'relative',
+          backgroundColor: 'var(--surface)',
+          borderRadius: 4,
           border: '1px solid var(--border)',
           overflowX: 'auto',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
         }}
       >
         {isLoading ? (
@@ -154,12 +156,13 @@ export default function EmployeesPage() {
                     style={{
                       padding: '12px 16px',
                       textAlign: 'left',
-                      fontSize: 11,
+                      fontSize: 10,
                       fontWeight: 600,
                       color: 'var(--muted)',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
+                      letterSpacing: '0.14em',
                       whiteSpace: 'nowrap',
+                      fontFamily: 'var(--font-mono)',
                     }}
                   >
                     {h}

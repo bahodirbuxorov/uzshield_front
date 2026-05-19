@@ -35,10 +35,13 @@ export default function SettingsPage() {
 
   const labelStyle: React.CSSProperties = {
     display: 'block',
-    fontSize: 13,
-    fontWeight: 500,
-    color: 'var(--text-primary)',
-    marginBottom: 6,
+    fontSize: 10,
+    fontFamily: 'var(--font-mono)',
+    fontWeight: 600,
+    color: 'var(--text-secondary)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.14em',
+    marginBottom: 8,
   }
 
   const inputStyle: React.CSSProperties = {
@@ -46,11 +49,12 @@ export default function SettingsPage() {
     width: '100%',
     height: 40,
     padding: '0 12px',
-    fontSize: 14,
+    fontSize: 13,
+    fontFamily: 'var(--font-mono)',
     color: 'var(--text-primary)',
-    backgroundColor: 'white',
-    border: '1px solid var(--border)',
-    borderRadius: 8,
+    backgroundColor: 'var(--surface-secondary)',
+    border: '1px solid var(--border-strong)',
+    borderRadius: 4,
     outline: 'none',
   }
 
@@ -64,8 +68,9 @@ export default function SettingsPage() {
           display: 'flex',
           gap: 4,
           backgroundColor: 'var(--surface-secondary)',
-          padding: 6,
-          borderRadius: 12,
+          border: '1px solid var(--border)',
+          padding: 4,
+          borderRadius: 4,
           flexWrap: 'wrap',
           width: 'fit-content',
         }}
@@ -82,16 +87,19 @@ export default function SettingsPage() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: 6,
-                padding: '8px 16px',
-                borderRadius: 8,
-                border: 'none',
+                padding: '7px 14px',
+                borderRadius: 3,
+                border: '1px solid',
+                borderColor: isActive ? 'var(--border-accent)' : 'transparent',
                 cursor: 'pointer',
-                fontSize: 13,
-                fontWeight: isActive ? 600 : 400,
+                fontSize: 11,
+                fontWeight: 600,
+                fontFamily: 'var(--font-mono)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
                 transition: 'all 0.15s',
-                backgroundColor: isActive ? 'white' : 'transparent',
-                color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
-                boxShadow: isActive ? '0 1px 4px rgba(0,0,0,0.1)' : 'none',
+                backgroundColor: isActive ? 'var(--surface-elevated)' : 'transparent',
+                color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
                 whiteSpace: 'nowrap',
               }}
             >
@@ -285,9 +293,10 @@ export default function SettingsPage() {
                     key={plan}
                     style={{
                       padding: 20,
-                      borderRadius: 12,
-                      border: `2px solid ${plan === 'pro' ? 'var(--accent)' : 'var(--border)'}`,
-                      backgroundColor: plan === 'pro' ? '#EFF6FF' : 'white',
+                      borderRadius: 4,
+                      border: `1px solid ${plan === 'pro' ? 'var(--border-accent)' : 'var(--border)'}`,
+                      backgroundColor: plan === 'pro' ? 'var(--accent-tint)' : 'var(--surface)',
+                      boxShadow: plan === 'pro' ? 'inset 0 0 0 1px rgba(0,255,148,0.2)' : 'none',
                       textAlign: 'center',
                       cursor: 'pointer',
                     }}
@@ -310,7 +319,19 @@ export default function SettingsPage() {
                 <thead>
                   <tr style={{ borderBottom: '1px solid var(--border)', backgroundColor: 'var(--surface-secondary)' }}>
                     {['Date', 'Plan', 'Amount', 'Status'].map((h) => (
-                      <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: 11, fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase' }}>
+                      <th
+                        key={h}
+                        style={{
+                          padding: '12px 16px',
+                          textAlign: 'left',
+                          fontSize: 10,
+                          fontWeight: 600,
+                          color: 'var(--muted)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.14em',
+                          fontFamily: 'var(--font-mono)',
+                        }}
+                      >
                         {h}
                       </th>
                     ))}

@@ -368,3 +368,95 @@ body::after {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* ─── Responsive helpers ─────────────────────────────────────────────── */
+
+/* Page padding reduces on small viewports. */
+@media (max-width: 767px) {
+  .page-container {
+    padding: 1rem 0.875rem 1.25rem;
+    gap: 1rem;
+  }
+}
+
+/* Make the dotted grid less visible on small screens (perf + clarity). */
+@media (max-width: 480px) {
+  body::before { background-size: 28px 28px; }
+}
+
+/* Sidebar off-canvas behaviour. The sidebar applies the .app-sidebar class. */
+.app-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  z-index: 60;
+  transition: transform 0.25s ease-out;
+}
+@media (max-width: 767px) {
+  .app-sidebar {
+    transform: translateX(-100%);
+    width: 280px !important;
+    min-width: 280px !important;
+    box-shadow: none;
+  }
+  .app-sidebar.is-open {
+    transform: translateX(0);
+    box-shadow: 0 24px 60px -8px rgba(0, 0, 0, 0.7);
+  }
+  /* The spacer that pushes content over for the desktop sidebar collapses
+     to 0 on mobile so the main column gets the full viewport width. */
+  .app-sidebar-spacer { width: 0 !important; }
+}
+
+/* Backdrop only renders on mobile when sidebar open. */
+.app-sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 5, 12, 0.65);
+  backdrop-filter: blur(2px);
+  z-index: 55;
+  animation: fadeIn 0.2s ease-out;
+}
+@media (min-width: 768px) {
+  .app-sidebar-backdrop { display: none; }
+}
+
+/* Disable body scroll while the off-canvas drawer is open. */
+body.sidebar-locked { overflow: hidden; }
+
+/* Compact dialogs on small viewports. */
+@media (max-width: 640px) {
+  [role="dialog"][data-state="open"] {
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
+  }
+}
+
+/* Header padding shrinks on mobile. */
+.app-header {
+  padding: 0 24px;
+}
+@media (max-width: 767px) {
+  .app-header {
+    padding: 0 12px;
+    gap: 8px;
+  }
+}
+
+/* Display fixes for helper classes used on flex/inline-flex elements. */
+.hide-on-mobile { display: flex; }
+.show-on-mobile { display: none; }
+@media (max-width: 767px) {
+  .hide-on-mobile { display: none !important; }
+  .show-on-mobile { display: flex; }
+}
+
+/* Reduce default card grid min-widths on phones — many places use 280px or
+   360px minmax which forces a single column anyway, but on very narrow
+   phones (<360px) the 280px minmax overflows the viewport. */
+@media (max-width: 380px) {
+  .page-container { padding: 0.75rem 0.625rem 1rem; }
+}

@@ -121,7 +121,7 @@ export default function CampaignsPage() {
 
       {/* Grid */}
       {isLoading ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 360px), 1fr))', gap: 16 }}>
           {[...Array(6)].map((_, i) => <Skeleton key={i} style={{ height: 200 }} />)}
         </div>
       ) : filtered.length === 0 ? (
@@ -132,7 +132,7 @@ export default function CampaignsPage() {
           onAction={() => router.push(`/${locale}/campaigns/new`)}
         />
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 360px), 1fr))', gap: 16 }}>
           {filtered.map((campaign, i) => (
             <CampaignCard key={campaign.id} campaign={campaign} index={i} />
           ))}

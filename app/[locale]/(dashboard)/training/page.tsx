@@ -90,7 +90,7 @@ export default function TrainingPage() {
       )}
 
       {/* Templates grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))', gap: 16 }}>
         {tplLoading
           ? [...Array(4)].map((_, i) => <Skeleton key={i} style={{ height: 180 }} />)
           : visible.length === 0

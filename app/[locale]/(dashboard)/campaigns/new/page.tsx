@@ -262,7 +262,7 @@ export default function NewCampaignPage() {
                 <div
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 260px), 1fr))',
                     gap: 12,
                     maxHeight: 400,
                     overflowY: 'auto',

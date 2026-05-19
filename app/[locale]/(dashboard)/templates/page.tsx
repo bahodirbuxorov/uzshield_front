@@ -168,13 +168,13 @@ export default function TemplatesPage() {
 
       {/* Grid */}
       {isLoading ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: 16 }}>
           {[...Array(6)].map((_, i) => <Skeleton key={i} style={{ height: 220 }} />)}
         </div>
       ) : filtered.length === 0 ? (
         <EmptyState icon={<FileText style={{ width: 32, height: 32 }} />} title={t('noTemplates')} />
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: 16 }}>
           {filtered.map((tmpl: PhishingTemplate) => {
             const ChIcon = CHANNEL_ICON[tmpl.channel] ?? Mail
             return (

@@ -2,10 +2,11 @@
 
 import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Bell, Search, Terminal } from 'lucide-react'
+import { Bell, Menu, Search, Terminal } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { useAuthStore } from '@/lib/store/useAuthStore'
+import { useLayoutStore } from '@/lib/store/useLayoutStore'
 
 const ROUTE_TITLE_MAP: Record<string, string> = {
   dashboard: 'dashboard',
@@ -15,12 +16,18 @@ const ROUTE_TITLE_MAP: Record<string, string> = {
   training: 'training',
   reports: 'reports',
   settings: 'settings',
+  companies: 'companies',
+  departments: 'departments',
+  users: 'users',
+  roles: 'roles',
+  notifications: 'notifications',
 }
 
 export function Header() {
   const tNav = useTranslations('nav')
   const pathname = usePathname()
   const { user } = useAuthStore()
+  const { toggleMobileSidebar } = useLayoutStore()
   const [clock, setClock] = useState<string>('')
 
   useEffect(() => {
@@ -49,11 +56,12 @@ export function Header() {
   return (
     <header
       id="main-header"
+      className="app-header"
       style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '0 24px',
+        gap: 12,
         height: 64,
         flexShrink: 0,
         backgroundColor: 'var(--background-deep)',
@@ -63,9 +71,42 @@ export function Header() {
         zIndex: 30,
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Terminal style={{ width: 14, height: 14, color: 'var(--accent)' }} />
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          minWidth: 0,
+          flex: 1,
+        }}
+      >
+        {/* Mobile hamburger */}
+        <button
+          className="show-on-mobile"
+          aria-label="Open navigation"
+          onClick={toggleMobileSidebar}
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 36,
+            height: 36,
+            borderRadius: 4,
+            background: 'var(--surface)',
+            border: '1px solid var(--border)',
+            color: 'var(--accent)',
+            cursor: 'pointer',
+            flexShrink: 0,
+          }}
+        >
+          <Menu style={{ width: 18, height: 18 }} />
+        </button>
+
+        {/* Terminal prompt — desktop only */}
+        <div
+          className="hide-on-mobile"
+          style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}
+        >
+          <Terminal style={{ width: 14, height: 14, color: 'var(--accent)', flexShrink: 0 }} />
           <span
             style={{
               fontFamily: 'var(--font-mono)',
@@ -99,9 +140,13 @@ export function Header() {
           />
         </div>
 
-        <span style={{ width: 1, height: 20, backgroundColor: 'var(--border)' }} />
+        <span
+          className="hide-on-mobile"
+          style={{ width: 1, height: 20, backgroundColor: 'var(--border)', flexShrink: 0 }}
+        />
 
         <h1
+          className="text-ellipsis-1"
           style={{
             fontSize: 14,
             fontWeight: 600,
@@ -110,17 +155,18 @@ export function Header() {
             margin: 0,
             textTransform: 'uppercase',
             letterSpacing: '0.06em',
+            minWidth: 0,
           }}
         >
           {tNav(titleKey as Parameters<typeof tNav>[0])}
         </h1>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        {/* Live clock */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+        {/* Live clock — desktop only (too wide on mobile) */}
         <div
+          className="hide-on-mobile"
           style={{
-            display: 'flex',
             alignItems: 'center',
             gap: 8,
             padding: '6px 10px',
@@ -144,11 +190,11 @@ export function Header() {
           </span>
         </div>
 
-        {/* Search hint */}
+        {/* Search hint — desktop only */}
         <button
+          className="hide-on-mobile"
           aria-label="Search"
           style={{
-            display: 'flex',
             alignItems: 'center',
             gap: 8,
             padding: '6px 10px',
@@ -197,6 +243,7 @@ export function Header() {
             cursor: 'pointer',
             color: 'var(--text-secondary)',
             transition: 'all 0.15s',
+            flexShrink: 0,
           }}
           onMouseEnter={(e) => {
             ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border-accent)'
@@ -223,7 +270,9 @@ export function Header() {
           />
         </button>
 
-        <Avatar style={{ width: 36, height: 36, border: '1px solid var(--border-accent)' }}>
+        <Avatar
+          style={{ width: 36, height: 36, border: '1px solid var(--border-accent)', flexShrink: 0 }}
+        >
           <AvatarFallback
             style={{
               fontSize: 11,

@@ -95,7 +95,7 @@ export default function CampaignsPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">{t('status.all')}</SelectItem>
-              <SelectItem value="active">{t('status.active')}</SelectItem>
+              <SelectItem value="running">{t('status.running')}</SelectItem>
               <SelectItem value="draft">{t('status.draft')}</SelectItem>
               <SelectItem value="paused">{t('status.paused')}</SelectItem>
               <SelectItem value="completed">{t('status.completed')}</SelectItem>

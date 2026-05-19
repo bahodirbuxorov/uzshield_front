@@ -96,9 +96,10 @@ export default function CampaignsPage() {
             <SelectContent>
               <SelectItem value="all">{t('status.all')}</SelectItem>
               <SelectItem value="running">{t('status.running')}</SelectItem>
+              <SelectItem value="scheduled">{t('status.scheduled')}</SelectItem>
               <SelectItem value="draft">{t('status.draft')}</SelectItem>
-              <SelectItem value="paused">{t('status.paused')}</SelectItem>
               <SelectItem value="completed">{t('status.completed')}</SelectItem>
+              <SelectItem value="cancelled">{t('status.cancelled')}</SelectItem>
             </SelectContent>
           </Select>
         </div>

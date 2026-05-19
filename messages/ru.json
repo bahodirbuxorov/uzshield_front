@@ -89,11 +89,11 @@
     "employees": "Сотрудники",
     "status": {
       "all": "Все статусы",
-      "active": "Активная",
       "running": "Запущена",
+      "scheduled": "Запланирована",
       "draft": "Черновик",
-      "paused": "Приостановлена",
-      "completed": "Завершена"
+      "completed": "Завершена",
+      "cancelled": "Отменена"
     },
     "channel": {
       "all": "Все каналы",

@@ -2,12 +2,12 @@ import { useTranslations } from 'next-intl'
 import { Badge } from '@/components/ui/badge'
 import type { CampaignStatus } from '@/lib/types/campaign'
 
-const STATUS_VARIANT: Record<CampaignStatus, 'success' | 'warning' | 'secondary' | 'default'> = {
-  active: 'success',
+const STATUS_VARIANT: Record<CampaignStatus, 'success' | 'warning' | 'secondary' | 'default' | 'danger'> = {
   running: 'success',
-  paused: 'warning',
+  scheduled: 'default',
+  draft: 'secondary',
   completed: 'secondary',
-  draft: 'default',
+  cancelled: 'danger',
 }
 
 /** Status badge for a campaign */

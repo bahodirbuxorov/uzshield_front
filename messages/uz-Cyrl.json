@@ -89,11 +89,11 @@
     "employees": "Ходимлар",
     "status": {
       "all": "Барча ҳолат",
-      "active": "Фаол",
       "running": "Ишламоқда",
+      "scheduled": "Режалаштирилган",
       "draft": "Қоралама",
-      "paused": "Тўхтатилган",
-      "completed": "Якунланган"
+      "completed": "Якунланган",
+      "cancelled": "Бекор қилинган"
     },
     "channel": {
       "all": "Барча канал",

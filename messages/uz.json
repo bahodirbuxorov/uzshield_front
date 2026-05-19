@@ -89,11 +89,11 @@
     "employees": "Xodimlar",
     "status": {
       "all": "Barcha holat",
-      "active": "Faol",
       "running": "Ishlamoqda",
+      "scheduled": "Rejalashtirilgan",
       "draft": "Qoralama",
-      "paused": "To'xtatilgan",
-      "completed": "Yakunlangan"
+      "completed": "Yakunlangan",
+      "cancelled": "Bekor qilingan"
     },
     "channel": {
       "all": "Barcha kanal",

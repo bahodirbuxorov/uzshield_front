@@ -7,11 +7,11 @@ export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8090'
 
 /** Mock auth credentials */
-export const MOCK_AUTH_EMAIL = 'admin@uzshield.uz'
+export const MOCK_AUTH_EMAIL = 'admin@oxupax.uz'
 export const MOCK_AUTH_PASSWORD = 'password123'
 
 /** Cookie name used to store auth token */
-export const AUTH_COOKIE_NAME = 'uzshield_token'
+export const AUTH_COOKIE_NAME = 'oxupax_token'
 
 /** Sidebar widths (in px) */
 export const SIDEBAR_WIDTH = 260

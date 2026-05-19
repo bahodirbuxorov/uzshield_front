@@ -110,7 +110,7 @@ export default function LoginPage() {
               flex: 1,
             }}
           >
-            uzshield@auth:~$ login
+            oxupax@auth:~$ login
           </span>
           <span style={{ display: 'flex', gap: 4 }}>
             <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: 'var(--danger)' }} />
@@ -148,7 +148,7 @@ export default function LoginPage() {
               textTransform: 'uppercase',
             }}
           >
-            UZ<span style={{ color: 'var(--accent)' }}>SHIELD</span>
+            OXU<span style={{ color: 'var(--accent)' }}>PAX</span>
           </h1>
           <p
             style={{

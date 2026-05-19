@@ -11,7 +11,7 @@ const intlMiddleware = createMiddleware({
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   const isAuthPage = pathname.includes('/login')
-  const token = request.cookies.get('uzshield_token')
+  const token = request.cookies.get('oxupax_token')
 
   if (!isAuthPage && !token) {
     const segments = pathname.split('/')

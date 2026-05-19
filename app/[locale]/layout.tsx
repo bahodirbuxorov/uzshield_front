@@ -33,8 +33,8 @@ const notoSans = Noto_Sans({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s · UzShield',
-    default: 'UzShield — Cyber Defense Console',
+    template: '%s · Oxupax',
+    default: 'Oxupax — Cyber Defense Console',
   },
   description: 'Xodimlarni fishing hujumlaridan himoya qiling | Cyber threat awareness platform',
 }

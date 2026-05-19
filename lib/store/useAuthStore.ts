@@ -42,7 +42,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'uzshield-auth',
+      name: 'oxupax-auth',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ user: state.user, token: state.token, isAuthenticated: state.isAuthenticated }),
     }

@@ -266,7 +266,10 @@ export default function DepartmentsPage() {
                   </div>
                 </div>
                 {d.description && (
-                  <p style={{ fontSize: 12, color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
+                  <p
+                    className="text-clamp-3 text-break-anywhere"
+                    style={{ fontSize: 12, color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}
+                  >
                     {d.description}
                   </p>
                 )}

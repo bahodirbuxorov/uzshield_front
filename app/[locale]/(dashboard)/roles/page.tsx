@@ -298,7 +298,10 @@ export default function RolesPage() {
                 </div>
 
                 {r.description && (
-                  <p style={{ fontSize: 12, color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
+                  <p
+                    className="text-clamp-2 text-break-anywhere"
+                    style={{ fontSize: 12, color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}
+                  >
                     {r.description}
                   </p>
                 )}

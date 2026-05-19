@@ -180,78 +180,165 @@ export default function TemplatesPage() {
             return (
               <Card
                 key={tmpl.id}
-                style={{ transition: 'box-shadow 0.2s, transform 0.2s', overflow: 'hidden' }}
+                style={{
+                  transition: 'box-shadow 0.2s, transform 0.2s, border-color 0.2s',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  minWidth: 0,
+                }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.boxShadow = '0 8px 24px rgba(0,0,0,0.1)'
-                  ;(e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'
+                  ;(e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-card-hover)'
+                  ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border-accent)'
                 }}
                 onMouseLeave={(e) => {
                   ;(e.currentTarget as HTMLElement).style.boxShadow = ''
-                  ;(e.currentTarget as HTMLElement).style.transform = ''
+                  ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'
                 }}
               >
                 {/* Top color strip */}
                 <div style={{
                   height: 4,
+                  flexShrink: 0,
                   backgroundColor:
                     tmpl.difficulty === 'easy' ? 'var(--success)' :
                     tmpl.difficulty === 'medium' ? 'var(--warning)' : 'var(--danger)',
                 }} />
-                <CardContent style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <CardContent
+                  style={{
+                    padding: 16,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 12,
+                    flex: 1,
+                    minWidth: 0,
+                  }}
+                >
                   {/* Header */}
-                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
-                    <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', margin: 0, flex: 1, lineHeight: 1.4 }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      justifyContent: 'space-between',
+                      gap: 8,
+                      minWidth: 0,
+                    }}
+                  >
+                    <h3
+                      className="text-clamp-2 text-break-anywhere"
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 700,
+                        color: 'var(--text-primary)',
+                        margin: 0,
+                        flex: 1,
+                        minWidth: 0,
+                        lineHeight: 1.35,
+                      }}
+                      title={tmpl.name}
+                    >
                       {tmpl.name}
                     </h3>
-                    <Badge variant={tmpl.difficulty === 'easy' ? 'success' : tmpl.difficulty === 'medium' ? 'warning' : 'danger'}>
+                    <Badge
+                      variant={tmpl.difficulty === 'easy' ? 'success' : tmpl.difficulty === 'medium' ? 'warning' : 'danger'}
+                      style={{ flexShrink: 0 }}
+                    >
                       {tCampaign(`difficulty.${tmpl.difficulty}` as Parameters<typeof tCampaign>[0])}
                     </Badge>
                   </div>
 
                   {/* Subject preview */}
-                  <p style={{
-                    fontSize: 13, color: 'var(--text-secondary)', margin: 0,
-                    fontStyle: 'italic', lineHeight: 1.5,
-                    display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
-                  }}>
+                  <p
+                    className="text-clamp-2 text-break-anywhere"
+                    style={{
+                      fontSize: 12,
+                      color: 'var(--text-secondary)',
+                      margin: 0,
+                      fontStyle: 'italic',
+                      lineHeight: 1.5,
+                      minWidth: 0,
+                    }}
+                    title={tmpl.subject}
+                  >
                     &ldquo;{tmpl.subject}&rdquo;
                   </p>
 
                   {/* Tags row */}
-                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: 6,
+                      flexWrap: 'wrap',
+                      alignItems: 'center',
+                      minWidth: 0,
+                    }}
+                  >
                     <div style={{
                       display: 'flex', alignItems: 'center', gap: 4,
-                      padding: '3px 8px', borderRadius: 6,
+                      padding: '3px 8px', borderRadius: 3,
                       backgroundColor: 'var(--surface-secondary)',
-                      fontSize: 12, color: 'var(--text-secondary)',
+                      border: '1px solid var(--border)',
+                      fontSize: 11, color: 'var(--text-secondary)',
+                      fontFamily: 'var(--font-mono)',
                     }}>
-                      <ChIcon style={{ width: 12, height: 12 }} />
+                      <ChIcon style={{ width: 11, height: 11 }} />
                       <span style={{ textTransform: 'capitalize' }}>{tmpl.channel}</span>
                     </div>
                     <Badge variant="outline">{tCampaign(`category.${tmpl.category}` as Parameters<typeof tCampaign>[0])}</Badge>
-                    <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--muted)' }}>{tmpl.usageCount}× ishlatilgan</span>
+                  </div>
+
+                  <div
+                    style={{
+                      fontSize: 10,
+                      color: 'var(--muted)',
+                      fontFamily: 'var(--font-mono)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.1em',
+                    }}
+                  >
+                    <span style={{ color: 'var(--accent)' }}>{tmpl.usageCount}</span>× ishlatilgan
                   </div>
 
                   {/* Actions */}
-                  <div style={{ display: 'flex', gap: 8, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: 8,
+                      paddingTop: 10,
+                      marginTop: 'auto',
+                      borderTop: '1px solid var(--border)',
+                      minWidth: 0,
+                    }}
+                  >
                     <Button
                       size="sm"
                       variant="outline"
-                      style={{ flex: 1, fontSize: 12, display: 'flex', alignItems: 'center', gap: 4 }}
+                      style={{
+                        flexShrink: 0,
+                        width: 36,
+                        padding: 0,
+                      }}
                       id={`preview-${tmpl.id}`}
                       onClick={() => setPreviewTemplate(tmpl)}
+                      aria-label={t('preview')}
+                      title={t('preview')}
                     >
-                      <Eye style={{ width: 13, height: 13 }} />
-                      {t('preview')}
+                      <Eye style={{ width: 14, height: 14 }} />
                     </Button>
                     <Button
                       size="sm"
-                      style={{ flex: 1, fontSize: 12, display: 'flex', alignItems: 'center', gap: 4 }}
+                      style={{
+                        flex: 1,
+                        minWidth: 0,
+                        padding: '0 10px',
+                        fontSize: 10,
+                        letterSpacing: '0.05em',
+                      }}
                       id={`use-${tmpl.id}`}
                       onClick={() => router.push(`/${locale}/campaigns/new`)}
                     >
-                      <Send style={{ width: 13, height: 13 }} />
-                      {t('useInCampaign')}
+                      <Send style={{ width: 12, height: 12, flexShrink: 0 }} />
+                      <span className="text-ellipsis-1" style={{ minWidth: 0 }}>{t('useInCampaign')}</span>
                     </Button>
                   </div>
                 </CardContent>
@@ -263,7 +350,16 @@ export default function TemplatesPage() {
 
       {/* ── PREVIEW MODAL ── */}
       <Dialog open={!!previewTemplate} onOpenChange={(o) => { if (!o) setPreviewTemplate(null) }}>
-        <DialogContent style={{ maxWidth: 560, maxHeight: '90vh', overflowY: 'auto' }}>
+        <DialogContent
+          style={{
+            maxWidth: 640,
+            width: 'calc(100vw - 32px)',
+            maxHeight: 'calc(100dvh - 32px)',
+            overflowY: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
           <DialogHeader>
             <DialogTitle style={{ fontSize: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
               <Eye style={{ width: 18, height: 18, color: 'var(--accent)' }} />
@@ -272,17 +368,49 @@ export default function TemplatesPage() {
           </DialogHeader>
 
           {previewTemplate && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, minWidth: 0 }}>
               {/* Meta */}
-              <div style={{
-                display: 'flex', flexWrap: 'wrap', gap: 8, padding: '12px 16px',
-                backgroundColor: 'var(--surface-secondary)', borderRadius: 10,
-              }}>
-                <div style={{ flex: 1, minWidth: 120 }}>
-                  <p style={{ fontSize: 11, color: 'var(--muted)', margin: '0 0 4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Nomi</p>
-                  <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>{previewTemplate.name}</p>
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: 8,
+                  padding: '12px 16px',
+                  backgroundColor: 'var(--surface-secondary)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 4,
+                  minWidth: 0,
+                }}
+              >
+                <div style={{ flex: '1 1 160px', minWidth: 0 }}>
+                  <p
+                    style={{
+                      fontSize: 10,
+                      color: 'var(--muted)',
+                      margin: '0 0 4px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.14em',
+                      fontFamily: 'var(--font-mono)',
+                    }}
+                  >
+                    Nomi
+                  </p>
+                  <p
+                    className="text-break-anywhere"
+                    style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}
+                  >
+                    {previewTemplate.name}
+                  </p>
                 </div>
-                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: 6,
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    flexShrink: 0,
+                  }}
+                >
                   <Badge variant={previewTemplate.difficulty === 'easy' ? 'success' : previewTemplate.difficulty === 'medium' ? 'warning' : 'danger'}>
                     {tCampaign(`difficulty.${previewTemplate.difficulty}` as Parameters<typeof tCampaign>[0])}
                   </Badge>
@@ -315,39 +443,74 @@ export default function TemplatesPage() {
                 </div>
 
                 {previewTemplate.channel === 'email' && (
-                  <div style={{ padding: 16, backgroundColor: 'var(--surface)' }}>
-                    <div style={{
-                      padding: '8px 12px', backgroundColor: 'var(--surface-secondary)',
-                      border: '1px solid var(--border)',
-                      borderRadius: 4, marginBottom: 12, fontSize: 13,
-                    }}>
-                      <span style={{
-                        color: 'var(--muted)', fontFamily: 'var(--font-mono)',
-                        textTransform: 'uppercase', fontSize: 10, letterSpacing: '0.12em', marginRight: 6,
-                      }}>SUBJECT:</span>
-                      <span style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{previewTemplate.subject}</span>
+                  <div style={{ padding: 16, backgroundColor: 'var(--surface)', minWidth: 0 }}>
+                    <div
+                      style={{
+                        padding: '8px 12px',
+                        backgroundColor: 'var(--surface-secondary)',
+                        border: '1px solid var(--border)',
+                        borderRadius: 4,
+                        marginBottom: 12,
+                        fontSize: 13,
+                        minWidth: 0,
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: 'var(--muted)',
+                          fontFamily: 'var(--font-mono)',
+                          textTransform: 'uppercase',
+                          fontSize: 10,
+                          letterSpacing: '0.12em',
+                          marginRight: 6,
+                        }}
+                      >
+                        SUBJECT:
+                      </span>
+                      <span
+                        className="text-break-anywhere"
+                        style={{ fontWeight: 500, color: 'var(--text-primary)' }}
+                      >
+                        {previewTemplate.subject}
+                      </span>
                     </div>
-                    <div style={{
-                      padding: 14, backgroundColor: 'var(--surface-secondary)',
-                      border: '1px dashed var(--border-strong)', borderRadius: 4,
-                      fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.7,
-                      whiteSpace: 'pre-wrap',
-                    }}>
+                    <div
+                      className="text-break-anywhere"
+                      style={{
+                        padding: 14,
+                        backgroundColor: 'var(--surface-secondary)',
+                        border: '1px dashed var(--border-strong)',
+                        borderRadius: 4,
+                        fontSize: 13,
+                        color: 'var(--text-primary)',
+                        lineHeight: 1.7,
+                        whiteSpace: 'pre-wrap',
+                        maxHeight: 360,
+                        overflowY: 'auto',
+                      }}
+                    >
                       {previewTemplate.previewText || 'Salom, {{employee_name}}!\n\nXavfsizlik testiga qatnashganingiz uchun rahmat. Bu xabar simulyatsiya hisoblanadi.\n\n{{link_url}}\n\nHurmat bilan,\n{{sender_name}}'}
                     </div>
                   </div>
                 )}
 
                 {(previewTemplate.channel === 'telegram' || previewTemplate.channel === 'sms') && (
-                  <div style={{ padding: 20, backgroundColor: 'var(--surface)', minHeight: 140 }}>
-                    <div style={{
-                      maxWidth: 300, marginLeft: 'auto',
-                      backgroundColor: 'var(--surface-secondary)',
-                      border: '1px solid var(--border-strong)', borderRadius: 8,
-                      padding: '10px 14px', fontSize: 13,
-                      color: 'var(--text-primary)', lineHeight: 1.6,
-                      whiteSpace: 'pre-wrap',
-                    }}>
+                  <div style={{ padding: 20, backgroundColor: 'var(--surface)', minHeight: 140, minWidth: 0 }}>
+                    <div
+                      className="text-break-anywhere"
+                      style={{
+                        maxWidth: 320,
+                        marginLeft: 'auto',
+                        backgroundColor: 'var(--surface-secondary)',
+                        border: '1px solid var(--border-strong)',
+                        borderRadius: 8,
+                        padding: '10px 14px',
+                        fontSize: 13,
+                        color: 'var(--text-primary)',
+                        lineHeight: 1.6,
+                        whiteSpace: 'pre-wrap',
+                      }}
+                    >
                       {previewTemplate.previewText || `Hurmatli foydalanuvchi!\n\n${previewTemplate.subject}\n\nBatafsil: {{link_url}}`}
                     </div>
                   </div>
@@ -355,16 +518,22 @@ export default function TemplatesPage() {
               </div>
 
               {/* Variables hint */}
-              <div style={{
-                padding: 10, borderRadius: 4,
-                backgroundColor: 'var(--warning-light)',
-                border: '1px dashed rgba(255,176,32,0.35)',
-                fontSize: 11,
-                fontFamily: 'var(--font-mono)',
-                color: 'var(--warning)',
-                letterSpacing: '0.02em',
-              }}>
-                <strong>O&apos;zgaruvchilar: </strong>
+              <div
+                className="text-break-anywhere"
+                style={{
+                  padding: 10,
+                  borderRadius: 4,
+                  backgroundColor: 'var(--warning-light)',
+                  border: '1px dashed rgba(255,176,32,0.35)',
+                  fontSize: 11,
+                  fontFamily: 'var(--font-mono)',
+                  color: 'var(--warning)',
+                  letterSpacing: '0.02em',
+                  lineHeight: 1.6,
+                  minWidth: 0,
+                }}
+              >
+                <strong style={{ display: 'block', marginBottom: 4 }}>O&apos;zgaruvchilar:</strong>
                 {`{{employee_name}}, {{link_url}}, {{company_name}}, {{sender_name}}`}
               </div>
 

@@ -277,16 +277,26 @@ export default function NotificationsPage() {
                     <Icon style={{ width: 14, height: 14 }} />
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        marginBottom: 4,
+                        flexWrap: 'wrap',
+                        minWidth: 0,
+                      }}
+                    >
                       <span
+                        className="text-ellipsis-1"
                         style={{
                           fontSize: 13,
                           fontWeight: 600,
                           color: 'var(--text-primary)',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
+                          flex: '1 1 160px',
+                          minWidth: 0,
                         }}
+                        title={n.subject ?? ''}
                       >
                         {n.subject ?? `[${n.channel}]`}
                       </span>
@@ -294,14 +304,11 @@ export default function NotificationsPage() {
                       <Badge variant="outline">{n.channel}</Badge>
                     </div>
                     <p
+                      className="text-clamp-2 text-break-anywhere"
                       style={{
                         fontSize: 12,
                         color: 'var(--text-secondary)',
                         margin: 0,
-                        overflow: 'hidden',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
                       }}
                     >
                       {n.body}

@@ -293,7 +293,10 @@ export default function NewCampaignPage() {
                           {t(`difficulty.${tmpl.difficulty}` as Parameters<typeof t>[0])}
                         </Badge>
                       </div>
-                      <p style={{ fontSize: 12, color: 'var(--text-secondary)', margin: '0 0 8px', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                      <p
+                        className="text-clamp-2 text-break-anywhere"
+                        style={{ fontSize: 12, color: 'var(--text-secondary)', margin: '0 0 8px' }}
+                      >
                         {tmpl.previewText}
                       </p>
                       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>

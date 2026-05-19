@@ -100,45 +100,113 @@ export default function TrainingPage() {
             </div>
           )
           : visible.map((tpl) => (
-            <Card key={tpl.id} style={{ overflow: 'hidden' }}>
-              {/* top bar */}
-              <div style={{ height: 4, backgroundColor: tpl.ai_generated ? 'var(--accent)' : 'var(--success)' }} />
-              <CardHeader style={{ paddingBottom: 8 }}>
-                <CardTitle style={{ fontSize: 15, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{tpl.title}</span>
-                  <Badge variant={tpl.ai_generated ? 'secondary' : 'outline'} style={{ flexShrink: 0, fontSize: 10 }}>
-                    {tpl.ai_generated ? '🤖 AI' : 'Manual'}
+            <Card
+              key={tpl.id}
+              style={{
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                minWidth: 0,
+                height: 280,
+              }}
+            >
+              <div style={{ height: 4, flexShrink: 0, backgroundColor: tpl.ai_generated ? 'var(--accent)' : 'var(--success)' }} />
+              <CardHeader style={{ paddingBottom: 8, paddingTop: 16, flexShrink: 0 }}>
+                <CardTitle
+                  style={{
+                    fontSize: 13,
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    justifyContent: 'space-between',
+                    gap: 8,
+                    minWidth: 0,
+                  }}
+                >
+                  <span
+                    className="text-clamp-2"
+                    style={{ flex: 1, minWidth: 0, lineHeight: 1.35 }}
+                    title={tpl.title}
+                  >
+                    {tpl.title}
+                  </span>
+                  <Badge
+                    variant={tpl.ai_generated ? 'secondary' : 'outline'}
+                    style={{ flexShrink: 0, fontSize: 9 }}
+                  >
+                    {tpl.ai_generated ? 'AI' : 'Manual'}
                   </Badge>
                 </CardTitle>
               </CardHeader>
-              <CardContent style={{ paddingTop: 0 }}>
-                <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: '0 0 12px', lineClamp: 3, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>
+              <CardContent
+                style={{
+                  paddingTop: 0,
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  minWidth: 0,
+                  minHeight: 0,
+                }}
+              >
+                <p
+                  className="text-clamp-3 text-break-anywhere"
+                  style={{
+                    fontSize: 12,
+                    color: 'var(--text-secondary)',
+                    margin: '0 0 12px',
+                    lineHeight: 1.55,
+                    flex: 1,
+                  }}
+                  title={tpl.content}
+                >
                   {tpl.content}
                 </p>
 
                 {tpl.topics.length > 0 && (
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 12 }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: 4,
+                      marginBottom: 10,
+                      maxHeight: 22,
+                      overflow: 'hidden',
+                    }}
+                  >
                     {tpl.topics.slice(0, 3).map((topic) => (
-                      <Badge key={topic} variant="outline" style={{ fontSize: 10 }}>
+                      <Badge key={topic} variant="outline" style={{ fontSize: 9 }}>
                         {topic}
                       </Badge>
                     ))}
                     {tpl.topics.length > 3 && (
-                      <Badge variant="outline" style={{ fontSize: 10, color: 'var(--muted)' }}>
+                      <Badge variant="outline" style={{ fontSize: 9, color: 'var(--muted)' }}>
                         +{tpl.topics.length - 3}
                       </Badge>
                     )}
                   </div>
                 )}
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 12, color: 'var(--muted)' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 12,
+                    fontSize: 11,
+                    color: 'var(--muted)',
+                    paddingTop: 8,
+                    borderTop: '1px dashed var(--border)',
+                    fontFamily: 'var(--font-mono)',
+                  }}
+                >
                   <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <Clock style={{ width: 13, height: 13 }} />
+                    <Clock style={{ width: 12, height: 12 }} />
                     {new Date(tpl.created_at).toLocaleDateString('uz-UZ')}
                   </span>
                   {tpl.employee_id && (
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                      <Users style={{ width: 13, height: 13 }} />
+                    <span
+                      className="text-ellipsis-1"
+                      style={{ display: 'flex', alignItems: 'center', gap: 4, minWidth: 0 }}
+                    >
+                      <Users style={{ width: 12, height: 12, flexShrink: 0 }} />
                       Employee #{tpl.employee_id}
                     </span>
                   )}

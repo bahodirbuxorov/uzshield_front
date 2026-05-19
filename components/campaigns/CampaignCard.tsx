@@ -111,18 +111,16 @@ export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
               </span>
               <Link
                 href={`/${locale}/campaigns/${campaign.id}`}
+                className="text-clamp-2 text-break-anywhere"
                 style={{
                   fontWeight: 600,
                   fontSize: 14,
                   color: 'var(--text-primary)',
                   textDecoration: 'none',
                   lineHeight: 1.4,
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
                   transition: 'color 0.15s',
                 }}
+                title={campaign.name}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--accent)' }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)' }}
               >

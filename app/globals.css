@@ -337,3 +337,34 @@ body::after {
 .recharts-default-tooltip .recharts-tooltip-label {
   color: var(--accent) !important;
 }
+
+/* Line-clamp helpers — React strips some -webkit-* props from inline style
+   on certain versions, so a real CSS class is more reliable. */
+.text-clamp-1,
+.text-clamp-2,
+.text-clamp-3,
+.text-clamp-4 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.text-clamp-1 { -webkit-line-clamp: 1; line-clamp: 1; }
+.text-clamp-2 { -webkit-line-clamp: 2; line-clamp: 2; }
+.text-clamp-3 { -webkit-line-clamp: 3; line-clamp: 3; }
+.text-clamp-4 { -webkit-line-clamp: 4; line-clamp: 4; }
+
+/* Break long unbreakable strings (URLs, ##markdown, etc.) inside narrow cards. */
+.text-break-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Truncate single-line with ellipsis. */
+.text-ellipsis-1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

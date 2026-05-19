@@ -89,11 +89,11 @@
     "employees": "Employees",
     "status": {
       "all": "All Statuses",
-      "active": "Active",
       "running": "Running",
+      "scheduled": "Scheduled",
       "draft": "Draft",
-      "paused": "Paused",
-      "completed": "Completed"
+      "completed": "Completed",
+      "cancelled": "Cancelled"
     },
     "channel": {
       "all": "All Channels",

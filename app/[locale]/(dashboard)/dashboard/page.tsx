@@ -20,7 +20,7 @@ export default function DashboardPage() {
   const topVulnerable = (employeeData?.data ?? []).slice(0, 5)
 
   const activeCampaigns = (campaignData?.data ?? []).filter(
-    (c) => c.status === 'running' || c.status === 'scheduled'
+    (c) => c.status === 'running' || c.status === 'scheduled',
   ).length
   const totalEmployees = employeeData?.meta?.total ?? (employeeData?.data ?? []).length
 

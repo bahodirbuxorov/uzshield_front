@@ -3,8 +3,8 @@ import type { Campaign as ApiCampaign } from '@/lib/api/campaigns'
 /** Channel used to deliver a phishing simulation */
 export type CampaignChannel = 'email' | 'telegram' | 'sms'
 
-/** Lifecycle state of a campaign */
-export type CampaignStatus = 'draft' | 'active' | 'paused' | 'completed' | 'running'
+/** Lifecycle state of a campaign — matches App\Enums\CampaignStatus on the backend. */
+export type CampaignStatus = 'draft' | 'scheduled' | 'running' | 'completed' | 'cancelled'
 
 /** Difficulty level for phishing templates */
 export type Difficulty = 'easy' | 'medium' | 'hard'

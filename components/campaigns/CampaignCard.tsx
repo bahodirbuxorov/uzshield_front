@@ -15,17 +15,17 @@ const CHANNEL_ICONS: Record<CampaignChannel, React.ElementType> = {
 }
 
 const STATUS_COLORS: Record<CampaignStatus, { bg: string; text: string; border: string; label: string }> = {
-  active:    { bg: 'rgba(0,255,148,0.10)',  text: '#00FF94', border: 'rgba(0,255,148,0.35)', label: 'LIVE' },
   running:   { bg: 'rgba(0,255,148,0.10)',  text: '#00FF94', border: 'rgba(0,255,148,0.35)', label: 'LIVE' },
-  paused:    { bg: 'rgba(255,176,32,0.12)', text: '#FFB020', border: 'rgba(255,176,32,0.35)', label: 'PAUSED' },
+  scheduled: { bg: 'rgba(0,229,255,0.10)',  text: '#00E5FF', border: 'rgba(0,229,255,0.35)', label: 'SCHEDULED' },
+  cancelled: { bg: 'rgba(255,59,92,0.12)',  text: '#FF3B5C', border: 'rgba(255,59,92,0.30)', label: 'CANCELLED' },
   completed: { bg: 'var(--surface-secondary)', text: 'var(--muted)', border: 'var(--border)', label: 'DONE' },
   draft:     { bg: 'var(--surface-secondary)', text: 'var(--text-secondary)', border: 'var(--border)', label: 'DRAFT' },
 }
 
 const STATUS_STRIP: Record<CampaignStatus, string> = {
-  active:    'var(--accent)',
   running:   'var(--accent)',
-  paused:    'var(--warning)',
+  scheduled: 'var(--cyan)',
+  cancelled: 'var(--danger)',
   completed: 'var(--muted)',
   draft:     'var(--border-strong)',
 }
@@ -145,7 +145,7 @@ export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
                 letterSpacing: '0.08em',
               }}
             >
-              {(campaign.status === 'active' || campaign.status === 'running') && (
+              {campaign.status === 'running' && (
                 <span
                   className="live-dot"
                   style={{ width: 5, height: 5, backgroundColor: status.text }}

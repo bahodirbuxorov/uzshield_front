@@ -8,12 +8,12 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { formatDate, fmtPercent } from '@/lib/utils/formatters'
 import type { Campaign, CampaignStatus } from '@/lib/types/campaign'
 
-const STATUS_VARIANT: Record<CampaignStatus, 'success' | 'warning' | 'secondary' | 'default'> = {
-  active: 'success',
+const STATUS_VARIANT: Record<CampaignStatus, 'success' | 'warning' | 'secondary' | 'default' | 'danger'> = {
   running: 'success',
-  paused: 'warning',
+  scheduled: 'default',
+  draft: 'secondary',
   completed: 'secondary',
-  draft: 'default',
+  cancelled: 'danger',
 }
 
 interface RecentCampaignsProps {

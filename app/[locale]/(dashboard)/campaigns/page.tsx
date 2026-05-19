@@ -75,15 +75,16 @@ export default function CampaignsPage() {
               height: 36,
               paddingLeft: 36,
               paddingRight: 12,
-              fontSize: 14,
+              fontSize: 13,
+              fontFamily: 'var(--font-mono)',
               color: 'var(--text-primary)',
-              backgroundColor: 'white',
-              border: '1px solid var(--border)',
-              borderRadius: 8,
+              backgroundColor: 'var(--surface-secondary)',
+              border: '1px solid var(--border-strong)',
+              borderRadius: 4,
               outline: 'none',
             }}
-            onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px rgba(26,111,255,0.1)' }}
-            onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none' }}
+            onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px rgba(0,255,148,0.15)' }}
+            onBlur={(e) => { e.target.style.borderColor = 'var(--border-strong)'; e.target.style.boxShadow = 'none' }}
           />
         </div>
 

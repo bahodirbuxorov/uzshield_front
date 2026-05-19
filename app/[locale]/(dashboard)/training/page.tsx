@@ -49,20 +49,41 @@ export default function TrainingPage() {
           ].map((s) => (
             <div
               key={s.label}
+              className="cyber-corners"
               style={{
-                backgroundColor: 'white',
+                position: 'relative',
+                backgroundColor: 'var(--surface)',
                 border: '1px solid var(--border)',
-                borderRadius: 12,
+                borderRadius: 4,
                 padding: '16px 20px',
                 textAlign: 'center',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
               }}
             >
-              <s.Icon style={{ width: 20, height: 20, color: s.color, margin: '0 auto 8px' }} />
-              <p style={{ fontSize: 22, fontWeight: 700, color: s.color, margin: '0 0 4px', fontFamily: 'var(--font-display)' }}>
+              <s.Icon style={{ width: 18, height: 18, color: s.color, margin: '0 auto 10px', filter: `drop-shadow(0 0 6px ${s.color})` }} />
+              <p
+                style={{
+                  fontSize: 22,
+                  fontWeight: 700,
+                  color: s.color,
+                  margin: '0 0 4px',
+                  fontFamily: 'var(--font-mono)',
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
                 {s.value}
               </p>
-              <p style={{ fontSize: 12, color: 'var(--muted)', margin: 0 }}>{s.label}</p>
+              <p
+                style={{
+                  fontSize: 10,
+                  color: 'var(--muted)',
+                  margin: 0,
+                  fontFamily: 'var(--font-mono)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.14em',
+                }}
+              >
+                {s.label}
+              </p>
             </div>
           ))}
         </div>

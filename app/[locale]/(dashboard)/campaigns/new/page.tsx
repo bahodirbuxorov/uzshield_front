@@ -75,10 +75,13 @@ export default function NewCampaignPage() {
   /* shared label style */
   const labelStyle: React.CSSProperties = {
     display: 'block',
-    fontSize: 13,
-    fontWeight: 500,
-    color: 'var(--text-primary)',
-    marginBottom: 6,
+    fontSize: 10,
+    fontWeight: 600,
+    fontFamily: 'var(--font-mono)',
+    color: 'var(--text-secondary)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.14em',
+    marginBottom: 8,
   }
 
   /* shared input style */
@@ -87,11 +90,12 @@ export default function NewCampaignPage() {
     width: '100%',
     height: 40,
     padding: '0 12px',
-    fontSize: 14,
+    fontSize: 13,
+    fontFamily: 'var(--font-mono)',
     color: 'var(--text-primary)',
-    backgroundColor: 'white',
-    border: '1px solid var(--border)',
-    borderRadius: 8,
+    backgroundColor: 'var(--surface-secondary)',
+    border: '1px solid var(--border-strong)',
+    borderRadius: 4,
     outline: 'none',
   }
 
@@ -180,8 +184,8 @@ export default function NewCampaignPage() {
                     placeholder={t('form.namePlaceholder')}
                     style={inputStyle}
                     {...nameReg}
-                    onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px rgba(26,111,255,0.1)' }}
-                    onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; nameReg.onBlur(e) }}
+                    onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px rgba(0,255,148,0.15)' }}
+                    onBlur={(e) => { e.target.style.borderColor = 'var(--border-strong)'; e.target.style.boxShadow = 'none'; nameReg.onBlur(e) }}
                   />
                   {errors.name && (
                     <p style={{ fontSize: 12, color: 'var(--danger)', marginTop: 4 }}>{errors.name.message}</p>
@@ -205,22 +209,27 @@ export default function NewCampaignPage() {
                         type="button"
                         style={{
                           padding: '10px',
-                          fontSize: 13,
-                          borderRadius: 8,
+                          fontSize: 12,
+                          borderRadius: 4,
                           border: '1px solid var(--border)',
-                          backgroundColor: 'white',
+                          backgroundColor: 'var(--surface)',
                           cursor: 'pointer',
-                          color: 'var(--text-primary)',
+                          color: 'var(--text-secondary)',
                           transition: 'all 0.15s',
                           textAlign: 'center',
+                          fontFamily: 'var(--font-mono)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.06em',
                         }}
                         onMouseEnter={(e) => {
-                          ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'
-                          ;(e.currentTarget as HTMLElement).style.backgroundColor = '#EFF6FF'
+                          ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border-accent)'
+                          ;(e.currentTarget as HTMLElement).style.backgroundColor = 'var(--accent-tint)'
+                          ;(e.currentTarget as HTMLElement).style.color = 'var(--accent)'
                         }}
                         onMouseLeave={(e) => {
                           ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'
-                          ;(e.currentTarget as HTMLElement).style.backgroundColor = 'white'
+                          ;(e.currentTarget as HTMLElement).style.backgroundColor = 'var(--surface)'
+                          ;(e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'
                         }}
                       >
                         {t(`form.${key}` as Parameters<typeof t>[0])}
@@ -270,9 +279,10 @@ export default function NewCampaignPage() {
                       style={{
                         textAlign: 'left',
                         padding: 16,
-                        borderRadius: 12,
-                        border: `2px solid ${selectedTemplateId === tmpl.id ? 'var(--accent)' : 'var(--border)'}`,
-                        backgroundColor: selectedTemplateId === tmpl.id ? '#EFF6FF' : 'white',
+                        borderRadius: 4,
+                        border: `1px solid ${selectedTemplateId === tmpl.id ? 'var(--border-accent)' : 'var(--border)'}`,
+                        backgroundColor: selectedTemplateId === tmpl.id ? 'var(--accent-tint)' : 'var(--surface)',
+                        boxShadow: selectedTemplateId === tmpl.id ? 'inset 0 0 0 1px rgba(0,255,148,0.18)' : 'none',
                         cursor: 'pointer',
                         transition: 'all 0.15s',
                       }}
@@ -320,8 +330,9 @@ export default function NewCampaignPage() {
 
                 <div
                   style={{
-                    borderRadius: 12,
+                    borderRadius: 4,
                     backgroundColor: 'var(--surface-secondary)',
+                    border: '1px solid var(--border)',
                     padding: 16,
                     marginBottom: 16,
                     display: 'flex',
@@ -357,14 +368,18 @@ export default function NewCampaignPage() {
                 <div
                   style={{
                     padding: 12,
-                    borderRadius: 10,
+                    borderRadius: 4,
                     backgroundColor: 'var(--success-light)',
-                    color: 'var(--success)',
-                    fontSize: 14,
+                    border: '1px solid var(--border-accent)',
+                    color: 'var(--accent)',
+                    fontSize: 12,
+                    fontFamily: 'var(--font-mono)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
                     marginBottom: 20,
                   }}
                 >
-                  ✓ {t('form.readyToLaunch')}
+                  [ok] {t('form.readyToLaunch')}
                 </div>
 
                 <div style={{ display: 'flex', gap: 12 }}>

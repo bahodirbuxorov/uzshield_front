@@ -31,7 +31,8 @@
     "rows": "Rows",
     "page": "Page",
     "of": "of",
-    "total": "Total"
+    "total": "Total",
+    "add": "Add"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -84,6 +85,7 @@
     "status": {
       "all": "All Statuses",
       "active": "Active",
+      "running": "Running",
       "draft": "Draft",
       "paused": "Paused",
       "completed": "Completed"
@@ -136,6 +138,7 @@
     "title": "Employees",
     "import": "Import Employees",
     "department": "Department",
+    "position": "Position",
     "riskScore": "Risk Score",
     "lastActivity": "Last Activity",
     "searchPlaceholder": "Search employees...",
@@ -215,6 +218,7 @@
     "title": "Settings",
     "tabs": {
       "company": "Company",
+      "users": "Users",
       "employees": "Employees",
       "notifications": "Notifications",
       "integration": "Integration",

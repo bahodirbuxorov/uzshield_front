@@ -38,21 +38,25 @@ const inputStyle: React.CSSProperties = {
   display: 'block',
   width: '100%',
   padding: '8px 12px',
-  fontSize: 14,
+  fontSize: 13,
+  fontFamily: 'var(--font-mono)',
   color: 'var(--text-primary)',
-  backgroundColor: 'white',
-  border: '1px solid var(--border)',
-  borderRadius: 8,
+  backgroundColor: 'var(--surface-secondary)',
+  border: '1px solid var(--border-strong)',
+  borderRadius: 4,
   outline: 'none',
   transition: 'border-color 0.15s, box-shadow 0.15s',
 }
 
 const labelStyle: React.CSSProperties = {
   display: 'block',
-  fontSize: 13,
-  fontWeight: 500,
-  color: 'var(--text-primary)',
-  marginBottom: 6,
+  fontSize: 10,
+  fontFamily: 'var(--font-mono)',
+  fontWeight: 600,
+  color: 'var(--text-secondary)',
+  textTransform: 'uppercase',
+  letterSpacing: '0.14em',
+  marginBottom: 8,
 }
 
 export default function TemplatesPage() {
@@ -134,7 +138,7 @@ export default function TemplatesPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{ ...inputStyle, height: 36, paddingLeft: 36, paddingRight: 12, padding: undefined }}
-            onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px rgba(26,111,255,0.1)' }}
+            onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px rgba(0,255,148,0.15)' }}
             onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none' }}
           />
         </div>
@@ -295,30 +299,38 @@ export default function TemplatesPage() {
                 {/* Bar */}
                 <div style={{
                   padding: '10px 16px',
-                  backgroundColor: previewTemplate.channel === 'email' ? '#1A6FFF' : previewTemplate.channel === 'telegram' ? '#229ED9' : '#25D366',
+                  backgroundColor: 'var(--surface-elevated)',
+                  borderBottom: '1px solid var(--border-strong)',
                   display: 'flex', alignItems: 'center', gap: 8,
                 }}>
-                  {previewTemplate.channel === 'email' && <Mail style={{ width: 16, height: 16, color: 'white' }} />}
-                  {previewTemplate.channel === 'telegram' && <MessageSquare style={{ width: 16, height: 16, color: 'white' }} />}
-                  {previewTemplate.channel === 'sms' && <Smartphone style={{ width: 16, height: 16, color: 'white' }} />}
-                  <span style={{ color: 'white', fontWeight: 600, fontSize: 13 }}>
-                    {previewTemplate.channel === 'email' ? 'Email xabar' : previewTemplate.channel === 'telegram' ? 'Telegram xabar' : 'SMS xabar'}
+                  {previewTemplate.channel === 'email' && <Mail style={{ width: 14, height: 14, color: 'var(--accent)' }} />}
+                  {previewTemplate.channel === 'telegram' && <MessageSquare style={{ width: 14, height: 14, color: 'var(--cyan)' }} />}
+                  {previewTemplate.channel === 'sms' && <Smartphone style={{ width: 14, height: 14, color: 'var(--critical)' }} />}
+                  <span style={{
+                    color: 'var(--text-primary)', fontWeight: 600, fontSize: 11,
+                    fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.12em',
+                  }}>
+                    {previewTemplate.channel === 'email' ? 'email · payload' : previewTemplate.channel === 'telegram' ? 'telegram · payload' : 'sms · payload'}
                   </span>
                 </div>
 
                 {previewTemplate.channel === 'email' && (
-                  <div style={{ padding: 20, backgroundColor: 'white' }}>
+                  <div style={{ padding: 16, backgroundColor: 'var(--surface)' }}>
                     <div style={{
                       padding: '8px 12px', backgroundColor: 'var(--surface-secondary)',
-                      borderRadius: 6, marginBottom: 16, fontSize: 13,
+                      border: '1px solid var(--border)',
+                      borderRadius: 4, marginBottom: 12, fontSize: 13,
                     }}>
-                      <span style={{ color: 'var(--muted)' }}>Mavzu: </span>
+                      <span style={{
+                        color: 'var(--muted)', fontFamily: 'var(--font-mono)',
+                        textTransform: 'uppercase', fontSize: 10, letterSpacing: '0.12em', marginRight: 6,
+                      }}>SUBJECT:</span>
                       <span style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{previewTemplate.subject}</span>
                     </div>
                     <div style={{
-                      padding: 16, backgroundColor: '#F8FBFF',
-                      border: '1px solid #E0ECFF', borderRadius: 8,
-                      fontSize: 14, color: 'var(--text-primary)', lineHeight: 1.7,
+                      padding: 14, backgroundColor: 'var(--surface-secondary)',
+                      border: '1px dashed var(--border-strong)', borderRadius: 4,
+                      fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.7,
                       whiteSpace: 'pre-wrap',
                     }}>
                       {previewTemplate.previewText || 'Salom, {{employee_name}}!\n\nXavfsizlik testiga qatnashganingiz uchun rahmat. Bu xabar simulyatsiya hisoblanadi.\n\n{{link_url}}\n\nHurmat bilan,\n{{sender_name}}'}
@@ -327,13 +339,14 @@ export default function TemplatesPage() {
                 )}
 
                 {(previewTemplate.channel === 'telegram' || previewTemplate.channel === 'sms') && (
-                  <div style={{ padding: 20, backgroundColor: '#ECF6FF', minHeight: 140 }}>
+                  <div style={{ padding: 20, backgroundColor: 'var(--surface)', minHeight: 140 }}>
                     <div style={{
                       maxWidth: 300, marginLeft: 'auto',
-                      backgroundColor: previewTemplate.channel === 'telegram' ? '#EFFDDE' : 'white',
-                      border: '1px solid var(--border)', borderRadius: 12,
-                      padding: '10px 14px', fontSize: 14,
+                      backgroundColor: 'var(--surface-secondary)',
+                      border: '1px solid var(--border-strong)', borderRadius: 8,
+                      padding: '10px 14px', fontSize: 13,
                       color: 'var(--text-primary)', lineHeight: 1.6,
+                      whiteSpace: 'pre-wrap',
                     }}>
                       {previewTemplate.previewText || `Hurmatli foydalanuvchi!\n\n${previewTemplate.subject}\n\nBatafsil: {{link_url}}`}
                     </div>
@@ -343,10 +356,13 @@ export default function TemplatesPage() {
 
               {/* Variables hint */}
               <div style={{
-                padding: 12, borderRadius: 8,
-                backgroundColor: '#FFF7ED',
-                border: '1px solid #FED7AA',
-                fontSize: 12, color: '#92400E',
+                padding: 10, borderRadius: 4,
+                backgroundColor: 'var(--warning-light)',
+                border: '1px dashed rgba(255,176,32,0.35)',
+                fontSize: 11,
+                fontFamily: 'var(--font-mono)',
+                color: 'var(--warning)',
+                letterSpacing: '0.02em',
               }}>
                 <strong>O&apos;zgaruvchilar: </strong>
                 {`{{employee_name}}, {{link_url}}, {{company_name}}, {{sender_name}}`}
@@ -386,7 +402,7 @@ export default function TemplatesPage() {
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 style={inputStyle}
-                onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px rgba(26,111,255,0.1)' }}
+                onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px rgba(0,255,148,0.15)' }}
                 onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none' }}
               />
             </div>
@@ -405,11 +421,15 @@ export default function TemplatesPage() {
                         onClick={() => setForm({ ...form, channel: ch })}
                         style={{
                           flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center',
-                          gap: 4, padding: '10px 4px', borderRadius: 8, border: '2px solid',
-                          borderColor: form.channel === ch ? 'var(--accent)' : 'var(--border)',
-                          backgroundColor: form.channel === ch ? '#EFF6FF' : 'white',
-                          cursor: 'pointer', fontSize: 11, color: form.channel === ch ? 'var(--accent)' : 'var(--text-secondary)',
-                          fontWeight: 500, textTransform: 'capitalize', transition: 'all 0.15s',
+                          gap: 4, padding: '10px 4px', borderRadius: 4, border: '1px solid',
+                          borderColor: form.channel === ch ? 'var(--border-accent)' : 'var(--border)',
+                          backgroundColor: form.channel === ch ? 'var(--accent-tint)' : 'var(--surface)',
+                          boxShadow: form.channel === ch ? 'inset 0 0 0 1px rgba(0,255,148,0.25)' : 'none',
+                          cursor: 'pointer', fontSize: 11,
+                          color: form.channel === ch ? 'var(--accent)' : 'var(--text-secondary)',
+                          fontWeight: 600, textTransform: 'uppercase',
+                          letterSpacing: '0.1em', fontFamily: 'var(--font-mono)',
+                          transition: 'all 0.15s',
                         }}
                       >
                         <Icon style={{ width: 16, height: 16 }} />
@@ -428,12 +448,14 @@ export default function TemplatesPage() {
                       type="button"
                       onClick={() => setForm({ ...form, difficulty: d })}
                       style={{
-                        flex: 1, padding: '10px 4px', borderRadius: 8, border: '2px solid',
-                        borderColor: form.difficulty === d ? (d === 'easy' ? 'var(--success)' : d === 'medium' ? 'var(--warning)' : 'var(--danger)') : 'var(--border)',
-                        backgroundColor: form.difficulty === d ? (d === 'easy' ? 'var(--success-light)' : d === 'medium' ? 'var(--warning-light)' : 'var(--danger-light)') : 'white',
+                        flex: 1, padding: '10px 4px', borderRadius: 4, border: '1px solid',
+                        borderColor: form.difficulty === d ? (d === 'easy' ? 'var(--accent)' : d === 'medium' ? 'var(--warning)' : 'var(--danger)') : 'var(--border)',
+                        backgroundColor: form.difficulty === d ? (d === 'easy' ? 'var(--success-light)' : d === 'medium' ? 'var(--warning-light)' : 'var(--danger-light)') : 'var(--surface)',
                         cursor: 'pointer', fontSize: 11,
-                        color: form.difficulty === d ? (d === 'easy' ? 'var(--success)' : d === 'medium' ? '#B45309' : 'var(--danger)') : 'var(--text-secondary)',
-                        fontWeight: 500, textTransform: 'capitalize', transition: 'all 0.15s',
+                        color: form.difficulty === d ? (d === 'easy' ? 'var(--accent)' : d === 'medium' ? 'var(--warning)' : 'var(--danger)') : 'var(--text-secondary)',
+                        fontWeight: 600, textTransform: 'uppercase',
+                        letterSpacing: '0.1em', fontFamily: 'var(--font-mono)',
+                        transition: 'all 0.15s',
                       }}
                     >
                       {tCampaign(`difficulty.${d}` as Parameters<typeof tCampaign>[0])}
@@ -453,7 +475,7 @@ export default function TemplatesPage() {
                 value={form.subject}
                 onChange={(e) => setForm({ ...form, subject: e.target.value })}
                 style={inputStyle}
-                onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px rgba(26,111,255,0.1)' }}
+                onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px rgba(0,255,148,0.15)' }}
                 onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none' }}
               />
             </div>
@@ -474,7 +496,7 @@ export default function TemplatesPage() {
                   lineHeight: 1.6,
                   padding: '10px 12px',
                 }}
-                onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px rgba(26,111,255,0.1)' }}
+                onFocus={(e) => { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px rgba(0,255,148,0.15)' }}
                 onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none' }}
               />
               <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>

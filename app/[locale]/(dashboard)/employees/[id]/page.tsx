@@ -59,7 +59,7 @@ export default function EmployeeDetailPage({
         </h2>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20, alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: 20, alignItems: 'start' }}>
         {/* ── Profile Card ── */}
         <div>
           <Card>

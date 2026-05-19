@@ -22,10 +22,11 @@ import {
   UserCog,
   ShieldCheck,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useAuthStore } from '@/lib/store/useAuthStore'
+import { useLayoutStore } from '@/lib/store/useLayoutStore'
 import { useCampaigns } from '@/lib/hooks/useCampaigns'
 import { logout } from '@/lib/api/auth'
 
@@ -48,12 +49,40 @@ export function Sidebar() {
   const locale = useLocale()
   const pathname = usePathname()
   const { user, clearAuth } = useAuthStore()
+  const { mobileSidebarOpen, setMobileSidebarOpen } = useLayoutStore()
   const [collapsed, setCollapsed] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Track viewport size so we can pick between desktop-collapse and mobile drawer.
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    const apply = () => setIsMobile(mq.matches)
+    apply()
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
+  }, [])
+
+  // Lock body scroll while the off-canvas drawer is open.
+  useEffect(() => {
+    if (isMobile && mobileSidebarOpen) {
+      document.body.classList.add('sidebar-locked')
+      return () => document.body.classList.remove('sidebar-locked')
+    }
+  }, [isMobile, mobileSidebarOpen])
+
+  // Auto-close the drawer when the route changes.
+  useEffect(() => {
+    if (isMobile) setMobileSidebarOpen(false)
+    // intentionally only watching pathname
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname])
 
   const handleLogout = async () => {
     try { await logout() } catch { /* ignore network errors on logout */ }
     clearAuth()
   }
+
+  const closeMobile = () => { if (isMobile) setMobileSidebarOpen(false) }
 
   const { data: campaignData } = useCampaigns({ status: 'running' })
   const activeCampaignCount = campaignData?.meta?.total ?? 0
@@ -107,18 +136,32 @@ export function Sidebar() {
     .join('')
     .toUpperCase() ?? 'AU'
 
-  const sidebarWidth = collapsed ? 72 : 260
+  // On mobile the drawer is always full-width content (collapse mode is desktop-only).
+  const effectivelyCollapsed = !isMobile && collapsed
+  const sidebarWidth = isMobile ? 280 : (collapsed ? 72 : 260)
 
   return (
     <>
+      {/* Mobile backdrop */}
+      {isMobile && mobileSidebarOpen && (
+        <div
+          className="app-sidebar-backdrop"
+          onClick={() => setMobileSidebarOpen(false)}
+          aria-hidden
+        />
+      )}
+
       <motion.aside
-        animate={{ width: sidebarWidth }}
+        animate={isMobile ? undefined : { width: sidebarWidth }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="fixed top-0 left-0 h-full z-40 flex flex-col overflow-hidden"
+        className={`app-sidebar flex flex-col overflow-hidden${
+          isMobile && mobileSidebarOpen ? ' is-open' : ''
+        }`}
         style={{
           backgroundColor: 'var(--background-deep)',
           borderRight: '1px solid var(--border)',
           boxShadow: 'inset -1px 0 0 rgba(0,229,255,0.04), 8px 0 32px -8px rgba(0,0,0,0.6)',
+          width: sidebarWidth,
           minWidth: sidebarWidth,
         }}
       >
@@ -127,7 +170,7 @@ export function Sidebar() {
           className="flex items-center h-16 shrink-0"
           style={{
             borderBottom: '1px solid var(--border)',
-            padding: collapsed ? '0 16px' : '0 20px',
+            padding: effectivelyCollapsed ? '0 16px' : '0 20px',
             gap: 12,
             overflow: 'hidden',
             position: 'relative',
@@ -148,7 +191,7 @@ export function Sidebar() {
             <ShieldHalf style={{ width: 18, height: 18, color: 'var(--accent)' }} />
           </div>
           <AnimatePresence>
-            {!collapsed && (
+            {!effectivelyCollapsed && (
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -189,11 +232,11 @@ export function Sidebar() {
         {/* Nav Items */}
         <nav
           className="flex-1 overflow-y-auto overflow-x-hidden"
-          style={{ padding: collapsed ? '12px 8px' : '0 12px 12px' }}
+          style={{ padding: effectivelyCollapsed ? '12px 8px' : '0 12px 12px' }}
         >
           {visibleSections.map((section, sIdx) => (
             <div key={section.label} className="flex flex-col gap-1" style={{ marginTop: sIdx === 0 ? 0 : 12 }}>
-              {!collapsed && (
+              {!effectivelyCollapsed && (
                 <div
                   style={{
                     padding: sIdx === 0 ? '14px 8px 6px' : '6px 8px 4px',
@@ -208,7 +251,7 @@ export function Sidebar() {
                   {section.label}
                 </div>
               )}
-              {collapsed && sIdx > 0 && (
+              {effectivelyCollapsed && sIdx > 0 && (
                 <div style={{ height: 1, backgroundColor: 'var(--border)', margin: '6px 4px' }} />
               )}
               {section.items.map((item) => {
@@ -219,12 +262,13 @@ export function Sidebar() {
                   href={item.href}
                   id={`nav-${item.key}`}
                   aria-label={t(item.key as Parameters<typeof t>[0])}
+                  onClick={closeMobile}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: 12,
-                    padding: collapsed ? '10px 0' : '9px 12px',
-                    justifyContent: collapsed ? 'center' : 'flex-start',
+                    padding: effectivelyCollapsed ? '10px 0' : '9px 12px',
+                    justifyContent: effectivelyCollapsed ? 'center' : 'flex-start',
                     borderRadius: 4,
                     position: 'relative',
                     textDecoration: 'none',
@@ -252,7 +296,7 @@ export function Sidebar() {
                   }}
                 >
                   {/* active indicator bar */}
-                  {active && !collapsed && (
+                  {active && !effectivelyCollapsed && (
                     <span
                       style={{
                         position: 'absolute',
@@ -270,7 +314,7 @@ export function Sidebar() {
                     style={{ width: 18, height: 18 }}
                   />
                   <AnimatePresence>
-                    {!collapsed && (
+                    {!effectivelyCollapsed && (
                       <motion.span
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -283,7 +327,7 @@ export function Sidebar() {
                       </motion.span>
                     )}
                   </AnimatePresence>
-                  {!collapsed && (
+                  {!effectivelyCollapsed && (
                     <span
                       style={{
                         fontFamily: 'var(--font-mono)',
@@ -299,9 +343,9 @@ export function Sidebar() {
                   {item.badge && item.badge > 0 && (
                     <span
                       style={{
-                        position: collapsed ? 'absolute' : 'static',
-                        top: collapsed ? 4 : undefined,
-                        right: collapsed ? 4 : undefined,
+                        position: effectivelyCollapsed ? 'absolute' : 'static',
+                        top: effectivelyCollapsed ? 4 : undefined,
+                        right: effectivelyCollapsed ? 4 : undefined,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -334,7 +378,7 @@ export function Sidebar() {
         <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: 4 }}>
           {/* User info — only when expanded */}
           <AnimatePresence>
-            {!collapsed && (
+            {!effectivelyCollapsed && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
@@ -416,7 +460,7 @@ export function Sidebar() {
 
           {/* Language Switcher — only when expanded */}
           <AnimatePresence>
-            {!collapsed && (
+            {!effectivelyCollapsed && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
@@ -439,8 +483,8 @@ export function Sidebar() {
               alignItems: 'center',
               gap: 12,
               width: '100%',
-              padding: collapsed ? '10px 0' : '9px 12px',
-              justifyContent: collapsed ? 'center' : 'flex-start',
+              padding: effectivelyCollapsed ? '10px 0' : '9px 12px',
+              justifyContent: effectivelyCollapsed ? 'center' : 'flex-start',
               borderRadius: 4,
               background: 'none',
               border: '1px solid transparent',
@@ -466,7 +510,7 @@ export function Sidebar() {
           >
             <LogOut style={{ width: 16, height: 16, flexShrink: 0 }} />
             <AnimatePresence>
-              {!collapsed && (
+              {!effectivelyCollapsed && (
                 <motion.span
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -479,12 +523,12 @@ export function Sidebar() {
             </AnimatePresence>
           </button>
 
-          {/* Collapse toggle */}
+          {/* Collapse toggle — desktop only */}
           <button
+            className="hide-on-mobile"
             onClick={() => setCollapsed(!collapsed)}
-            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            aria-label={effectivelyCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             style={{
-              display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               width: '100%',
@@ -506,7 +550,7 @@ export function Sidebar() {
               ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'
             }}
           >
-            {collapsed
+            {effectivelyCollapsed
               ? <ChevronRight style={{ width: 14, height: 14 }} />
               : <ChevronLeft style={{ width: 14, height: 14 }} />
             }
@@ -514,8 +558,9 @@ export function Sidebar() {
         </div>
       </motion.aside>
 
-      {/* Spacer div so main content shifts with sidebar */}
+      {/* Spacer div so main content shifts with sidebar (collapses to 0 on mobile via CSS) */}
       <div
+        className="app-sidebar-spacer"
         style={{
           flexShrink: 0,
           transition: 'width 0.3s',

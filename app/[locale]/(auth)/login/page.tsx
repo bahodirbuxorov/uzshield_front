@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Shield, Eye, EyeOff, AlertCircle } from 'lucide-react'
+import { ShieldHalf, Eye, EyeOff, AlertCircle, Terminal } from 'lucide-react'
 import { toast } from 'sonner'
 import { motion } from 'framer-motion'
 import { login } from '@/lib/api/auth'
@@ -30,13 +30,31 @@ export default function LoginPage() {
     defaultValues: { email: '', password: '' },
   })
 
+  const inputBaseStyle: React.CSSProperties = {
+    display: 'block',
+    width: '100%',
+    height: 44,
+    padding: '0 12px',
+    fontSize: 13,
+    fontFamily: 'var(--font-mono)',
+    color: 'var(--text-primary)',
+    backgroundColor: 'var(--surface-secondary)',
+    border: '1px solid var(--border-strong)',
+    borderRadius: 4,
+    outline: 'none',
+    transition: 'border-color 0.15s, box-shadow 0.15s, background-color 0.15s',
+    letterSpacing: '0.02em',
+  }
+
   const focusStyle = (e: React.FocusEvent<HTMLInputElement>) => {
     e.target.style.borderColor = 'var(--accent)'
-    e.target.style.boxShadow = '0 0 0 3px rgba(26,111,255,0.12)'
+    e.target.style.boxShadow = '0 0 0 3px rgba(0,255,148,0.15)'
+    e.target.style.backgroundColor = 'var(--surface-elevated)'
   }
   const blurStyle = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.target.style.borderColor = 'var(--border)'
-    e.target.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)'
+    e.target.style.borderColor = 'var(--border-strong)'
+    e.target.style.boxShadow = ''
+    e.target.style.backgroundColor = 'var(--surface-secondary)'
   }
 
   const emailReg = register('email')
@@ -46,7 +64,7 @@ export default function LoginPage() {
     try {
       const { token, user } = await login(data)
       setAuth(user, token)
-      toast.success('Welcome back, ' + user.name + '!')
+      toast.success('access granted · ' + user.name)
       router.push(`/${locale}/dashboard`)
     } catch {
       toast.error(t('invalidCredentials'))
@@ -55,60 +73,151 @@ export default function LoginPage() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.96 }}
-      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
     >
-      <div className="bg-white rounded-2xl shadow-xl border border-[var(--border)] p-8">
-        {/* Logo */}
-        <div className="flex flex-col items-center mb-8">
-          <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-[var(--primary)] mb-4 shadow-lg">
-            <Shield className="w-7 h-7 text-white" />
-          </div>
-          <h1
-            className="text-2xl font-bold text-[var(--text-primary)]"
-            style={{ fontFamily: 'var(--font-display)' }}
+      <div
+        className="cyber-corners"
+        style={{
+          position: 'relative',
+          backgroundColor: 'var(--surface)',
+          border: '1px solid var(--border-strong)',
+          borderRadius: 6,
+          padding: 32,
+          boxShadow: '0 24px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,255,148,0.06)',
+          backdropFilter: 'blur(10px)',
+        }}
+      >
+        {/* Terminal header bar */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '0 0 16px',
+            marginBottom: 20,
+            borderBottom: '1px dashed var(--border)',
+          }}
+        >
+          <Terminal style={{ width: 12, height: 12, color: 'var(--accent)' }} />
+          <span
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 11,
+              color: 'var(--muted)',
+              letterSpacing: '0.1em',
+              flex: 1,
+            }}
           >
-            UzShield
-          </h1>
-          <p className="mt-1 text-sm text-[var(--text-secondary)] text-center">{t('tagline')}</p>
+            uzshield@auth:~$ login
+          </span>
+          <span style={{ display: 'flex', gap: 4 }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: 'var(--danger)' }} />
+            <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: 'var(--warning)' }} />
+            <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: 'var(--accent)' }} />
+          </span>
         </div>
 
-        <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-6 text-center">
-          {t('loginTitle')}
+        {/* Logo / brand */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 28 }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 56,
+              height: 56,
+              borderRadius: 8,
+              backgroundColor: 'var(--surface-elevated)',
+              border: '1px solid var(--border-accent)',
+              boxShadow: 'var(--shadow-glow-accent)',
+              marginBottom: 16,
+              position: 'relative',
+            }}
+          >
+            <ShieldHalf style={{ width: 26, height: 26, color: 'var(--accent)' }} />
+          </div>
+          <h1
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 22,
+              fontWeight: 700,
+              color: 'var(--text-primary)',
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+            }}
+          >
+            UZ<span style={{ color: 'var(--accent)' }}>SHIELD</span>
+          </h1>
+          <p
+            style={{
+              marginTop: 6,
+              fontSize: 11,
+              fontFamily: 'var(--font-mono)',
+              color: 'var(--muted)',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              textAlign: 'center',
+            }}
+          >
+            {t('tagline')}
+          </p>
+        </div>
+
+        <h2
+          style={{
+            fontSize: 12,
+            fontWeight: 600,
+            color: 'var(--text-secondary)',
+            marginBottom: 20,
+            textAlign: 'center',
+            fontFamily: 'var(--font-mono)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.18em',
+          }}
+        >
+          &gt; {t('loginTitle')}
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
           {/* Email */}
           <div className="space-y-1.5">
-            <Label htmlFor="login-email">{t('email')}</Label>
+            <Label
+              htmlFor="login-email"
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 10,
+                color: 'var(--text-secondary)',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+              }}
+            >
+              [ {t('email')} ]
+            </Label>
             <input
               id="login-email"
               type="email"
               placeholder={t('emailPlaceholder')}
               autoComplete="email"
               aria-invalid={!!errors.email}
-              style={{
-                display: 'block',
-                width: '100%',
-                height: '42px',
-                padding: '0 12px',
-                fontSize: '14px',
-                color: 'var(--text-primary)',
-                backgroundColor: 'white',
-                border: '1px solid var(--border)',
-                borderRadius: '8px',
-                outline: 'none',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-                transition: 'border-color 0.15s, box-shadow 0.15s',
-              }}
+              style={inputBaseStyle}
               {...emailReg}
               onFocus={focusStyle}
               onBlur={(e) => { blurStyle(e); emailReg.onBlur(e) }}
             />
             {errors.email && (
-              <p className="flex items-center gap-1 text-xs" style={{ color: 'var(--danger)' }}>
-                <AlertCircle className="w-3 h-3 shrink-0" />
+              <p
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  fontSize: 11,
+                  color: 'var(--danger)',
+                  fontFamily: 'var(--font-mono)',
+                }}
+              >
+                <AlertCircle style={{ width: 12, height: 12, flexShrink: 0 }} />
                 {errors.email.message}
               </p>
             )}
@@ -116,7 +225,18 @@ export default function LoginPage() {
 
           {/* Password */}
           <div className="space-y-1.5">
-            <Label htmlFor="login-password">{t('password')}</Label>
+            <Label
+              htmlFor="login-password"
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 10,
+                color: 'var(--text-secondary)',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+              }}
+            >
+              [ {t('password')} ]
+            </Label>
             <div style={{ position: 'relative' }}>
               <input
                 id="login-password"
@@ -124,20 +244,7 @@ export default function LoginPage() {
                 placeholder={t('passwordPlaceholder')}
                 autoComplete="current-password"
                 aria-invalid={!!errors.password}
-                style={{
-                  display: 'block',
-                  width: '100%',
-                  height: '42px',
-                  padding: '0 44px 0 12px',
-                  fontSize: '14px',
-                  color: 'var(--text-primary)',
-                  backgroundColor: 'white',
-                  border: '1px solid var(--border)',
-                  borderRadius: '8px',
-                  outline: 'none',
-                  boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-                  transition: 'border-color 0.15s, box-shadow 0.15s',
-                }}
+                style={{ ...inputBaseStyle, padding: '0 44px 0 12px' }}
                 {...passwordReg}
                 onFocus={focusStyle}
                 onBlur={(e) => { blurStyle(e); passwordReg.onBlur(e) }}
@@ -148,7 +255,7 @@ export default function LoginPage() {
                 aria-label={showPassword ? t('hidePassword') : t('showPassword')}
                 style={{
                   position: 'absolute',
-                  right: '12px',
+                  right: 12,
                   top: '50%',
                   transform: 'translateY(-50%)',
                   background: 'none',
@@ -160,12 +267,21 @@ export default function LoginPage() {
                   padding: 0,
                 }}
               >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showPassword ? <EyeOff style={{ width: 16, height: 16 }} /> : <Eye style={{ width: 16, height: 16 }} />}
               </button>
             </div>
             {errors.password && (
-              <p className="flex items-center gap-1 text-xs" style={{ color: 'var(--danger)' }}>
-                <AlertCircle className="w-3 h-3 shrink-0" />
+              <p
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  fontSize: 11,
+                  color: 'var(--danger)',
+                  fontFamily: 'var(--font-mono)',
+                }}
+              >
+                <AlertCircle style={{ width: 12, height: 12, flexShrink: 0 }} />
                 {errors.password.message}
               </p>
             )}
@@ -179,25 +295,50 @@ export default function LoginPage() {
             disabled={isSubmitting}
           >
             {isSubmitting ? (
-              <span className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                Loading…
+              <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div
+                  style={{
+                    width: 14,
+                    height: 14,
+                    borderRadius: '50%',
+                    border: '2px solid rgba(2,26,14,0.3)',
+                    borderTopColor: '#021A0E',
+                    animation: 'spin 0.8s linear infinite',
+                  }}
+                />
+                Authenticating…
               </span>
             ) : (
-              t('loginButton')
+              <>&gt; {t('loginButton')}</>
             )}
           </Button>
         </form>
 
         {/* Hint */}
         <div
-          className="mt-6 p-3 rounded-xl text-xs text-center"
-          style={{ backgroundColor: 'var(--surface-secondary)', color: 'var(--text-secondary)' }}
+          style={{
+            marginTop: 24,
+            padding: 12,
+            borderRadius: 4,
+            border: '1px dashed var(--border)',
+            backgroundColor: 'var(--surface-secondary)',
+            fontSize: 11,
+            color: 'var(--muted)',
+            fontFamily: 'var(--font-mono)',
+            textAlign: 'center',
+            letterSpacing: '0.04em',
+          }}
         >
-          <span className="font-medium">Demo: </span>
+          <span style={{ color: 'var(--accent)' }}># DEMO</span>{' '}
           super@oxupax.local / password
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </motion.div>
   )
 }

@@ -2,13 +2,12 @@
 
 import { useTranslations } from 'next-intl'
 import { Mail, MessageSquare, Smartphone } from 'lucide-react'
-import { cn } from '@/lib/utils/cn'
 import type { CampaignChannel } from '@/lib/types/campaign'
 
-const CHANNELS: { key: CampaignChannel; icon: React.ElementType; color: string; bg: string }[] = [
-  { key: 'email', icon: Mail, color: 'text-[var(--accent)]', bg: 'bg-blue-50 border-blue-200 hover:border-[var(--accent)]' },
-  { key: 'telegram', icon: MessageSquare, color: 'text-sky-500', bg: 'bg-sky-50 border-sky-200 hover:border-sky-400' },
-  { key: 'sms', icon: Smartphone, color: 'text-[var(--success)]', bg: 'bg-[var(--success-light)] border-green-200 hover:border-[var(--success)]' },
+const CHANNELS: { key: CampaignChannel; icon: React.ElementType; tone: string }[] = [
+  { key: 'email',    icon: Mail,          tone: '#00FF94' },
+  { key: 'telegram', icon: MessageSquare, tone: '#00E5FF' },
+  { key: 'sms',      icon: Smartphone,    tone: '#B847FF' },
 ]
 
 interface ChannelSelectorProps {
@@ -22,7 +21,7 @@ export function ChannelSelector({ selected, onToggle }: ChannelSelectorProps) {
 
   return (
     <div className="grid grid-cols-3 gap-3">
-      {CHANNELS.map(({ key, icon: Icon, color, bg }) => {
+      {CHANNELS.map(({ key, icon: Icon, tone }) => {
         const isSelected = selected.includes(key)
         return (
           <button
@@ -32,16 +31,45 @@ export function ChannelSelector({ selected, onToggle }: ChannelSelectorProps) {
             onClick={() => onToggle(key)}
             aria-pressed={isSelected}
             aria-label={t(`channel.${key}` as Parameters<typeof t>[0])}
-            className={cn(
-              'flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-150',
-              isSelected
-                ? `${bg} ${color} border-opacity-100 shadow-sm ring-2 ring-offset-1`
-                : `bg-white border-[var(--border)] text-[var(--muted)] hover:bg-[var(--surface-secondary)] ${bg}`,
-              isSelected ? 'ring-[var(--accent)]' : 'ring-transparent'
-            )}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 8,
+              padding: '18px 12px',
+              borderRadius: 4,
+              border: '1px solid',
+              borderColor: isSelected ? `${tone}80` : 'var(--border)',
+              backgroundColor: isSelected ? `${tone}14` : 'var(--surface)',
+              color: isSelected ? tone : 'var(--text-secondary)',
+              cursor: 'pointer',
+              transition: 'all 0.15s',
+              boxShadow: isSelected ? `0 0 18px ${tone}33, inset 0 0 0 1px ${tone}40` : 'none',
+              position: 'relative',
+            }}
+            onMouseEnter={(e) => {
+              if (!isSelected) {
+                ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border-strong)'
+                ;(e.currentTarget as HTMLElement).style.backgroundColor = 'var(--surface-secondary)'
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isSelected) {
+                ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'
+                ;(e.currentTarget as HTMLElement).style.backgroundColor = 'var(--surface)'
+              }
+            }}
           >
-            <Icon className={cn('w-7 h-7', isSelected ? color : 'text-[var(--muted)]')} />
-            <span className={cn('text-sm font-medium capitalize', isSelected ? color : 'text-[var(--text-secondary)]')}>
+            <Icon style={{ width: 26, height: 26 }} />
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                fontFamily: 'var(--font-mono)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+              }}
+            >
               {t(`channel.${key}` as Parameters<typeof t>[0])}
             </span>
           </button>

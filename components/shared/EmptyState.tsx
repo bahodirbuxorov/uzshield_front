@@ -16,7 +16,14 @@ export function EmptyState({ icon, title, description, actionLabel, onAction }: 
   return (
     <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
       {icon && (
-        <div className="mb-4 flex items-center justify-center w-16 h-16 rounded-2xl bg-[var(--surface-secondary)] text-[var(--muted)]">
+        <div
+          className="mb-4 flex items-center justify-center w-16 h-16 text-[var(--muted)]"
+          style={{
+            borderRadius: 4,
+            backgroundColor: 'var(--surface-secondary)',
+            border: '1px dashed var(--border-strong)',
+          }}
+        >
           {icon}
         </div>
       )}

@@ -32,8 +32,9 @@ export function LanguageSwitcher() {
           variant="ghost"
           size="sm"
           id="language-switcher"
-          className="w-full justify-start text-white/70 hover:text-white hover:bg-white/10 gap-2"
+          className="w-full justify-start gap-2 border border-[var(--border)] hover:border-[var(--border-accent)] normal-case tracking-normal"
           aria-label="Select language"
+          style={{ fontFamily: 'var(--font-mono)', fontSize: 11 }}
         >
           <span>{localeFlags[locale as keyof typeof localeFlags]}</span>
           <span className="flex-1 text-left">{localeNames[locale as keyof typeof localeNames]}</span>

@@ -40,24 +40,77 @@ export function RecentCampaigns({ campaigns, loading }: RecentCampaignsProps) {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="text-base">{t('recentCampaigns')}</CardTitle>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle className="flex items-center gap-2">
+          <span className="live-dot" style={{ width: 6, height: 6 }} />
+          {t('recentCampaigns')}
+        </CardTitle>
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 10,
+            color: 'var(--muted)',
+            letterSpacing: '0.08em',
+          }}
+        >
+          [{campaigns.length} entries]
+        </span>
       </CardHeader>
       <CardContent className="p-0">
         <div className="overflow-x-auto">
           <table className="w-full text-sm" aria-label="Recent campaigns">
             <thead>
-              <tr className="border-b border-[var(--border)]">
-                <th className="text-left px-6 py-3 text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">
+              <tr style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+                <th
+                  className="text-left px-6 py-3"
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 10,
+                    fontWeight: 600,
+                    color: 'var(--muted)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.14em',
+                  }}
+                >
                   {tCampaign('form.name')}
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-[var(--muted)] uppercase tracking-wide hidden sm:table-cell">
+                <th
+                  className="text-left px-4 py-3 hidden sm:table-cell"
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 10,
+                    fontWeight: 600,
+                    color: 'var(--muted)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.14em',
+                  }}
+                >
                   {tCampaign('channel.all')}
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-[var(--muted)] uppercase tracking-wide hidden md:table-cell">
+                <th
+                  className="text-left px-4 py-3 hidden md:table-cell"
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 10,
+                    fontWeight: 600,
+                    color: 'var(--muted)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.14em',
+                  }}
+                >
                   {tCampaign('clickRate')}
                 </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">
+                <th
+                  className="text-left px-4 py-3"
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 10,
+                    fontWeight: 600,
+                    color: 'var(--muted)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.14em',
+                  }}
+                >
                   Status
                 </th>
               </tr>
@@ -66,25 +119,54 @@ export function RecentCampaigns({ campaigns, loading }: RecentCampaignsProps) {
               {campaigns.map((campaign) => (
                 <tr
                   key={campaign.id}
-                  className="border-b border-[var(--border)] last:border-0 hover:bg-[var(--surface-secondary)] transition-colors"
+                  className="transition-colors"
+                  style={{ borderBottom: '1px solid var(--border)' }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'var(--surface-secondary)' }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent' }}
                 >
                   <td className="px-6 py-3">
                     <Link
                       href={`/${locale}/campaigns/${campaign.id}`}
-                      className="font-medium text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
+                      style={{
+                        fontWeight: 500,
+                        color: 'var(--text-primary)',
+                        textDecoration: 'none',
+                        transition: 'color 0.15s',
+                        fontSize: 13,
+                      }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--accent)' }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)' }}
                     >
                       {campaign.name}
                     </Link>
-                    <p className="text-xs text-[var(--muted)] mt-0.5">{formatDate(campaign.startedAt)}</p>
+                    <p
+                      style={{
+                        fontSize: 10,
+                        color: 'var(--muted)',
+                        marginTop: 2,
+                        fontFamily: 'var(--font-mono)',
+                        letterSpacing: '0.04em',
+                      }}
+                    >
+                      {formatDate(campaign.startedAt)}
+                    </p>
                   </td>
                   <td className="px-4 py-3 hidden sm:table-cell">
                     <div className="flex gap-1 flex-wrap">
                       {(campaign.channels ?? []).map((ch) => (
-                        <Badge key={ch} variant="outline" className="capitalize text-xs">{ch}</Badge>
+                        <Badge key={ch} variant="outline">{ch}</Badge>
                       ))}
                     </div>
                   </td>
-                  <td className="px-4 py-3 hidden md:table-cell font-semibold text-[var(--text-primary)]">
+                  <td
+                    className="px-4 py-3 hidden md:table-cell"
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontWeight: 600,
+                      color: 'var(--danger)',
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
                     {campaign.clickRate != null ? fmtPercent(campaign.clickRate) : '0%'}
                   </td>
                   <td className="px-4 py-3">

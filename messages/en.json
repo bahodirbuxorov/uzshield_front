@@ -41,6 +41,11 @@
     "templates": "Templates",
     "training": "Training",
     "reports": "Reports",
+    "companies": "Companies",
+    "departments": "Departments",
+    "users": "Operators",
+    "roles": "Roles",
+    "notifications": "Signals",
     "settings": "Settings",
     "logout": "Logout"
   },
@@ -51,7 +56,7 @@
     "tagline": "Protect your employees from phishing attacks",
     "loginButton": "Sign in",
     "invalidCredentials": "Invalid email or password",
-    "emailPlaceholder": "admin@oxupax.uz",
+    "emailPlaceholder": "super@oxupax.local",
     "passwordPlaceholder": "Enter your password",
     "showPassword": "Show password",
     "hidePassword": "Hide password",
@@ -242,5 +247,151 @@
     "upgradePlan": "Upgrade Plan",
     "billingHistory": "Billing History",
     "paymentMethod": "Payment Method"
+  },
+  "companies": {
+    "title": "Companies",
+    "description": "Tenants registered on the Oxupax platform",
+    "add": "New Company",
+    "addDesc": "Register a new tenant. Only super admins can create companies.",
+    "edit": "Edit Company",
+    "editDesc": "Update tenant metadata",
+    "empty": "No companies registered",
+    "emptyDesc": "Companies registered in the platform appear here.",
+    "industry": "Industry",
+    "size": "Headcount",
+    "phone": "Phone",
+    "created": "Company created",
+    "updated": "Company updated",
+    "deleted": "Company removed",
+    "confirmDelete": "Delete company {name}? This cannot be undone.",
+    "superAdminOnly": "Read-only — super-admin role required to modify tenants.",
+    "status": {
+      "active": "Online",
+      "inactive": "Suspended"
+    },
+    "errors": {
+      "nameRequired": "Company name is required"
+    }
+  },
+  "departments": {
+    "title": "Departments",
+    "description": "Org units inside your company",
+    "add": "New Department",
+    "addDesc": "Create a department to group employees",
+    "edit": "Edit Department",
+    "editDesc": "Update name or description",
+    "empty": "No departments yet",
+    "emptyDesc": "Create departments to organise your employees and run targeted campaigns.",
+    "descriptionLabel": "Description",
+    "company": "Company",
+    "headcount": "headcount",
+    "created": "Department created",
+    "updated": "Department updated",
+    "deleted": "Department removed",
+    "confirmDelete": "Delete department {name}?",
+    "errors": {
+      "nameRequired": "Name is required",
+      "companyRequired": "Pick a company"
+    }
+  },
+  "notifications": {
+    "title": "Signals",
+    "description": "Outbound and in-app notifications dispatched by the platform",
+    "compose": "Compose Signal",
+    "composeDesc": "Send a notification to selected employees through the chosen channel.",
+    "channel": "Channel",
+    "subject": "Subject",
+    "subjectPlaceholder": "Brief subject line",
+    "body": "Payload",
+    "bodyPlaceholder": "Notification body…",
+    "recipients": "Recipients",
+    "noEmployees": "No active employees to target.",
+    "send": "Dispatch",
+    "sending": "Dispatching…",
+    "sentSuccess": "Dispatched {count} signal(s)",
+    "noNotifications": "No signals dispatched yet",
+    "noNotificationsDesc": "Signals you send through campaigns or composer will appear here.",
+    "channels": {
+      "email": "Email",
+      "sms": "SMS",
+      "inApp": "In-app"
+    },
+    "status": {
+      "sent": "Delivered",
+      "pending": "Queued",
+      "failed": "Failed"
+    },
+    "stats": {
+      "total": "Total",
+      "sent": "Delivered",
+      "pending": "Queued",
+      "failed": "Failed"
+    },
+    "errors": {
+      "subjectRequired": "Subject is required",
+      "bodyRequired": "Body is required",
+      "recipientsRequired": "Pick at least one recipient"
+    }
+  },
+  "users": {
+    "title": "Operators",
+    "description": "Console operators with platform access",
+    "add": "New Operator",
+    "addDesc": "Create a console account with role-based access.",
+    "edit": "Edit Operator",
+    "editDesc": "Update profile, credentials, or company assignment.",
+    "empty": "No operators yet",
+    "emptyDesc": "Create operator accounts to grant console access.",
+    "searchPlaceholder": "Search operators…",
+    "roles": "Roles",
+    "manageRoles": "Manage roles",
+    "manageRolesFor": "Roles · {name}",
+    "manageRolesDesc": "Toggle the roles assigned to this operator. Changes apply on save.",
+    "phone": "Phone",
+    "password": "Password",
+    "passwordOptional": "leave blank to keep current",
+    "company": "Company",
+    "initialRole": "Initial roles",
+    "you": "you",
+    "created": "Operator created",
+    "updated": "Operator updated",
+    "deleted": "Operator removed",
+    "rolesUpdated": "Roles updated",
+    "confirmDelete": "Delete operator {name}?",
+    "errors": {
+      "required": "Name and email are required",
+      "passwordRequired": "Password is required for new operators",
+      "cannotDeleteSelf": "You cannot delete your own account"
+    }
+  },
+  "roles": {
+    "title": "Roles",
+    "description": "Permission bundles assigned to operators",
+    "add": "New Role",
+    "addDesc": "Define a permission bundle. Permissions can be edited after creation.",
+    "edit": "Edit Role",
+    "editDesc": "Update role name or description.",
+    "empty": "No roles configured",
+    "emptyDesc": "Default roles are seeded by the platform — create custom roles to fine-tune access.",
+    "roleName": "Role name",
+    "descriptionLabel": "Description",
+    "permissions": "permissions",
+    "noPermissions": "No permissions assigned",
+    "protected": "system",
+    "managePermissions": "Edit permissions",
+    "managePermissionsFor": "Permissions · {name}",
+    "selectedCount": "{count} of {total} selected",
+    "filterPermissions": "Filter permissions…",
+    "selectAll": "Select all",
+    "clearAll": "Clear",
+    "permissionsUpdated": "Permissions synced",
+    "created": "Role created",
+    "updated": "Role updated",
+    "deleted": "Role removed",
+    "confirmDelete": "Delete role {name}?",
+    "errors": {
+      "nameRequired": "Role name is required",
+      "protectedRole": "This role is protected by the system"
+    }
   }
 }

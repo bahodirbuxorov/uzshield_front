@@ -1,10 +1,13 @@
 import api from '@/lib/api/axios'
 import type { PaginatedResponse } from '@/lib/types/employee'
 
+/** Channels supported by the notification backend. */
+export type NotificationChannel = 'email' | 'sms' | 'in_app'
+
 /** Notification record from API */
 export interface Notification {
   id: number
-  channel: 'email' | 'sms' | 'telegram'
+  channel: NotificationChannel
   subject: string | null
   body: string
   status: 'pending' | 'sent' | 'failed'
@@ -48,14 +51,17 @@ export async function fetchNotificationById(id: number): Promise<Notification> {
  * POST /api/notifications/send
  */
 export async function sendNotification(payload: {
-  channel: 'email' | 'sms' | 'telegram'
-  subject?: string
+  channel: NotificationChannel
+  subject: string
   body: string
   employee_ids?: number[]
   user_ids?: number[]
-}): Promise<Notification> {
-  const res = await api.post<{ data: Notification }>('/api/notifications/send', payload)
-  return res.data.data
+}): Promise<{ sent: number; data: Notification[] }> {
+  const res = await api.post<{ sent: number; data: Notification[] }>(
+    '/api/notifications/send',
+    payload,
+  )
+  return res.data
 }
 
 /**

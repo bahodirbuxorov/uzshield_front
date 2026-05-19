@@ -6,9 +6,9 @@ export const PAGE_SIZE_OPTIONS = [10, 25, 50]
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8090'
 
-/** Mock auth credentials */
-export const MOCK_AUTH_EMAIL = 'admin@oxupax.uz'
-export const MOCK_AUTH_PASSWORD = 'password123'
+/** Demo auth credentials seeded by the backend (database/seeders/DatabaseSeeder.php) */
+export const MOCK_AUTH_EMAIL = 'super@oxupax.local'
+export const MOCK_AUTH_PASSWORD = 'password'
 
 /** Cookie name used to store auth token */
 export const AUTH_COOKIE_NAME = 'oxupax_token'

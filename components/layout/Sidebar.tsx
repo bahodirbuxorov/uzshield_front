@@ -16,6 +16,11 @@ import {
   ShieldHalf,
   ChevronLeft,
   ChevronRight,
+  Building2,
+  Layers,
+  Bell,
+  UserCog,
+  ShieldCheck,
 } from 'lucide-react'
 import { useState } from 'react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -30,6 +35,12 @@ interface NavItem {
   icon: React.ElementType
   badge?: number
   code: string
+  superOnly?: boolean
+}
+
+interface NavSection {
+  label: string
+  items: NavItem[]
 }
 
 export function Sidebar() {
@@ -44,18 +55,48 @@ export function Sidebar() {
     clearAuth()
   }
 
-  const { data: campaignData } = useCampaigns({ status: 'active' })
+  const { data: campaignData } = useCampaigns({ status: 'running' })
   const activeCampaignCount = campaignData?.meta?.total ?? 0
+  const isSuper = user?.roles?.includes('super_admin') ?? false
 
-  const navItems: NavItem[] = [
-    { key: 'dashboard', href: `/${locale}/dashboard`, icon: LayoutDashboard, code: '01' },
-    { key: 'campaigns', href: `/${locale}/campaigns`, icon: Mail, badge: activeCampaignCount || undefined, code: '02' },
-    { key: 'employees', href: `/${locale}/employees`, icon: Users, code: '03' },
-    { key: 'templates', href: `/${locale}/templates`, icon: FileText, code: '04' },
-    { key: 'training', href: `/${locale}/training`, icon: GraduationCap, code: '05' },
-    { key: 'reports', href: `/${locale}/reports`, icon: BarChart2, code: '06' },
-    { key: 'settings', href: `/${locale}/settings`, icon: Settings, code: '07' },
+  const sections: NavSection[] = [
+    {
+      label: '// operations',
+      items: [
+        { key: 'dashboard', href: `/${locale}/dashboard`, icon: LayoutDashboard, code: '01' },
+        { key: 'campaigns', href: `/${locale}/campaigns`, icon: Mail, badge: activeCampaignCount || undefined, code: '02' },
+        { key: 'templates', href: `/${locale}/templates`, icon: FileText, code: '03' },
+        { key: 'training', href: `/${locale}/training`, icon: GraduationCap, code: '04' },
+        { key: 'reports', href: `/${locale}/reports`, icon: BarChart2, code: '05' },
+      ],
+    },
+    {
+      label: '// directory',
+      items: [
+        { key: 'employees', href: `/${locale}/employees`, icon: Users, code: '10' },
+        { key: 'departments', href: `/${locale}/departments`, icon: Layers, code: '11' },
+        { key: 'companies', href: `/${locale}/companies`, icon: Building2, code: '12', superOnly: true },
+      ],
+    },
+    {
+      label: '// access',
+      items: [
+        { key: 'users', href: `/${locale}/users`, icon: UserCog, code: '20' },
+        { key: 'roles', href: `/${locale}/roles`, icon: ShieldCheck, code: '21' },
+        { key: 'notifications', href: `/${locale}/notifications`, icon: Bell, code: '22' },
+      ],
+    },
+    {
+      label: '// system',
+      items: [
+        { key: 'settings', href: `/${locale}/settings`, icon: Settings, code: '90' },
+      ],
+    },
   ]
+
+  const visibleSections = sections
+    .map((s) => ({ ...s, items: s.items.filter((i) => !i.superOnly || isSuper) }))
+    .filter((s) => s.items.length > 0)
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/')
 
@@ -145,29 +186,32 @@ export function Sidebar() {
           </AnimatePresence>
         </div>
 
-        {/* Section label */}
-        {!collapsed && (
-          <div
-            style={{
-              padding: '14px 20px 6px',
-              fontSize: 10,
-              fontFamily: 'var(--font-mono)',
-              color: 'var(--muted)',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-            }}
-          >
-            {'// navigation'}
-          </div>
-        )}
-
         {/* Nav Items */}
         <nav
           className="flex-1 overflow-y-auto overflow-x-hidden"
           style={{ padding: collapsed ? '12px 8px' : '0 12px 12px' }}
         >
-          <div className="flex flex-col gap-1">
-            {navItems.map((item) => {
+          {visibleSections.map((section, sIdx) => (
+            <div key={section.label} className="flex flex-col gap-1" style={{ marginTop: sIdx === 0 ? 0 : 12 }}>
+              {!collapsed && (
+                <div
+                  style={{
+                    padding: sIdx === 0 ? '14px 8px 6px' : '6px 8px 4px',
+                    fontSize: 9,
+                    fontFamily: 'var(--font-mono)',
+                    color: 'var(--muted)',
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    opacity: 0.7,
+                  }}
+                >
+                  {section.label}
+                </div>
+              )}
+              {collapsed && sIdx > 0 && (
+                <div style={{ height: 1, backgroundColor: 'var(--border)', margin: '6px 4px' }} />
+              )}
+              {section.items.map((item) => {
               const active = isActive(item.href)
               return (
                 <Link
@@ -279,7 +323,8 @@ export function Sidebar() {
                 </Link>
               )
             })}
-          </div>
+            </div>
+          ))}
         </nav>
 
         {/* Divider */}

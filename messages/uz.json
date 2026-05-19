@@ -41,6 +41,11 @@
     "templates": "Shablonlar",
     "training": "O'quv modullar",
     "reports": "Hisobotlar",
+    "companies": "Kompaniyalar",
+    "departments": "Bo'limlar",
+    "users": "Operatorlar",
+    "roles": "Rollar",
+    "notifications": "Signallar",
     "settings": "Sozlamalar",
     "logout": "Chiqish"
   },
@@ -51,7 +56,7 @@
     "tagline": "Xodimlarni fishing hujumlaridan himoya qiling",
     "loginButton": "Tizimga kirish",
     "invalidCredentials": "Email yoki parol noto'g'ri",
-    "emailPlaceholder": "admin@oxupax.uz",
+    "emailPlaceholder": "super@oxupax.local",
     "passwordPlaceholder": "Parolingizni kiriting",
     "showPassword": "Parolni ko'rsatish",
     "hidePassword": "Parolni yashirish",
@@ -242,5 +247,151 @@
     "upgradePlan": "Tarifni yangilash",
     "billingHistory": "To'lov tarixi",
     "paymentMethod": "To'lov usuli"
+  },
+  "companies": {
+    "title": "Kompaniyalar",
+    "description": "Oxupax platformasiga ulangan tashkilotlar",
+    "add": "Yangi kompaniya",
+    "addDesc": "Yangi tashkilot ro'yxatdan o'tkazish. Faqat super admin yarata oladi.",
+    "edit": "Kompaniyani tahrirlash",
+    "editDesc": "Tashkilot ma'lumotlarini yangilash",
+    "empty": "Kompaniyalar mavjud emas",
+    "emptyDesc": "Platformada ro'yxatdan o'tgan kompaniyalar shu yerda paydo bo'ladi.",
+    "industry": "Soha",
+    "size": "Hodimlar soni",
+    "phone": "Telefon",
+    "created": "Kompaniya yaratildi",
+    "updated": "Kompaniya yangilandi",
+    "deleted": "Kompaniya o'chirildi",
+    "confirmDelete": "{name} kompaniyasini o'chirilsinmi? Bu amalni qaytarib bo'lmaydi.",
+    "superAdminOnly": "Faqat o'qish — tashkilotlarni boshqarish uchun super-admin roli kerak.",
+    "status": {
+      "active": "Faol",
+      "inactive": "To'xtatilgan"
+    },
+    "errors": {
+      "nameRequired": "Kompaniya nomi shart"
+    }
+  },
+  "departments": {
+    "title": "Bo'limlar",
+    "description": "Kompaniya ichidagi tarkibiy bo'linmalar",
+    "add": "Yangi bo'lim",
+    "addDesc": "Xodimlarni guruhlash uchun bo'lim yarating",
+    "edit": "Bo'limni tahrirlash",
+    "editDesc": "Nom yoki ta'rifni yangilash",
+    "empty": "Bo'limlar yo'q",
+    "emptyDesc": "Xodimlarni guruhlash va aniq kampaniyalarni ishga tushirish uchun bo'lim yarating.",
+    "descriptionLabel": "Tavsif",
+    "company": "Kompaniya",
+    "headcount": "ta xodim",
+    "created": "Bo'lim yaratildi",
+    "updated": "Bo'lim yangilandi",
+    "deleted": "Bo'lim o'chirildi",
+    "confirmDelete": "{name} bo'limini o'chirilsinmi?",
+    "errors": {
+      "nameRequired": "Nom shart",
+      "companyRequired": "Kompaniyani tanlang"
+    }
+  },
+  "notifications": {
+    "title": "Signallar",
+    "description": "Platform tomonidan yuborilgan bildirishnomalar",
+    "compose": "Yangi signal",
+    "composeDesc": "Tanlangan xodimlarga ko'rsatilgan kanal orqali bildirishnoma yuboring.",
+    "channel": "Kanal",
+    "subject": "Mavzu",
+    "subjectPlaceholder": "Qisqa mavzu",
+    "body": "Matn",
+    "bodyPlaceholder": "Bildirishnoma matni…",
+    "recipients": "Qabul qiluvchilar",
+    "noEmployees": "Faol xodimlar yo'q.",
+    "send": "Yuborish",
+    "sending": "Yuborilmoqda…",
+    "sentSuccess": "{count} ta signal yuborildi",
+    "noNotifications": "Hali signal yuborilmagan",
+    "noNotificationsDesc": "Kampaniya yoki kompozer orqali yuborilgan signallar shu yerda ko'rinadi.",
+    "channels": {
+      "email": "Email",
+      "sms": "SMS",
+      "inApp": "Ilova"
+    },
+    "status": {
+      "sent": "Yuborildi",
+      "pending": "Navbatda",
+      "failed": "Xatolik"
+    },
+    "stats": {
+      "total": "Jami",
+      "sent": "Yuborildi",
+      "pending": "Navbatda",
+      "failed": "Xatolik"
+    },
+    "errors": {
+      "subjectRequired": "Mavzu shart",
+      "bodyRequired": "Matn shart",
+      "recipientsRequired": "Kamida bitta qabul qiluvchi tanlang"
+    }
+  },
+  "users": {
+    "title": "Operatorlar",
+    "description": "Konsol foydalanuvchilari",
+    "add": "Yangi operator",
+    "addDesc": "Rollar bilan konsol hisobini yarating.",
+    "edit": "Operatorni tahrirlash",
+    "editDesc": "Profil, parol yoki kompaniya bog'lanishini yangilash.",
+    "empty": "Hali operator yo'q",
+    "emptyDesc": "Konsolga ulanish uchun operator hisoblarini yarating.",
+    "searchPlaceholder": "Operator qidirish…",
+    "roles": "Rollar",
+    "manageRoles": "Rollarni boshqarish",
+    "manageRolesFor": "Rollar · {name}",
+    "manageRolesDesc": "Operatorga biriktirilgan rollarni belgilang.",
+    "phone": "Telefon",
+    "password": "Parol",
+    "passwordOptional": "o'zgartirmaslik uchun bo'sh qoldiring",
+    "company": "Kompaniya",
+    "initialRole": "Boshlang'ich rollar",
+    "you": "siz",
+    "created": "Operator yaratildi",
+    "updated": "Operator yangilandi",
+    "deleted": "Operator o'chirildi",
+    "rolesUpdated": "Rollar yangilandi",
+    "confirmDelete": "{name} operatorini o'chirilsinmi?",
+    "errors": {
+      "required": "Ism va email shart",
+      "passwordRequired": "Yangi operator uchun parol shart",
+      "cannotDeleteSelf": "O'z hisobingizni o'chira olmaysiz"
+    }
+  },
+  "roles": {
+    "title": "Rollar",
+    "description": "Operatorlarga biriktiriladigan ruxsat to'plamlari",
+    "add": "Yangi rol",
+    "addDesc": "Ruxsat to'plamini aniqlang. Ruxsatlarni keyin tahrirlash mumkin.",
+    "edit": "Rolni tahrirlash",
+    "editDesc": "Rol nomi yoki ta'rifini yangilash.",
+    "empty": "Rollar sozlanmagan",
+    "emptyDesc": "Asosiy rollar platforma tomonidan yaratiladi — alohida kirishni sozlash uchun yangi rol qo'shing.",
+    "roleName": "Rol nomi",
+    "descriptionLabel": "Tavsif",
+    "permissions": "ruxsat",
+    "noPermissions": "Ruxsatlar yo'q",
+    "protected": "tizim",
+    "managePermissions": "Ruxsatlarni tahrirlash",
+    "managePermissionsFor": "Ruxsatlar · {name}",
+    "selectedCount": "{count} / {total} tanlandi",
+    "filterPermissions": "Ruxsat qidirish…",
+    "selectAll": "Hammasi",
+    "clearAll": "Tozalash",
+    "permissionsUpdated": "Ruxsatlar yangilandi",
+    "created": "Rol yaratildi",
+    "updated": "Rol yangilandi",
+    "deleted": "Rol o'chirildi",
+    "confirmDelete": "{name} rolini o'chirilsinmi?",
+    "errors": {
+      "nameRequired": "Rol nomi shart",
+      "protectedRole": "Bu rol tizim tomonidan himoyalangan"
+    }
   }
 }

@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import type { ReactNode } from 'react'
 
 interface PageHeaderProps {
@@ -15,16 +14,49 @@ interface PageHeaderProps {
  */
 export function PageHeader({ title, description, actions }: PageHeaderProps) {
   return (
-    <div className="flex items-start justify-between gap-4 flex-wrap">
+    <div
+      className="flex items-start justify-between gap-4 flex-wrap"
+      style={{
+        paddingBottom: 16,
+        borderBottom: '1px solid var(--border)',
+        position: 'relative',
+      }}
+    >
       <div>
+        <div
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 10,
+            color: 'var(--muted)',
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            marginBottom: 6,
+          }}
+        >
+          <span style={{ color: 'var(--accent)' }}>&gt;</span> module
+        </div>
         <h2
-          className="text-2xl font-bold text-[var(--text-primary)]"
-          style={{ fontFamily: 'var(--font-display)' }}
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 22,
+            fontWeight: 700,
+            color: 'var(--text-primary)',
+            letterSpacing: '0.02em',
+            margin: 0,
+          }}
         >
           {title}
         </h2>
         {description && (
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">{description}</p>
+          <p
+            style={{
+              marginTop: 6,
+              fontSize: 13,
+              color: 'var(--text-secondary)',
+            }}
+          >
+            {description}
+          </p>
         )}
       </div>
       {actions && <div className="flex items-center gap-2 flex-wrap">{actions}</div>}

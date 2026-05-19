@@ -17,6 +17,29 @@ interface StatsCardProps {
   index?: number
 }
 
+const TONE_MAP: Record<string, { fg: string; glow: string; bg: string }> = {
+  'text-[var(--accent)]': {
+    fg: 'var(--accent)',
+    glow: '0 0 18px rgba(0,255,148,0.35)',
+    bg: 'rgba(0,255,148,0.08)',
+  },
+  'text-[var(--success)]': {
+    fg: 'var(--accent)',
+    glow: '0 0 18px rgba(0,255,148,0.35)',
+    bg: 'rgba(0,255,148,0.08)',
+  },
+  'text-amber-500': {
+    fg: 'var(--warning)',
+    glow: '0 0 18px rgba(255,176,32,0.35)',
+    bg: 'rgba(255,176,32,0.10)',
+  },
+  'text-purple-600': {
+    fg: 'var(--critical)',
+    glow: '0 0 18px rgba(184,71,255,0.35)',
+    bg: 'rgba(184,71,255,0.10)',
+  },
+}
+
 export function StatsCard({
   title,
   value,
@@ -24,94 +47,130 @@ export function StatsCard({
   trendLabel,
   icon: Icon,
   iconColor,
-  iconBg,
   loading = false,
   index = 0,
 }: StatsCardProps) {
   if (loading) {
     return (
       <div
+        className="cyber-corners"
         style={{
-          backgroundColor: 'white',
+          position: 'relative',
+          backgroundColor: 'var(--surface)',
           border: '1px solid var(--border)',
-          borderRadius: 16,
-          padding: 24,
-          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+          borderRadius: 4,
+          padding: 20,
         }}
       >
-        <Skeleton style={{ height: 16, width: 128, marginBottom: 16 }} />
-        <Skeleton style={{ height: 32, width: 96, marginBottom: 8 }} />
+        <Skeleton style={{ height: 14, width: 128, marginBottom: 16 }} />
+        <Skeleton style={{ height: 36, width: 96, marginBottom: 8 }} />
         <Skeleton style={{ height: 12, width: 112 }} />
       </div>
     )
   }
 
+  const tone = (iconColor && TONE_MAP[iconColor]) || TONE_MAP['text-[var(--accent)]']
+
   const trendIcon = trend === undefined ? null : trend > 0 ? TrendingUp : trend < 0 ? TrendingDown : Minus
   const trendColor =
     trend === undefined ? '' :
-    trend > 0 ? 'var(--success)' :
+    trend > 0 ? 'var(--accent)' :
     trend < 0 ? 'var(--danger)' :
     'var(--muted)'
   const TrendIcon = trendIcon
+
+  // Generate a fake hex-ish ID
+  const hex = (title.length * 17 + (typeof value === 'string' ? value.length : value) * 31)
+    .toString(16)
+    .padStart(4, '0')
+    .toUpperCase()
+    .slice(0, 4)
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08, duration: 0.4, ease: 'easeOut' }}
+      whileHover={{ y: -2 }}
+      className="cyber-corners"
       style={{
-        backgroundColor: 'white',
+        position: 'relative',
+        backgroundColor: 'var(--surface)',
         border: '1px solid var(--border)',
-        borderRadius: 16,
-        padding: 24,
-        boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-        transition: 'box-shadow 0.2s',
-        cursor: 'default',
+        borderRadius: 4,
+        padding: 20,
+        overflow: 'hidden',
+        transition: 'border-color 0.2s, box-shadow 0.2s',
       }}
-      onHoverStart={(e) => { (e.target as HTMLElement).style?.setProperty?.('box-shadow', '0 4px 12px rgba(0,0,0,0.12)') }}
+      onMouseEnter={(e) => {
+        ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border-accent)'
+        ;(e.currentTarget as HTMLElement).style.boxShadow = `0 0 0 1px ${tone.fg}33, 0 8px 28px -12px ${tone.fg}40`
+      }}
+      onMouseLeave={(e) => {
+        ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'
+        ;(e.currentTarget as HTMLElement).style.boxShadow = ''
+      }}
     >
+      {/* corner hex id */}
+      <span
+        style={{
+          position: 'absolute',
+          top: 8,
+          right: 10,
+          fontFamily: 'var(--font-mono)',
+          fontSize: 9,
+          letterSpacing: '0.1em',
+          color: 'var(--muted)',
+          opacity: 0.7,
+        }}
+      >
+        0x{hex}
+      </span>
+
       {/* Header row */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-        <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>{title}</span>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
+        <span
+          style={{
+            fontSize: 10,
+            fontWeight: 600,
+            color: 'var(--muted)',
+            fontFamily: 'var(--font-mono)',
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+          }}
+        >
+          {title}
+        </span>
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: 42,
-            height: 42,
-            borderRadius: 12,
-            backgroundColor: iconBg?.replace('bg-', '') === iconBg ? undefined : undefined,
-            background: iconBg === 'bg-blue-50' ? '#EFF6FF' :
-                         iconBg === 'bg-[var(--success-light)]' ? 'var(--success-light)' :
-                         iconBg === 'bg-[var(--warning-light)]' ? 'var(--warning-light)' :
-                         iconBg === 'bg-purple-50' ? '#F5F3FF' : '#F1F5F9',
+            width: 36,
+            height: 36,
+            borderRadius: 4,
+            backgroundColor: tone.bg,
+            border: `1px solid ${tone.fg}40`,
+            boxShadow: tone.glow,
             flexShrink: 0,
           }}
         >
-          <Icon
-            style={{
-              width: 20,
-              height: 20,
-              color: iconColor === 'text-[var(--accent)]' ? 'var(--accent)' :
-                     iconColor === 'text-[var(--success)]' ? 'var(--success)' :
-                     iconColor === 'text-amber-500' ? '#F59E0B' :
-                     iconColor === 'text-purple-600' ? '#9333EA' : 'var(--accent)',
-            }}
-          />
+          <Icon style={{ width: 18, height: 18, color: tone.fg }} />
         </div>
       </div>
 
       {/* Value */}
       <p
         style={{
-          fontSize: 30,
+          fontSize: 32,
           fontWeight: 700,
           color: 'var(--text-primary)',
           margin: 0,
-          fontFamily: 'var(--font-display)',
+          fontFamily: 'var(--font-mono)',
           lineHeight: 1,
-          marginBottom: trend !== undefined ? 6 : 0,
+          letterSpacing: '-0.02em',
+          marginBottom: trend !== undefined ? 8 : 0,
+          fontVariantNumeric: 'tabular-nums',
         }}
       >
         {value}
@@ -119,10 +178,24 @@ export function StatsCard({
 
       {/* Trend */}
       {trend !== undefined && TrendIcon && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 500, color: trendColor }}>
-          <TrendIcon style={{ width: 14, height: 14 }} />
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            fontSize: 11,
+            fontFamily: 'var(--font-mono)',
+            fontWeight: 600,
+            color: trendColor,
+            letterSpacing: '0.04em',
+          }}
+        >
+          <TrendIcon style={{ width: 12, height: 12 }} />
           <span>
-            {Math.abs(trend)}% {trendLabel}
+            {trend > 0 ? '+' : ''}{Math.abs(trend)}%
+          </span>
+          <span style={{ color: 'var(--muted)', textTransform: 'uppercase', fontSize: 10 }}>
+            {trendLabel}
           </span>
         </div>
       )}

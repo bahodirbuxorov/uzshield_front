@@ -1,24 +1,88 @@
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--background)] relative overflow-hidden">
-      {/* Geometric background pattern */}
+    <div
+      className="cyber-grid-bg"
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+      }}
+    >
+      {/* Falling code rain — purely decorative columns */}
       <div
-        className="absolute inset-0 opacity-40"
+        aria-hidden
         style={{
-          backgroundImage: `
-            radial-gradient(circle at 20% 50%, rgba(26,111,255,0.08) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(15,31,61,0.08) 0%, transparent 40%),
-            radial-gradient(circle at 60% 80%, rgba(0,179,126,0.06) 0%, transparent 40%)
-          `,
+          position: 'absolute',
+          inset: 0,
+          overflow: 'hidden',
+          pointerEvents: 'none',
+          opacity: 0.18,
+          maskImage: 'linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%)',
         }}
-      />
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: '-100%',
+            left: 0,
+            right: 0,
+            height: '200%',
+            background:
+              'repeating-linear-gradient(to right, transparent 0 96px, rgba(0,255,148,0.05) 96px 97px, transparent 97px 192px)',
+          }}
+        />
+      </div>
+
+      {/* Top-left HUD */}
       <div
-        className="absolute inset-0 opacity-20"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231A6FFF' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          position: 'absolute',
+          top: 24,
+          left: 32,
+          fontFamily: 'var(--font-mono)',
+          fontSize: 10,
+          color: 'var(--muted)',
+          letterSpacing: '0.18em',
+          textTransform: 'uppercase',
+          zIndex: 1,
         }}
-      />
-      <div className="relative z-10 w-full max-w-md px-4">{children}</div>
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span className="live-dot" style={{ width: 6, height: 6 }} />
+          uzshield · secure session
+        </div>
+        <div style={{ marginTop: 4, color: 'var(--muted)', opacity: 0.6 }}>
+          [ tls-1.3 / aes-256-gcm ]
+        </div>
+      </div>
+
+      {/* Bottom-right HUD */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 24,
+          right: 32,
+          fontFamily: 'var(--font-mono)',
+          fontSize: 10,
+          color: 'var(--muted)',
+          letterSpacing: '0.12em',
+          textAlign: 'right',
+          zIndex: 1,
+          opacity: 0.7,
+        }}
+      >
+        <div>v0.1.0 · build {new Date().getFullYear()}</div>
+        <div style={{ color: 'var(--accent)', marginTop: 4, opacity: 0.7 }}>
+          {'// protecting the perimeter'}
+        </div>
+      </div>
+
+      <div style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: 440, padding: '0 16px' }}>
+        {children}
+      </div>
     </div>
   )
 }

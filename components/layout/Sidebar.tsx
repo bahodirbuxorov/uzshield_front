@@ -13,7 +13,7 @@ import {
   BarChart2,
   Settings,
   LogOut,
-  Shield,
+  ShieldHalf,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react'
@@ -21,7 +21,6 @@ import { useState } from 'react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useAuthStore } from '@/lib/store/useAuthStore'
-import { cn } from '@/lib/utils/cn'
 import { useCampaigns } from '@/lib/hooks/useCampaigns'
 import { logout } from '@/lib/api/auth'
 
@@ -30,6 +29,7 @@ interface NavItem {
   href: string
   icon: React.ElementType
   badge?: number
+  code: string
 }
 
 export function Sidebar() {
@@ -48,13 +48,13 @@ export function Sidebar() {
   const activeCampaignCount = campaignData?.meta?.total ?? 0
 
   const navItems: NavItem[] = [
-    { key: 'dashboard', href: `/${locale}/dashboard`, icon: LayoutDashboard },
-    { key: 'campaigns', href: `/${locale}/campaigns`, icon: Mail, badge: activeCampaignCount || undefined },
-    { key: 'employees', href: `/${locale}/employees`, icon: Users },
-    { key: 'templates', href: `/${locale}/templates`, icon: FileText },
-    { key: 'training', href: `/${locale}/training`, icon: GraduationCap },
-    { key: 'reports', href: `/${locale}/reports`, icon: BarChart2 },
-    { key: 'settings', href: `/${locale}/settings`, icon: Settings },
+    { key: 'dashboard', href: `/${locale}/dashboard`, icon: LayoutDashboard, code: '01' },
+    { key: 'campaigns', href: `/${locale}/campaigns`, icon: Mail, badge: activeCampaignCount || undefined, code: '02' },
+    { key: 'employees', href: `/${locale}/employees`, icon: Users, code: '03' },
+    { key: 'templates', href: `/${locale}/templates`, icon: FileText, code: '04' },
+    { key: 'training', href: `/${locale}/training`, icon: GraduationCap, code: '05' },
+    { key: 'reports', href: `/${locale}/reports`, icon: BarChart2, code: '06' },
+    { key: 'settings', href: `/${locale}/settings`, icon: Settings, code: '07' },
   ]
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/')
@@ -70,53 +70,101 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Sidebar */}
       <motion.aside
         animate={{ width: sidebarWidth }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         className="fixed top-0 left-0 h-full z-40 flex flex-col overflow-hidden"
         style={{
-          backgroundColor: 'var(--primary)',
-          boxShadow: '2px 0 16px rgba(0,0,0,0.15)',
+          backgroundColor: 'var(--background-deep)',
+          borderRight: '1px solid var(--border)',
+          boxShadow: 'inset -1px 0 0 rgba(0,229,255,0.04), 8px 0 32px -8px rgba(0,0,0,0.6)',
           minWidth: sidebarWidth,
         }}
       >
         {/* Logo */}
         <div
-          className="flex items-center h-16 shrink-0 border-b"
+          className="flex items-center h-16 shrink-0"
           style={{
-            borderColor: 'rgba(255,255,255,0.1)',
+            borderBottom: '1px solid var(--border)',
             padding: collapsed ? '0 16px' : '0 20px',
             gap: 12,
             overflow: 'hidden',
+            position: 'relative',
           }}
         >
           <div
-            className="flex items-center justify-center shrink-0 rounded-xl"
-            style={{ width: 36, height: 36, backgroundColor: 'var(--accent)' }}
+            className="flex items-center justify-center shrink-0"
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 4,
+              backgroundColor: 'var(--surface-elevated)',
+              border: '1px solid var(--border-accent)',
+              boxShadow: 'var(--shadow-glow-accent)',
+              position: 'relative',
+            }}
           >
-            <Shield className="w-5 h-5 text-white" />
+            <ShieldHalf style={{ width: 18, height: 18, color: 'var(--accent)' }} />
           </div>
           <AnimatePresence>
             {!collapsed && (
-              <motion.span
+              <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
                 transition={{ duration: 0.15 }}
-                className="text-white font-bold text-lg tracking-tight whitespace-nowrap"
-                style={{ fontFamily: 'var(--font-display)' }}
+                style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}
               >
-                UzShield
-              </motion.span>
+                <span
+                  style={{
+                    color: 'var(--text-primary)',
+                    fontFamily: 'var(--font-display)',
+                    fontWeight: 700,
+                    fontSize: 16,
+                    letterSpacing: '0.04em',
+                    lineHeight: 1,
+                  }}
+                >
+                  UZ<span style={{ color: 'var(--accent)' }}>SHIELD</span>
+                </span>
+                <span
+                  style={{
+                    color: 'var(--muted)',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 9,
+                    letterSpacing: '0.18em',
+                    marginTop: 3,
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  cyber.console
+                  <span className="animate-blink" style={{ color: 'var(--accent)' }}>_</span>
+                </span>
+              </motion.div>
             )}
           </AnimatePresence>
         </div>
 
+        {/* Section label */}
+        {!collapsed && (
+          <div
+            style={{
+              padding: '14px 20px 6px',
+              fontSize: 10,
+              fontFamily: 'var(--font-mono)',
+              color: 'var(--muted)',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+            }}
+          >
+            {'// navigation'}
+          </div>
+        )}
+
         {/* Nav Items */}
         <nav
           className="flex-1 overflow-y-auto overflow-x-hidden"
-          style={{ padding: '12px 8px' }}
+          style={{ padding: collapsed ? '12px 8px' : '0 12px 12px' }}
         >
           <div className="flex flex-col gap-1">
             {navItems.map((item) => {
@@ -131,29 +179,51 @@ export function Sidebar() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: 12,
-                    padding: collapsed ? '10px 0' : '10px 12px',
+                    padding: collapsed ? '10px 0' : '9px 12px',
                     justifyContent: collapsed ? 'center' : 'flex-start',
-                    borderRadius: 12,
+                    borderRadius: 4,
                     position: 'relative',
                     textDecoration: 'none',
-                    transition: 'background-color 0.15s',
-                    backgroundColor: active ? 'var(--accent)' : 'transparent',
-                    color: active ? 'white' : 'rgba(255,255,255,0.6)',
-                    fontSize: 14,
+                    transition: 'background-color 0.15s, color 0.15s, border-color 0.15s',
+                    backgroundColor: active ? 'var(--accent-tint)' : 'transparent',
+                    border: '1px solid',
+                    borderColor: active ? 'var(--border-accent)' : 'transparent',
+                    color: active ? 'var(--accent)' : 'var(--text-secondary)',
+                    fontSize: 13,
                     fontWeight: 500,
                     overflow: 'hidden',
                     whiteSpace: 'nowrap',
                   }}
                   onMouseEnter={(e) => {
-                    if (!active) (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.08)'
+                    if (!active) {
+                      ;(e.currentTarget as HTMLElement).style.backgroundColor = 'var(--surface-secondary)'
+                      ;(e.currentTarget as HTMLElement).style.color = 'var(--text-primary)'
+                    }
                   }}
                   onMouseLeave={(e) => {
-                    if (!active) (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'
+                    if (!active) {
+                      ;(e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'
+                      ;(e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'
+                    }
                   }}
                 >
+                  {/* active indicator bar */}
+                  {active && !collapsed && (
+                    <span
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 6,
+                        bottom: 6,
+                        width: 2,
+                        backgroundColor: 'var(--accent)',
+                        boxShadow: '0 0 8px var(--accent)',
+                      }}
+                    />
+                  )}
                   <item.icon
                     className="shrink-0"
-                    style={{ width: 20, height: 20, color: active ? 'white' : 'rgba(255,255,255,0.6)' }}
+                    style={{ width: 18, height: 18 }}
                   />
                   <AnimatePresence>
                     {!collapsed && (
@@ -163,11 +233,25 @@ export function Sidebar() {
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.1 }}
                         className="flex-1 min-w-0 overflow-hidden text-ellipsis"
+                        style={{ textTransform: 'capitalize' }}
                       >
                         {t(item.key as Parameters<typeof t>[0])}
                       </motion.span>
                     )}
                   </AnimatePresence>
+                  {!collapsed && (
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: 9,
+                        color: active ? 'var(--accent)' : 'var(--muted)',
+                        opacity: 0.7,
+                        letterSpacing: '0.05em',
+                      }}
+                    >
+                      {item.code}
+                    </span>
+                  )}
                   {item.badge && item.badge > 0 && (
                     <span
                       style={{
@@ -178,11 +262,13 @@ export function Sidebar() {
                         alignItems: 'center',
                         justifyContent: 'center',
                         minWidth: 18,
-                        height: 18,
-                        borderRadius: 9,
-                        backgroundColor: 'var(--warning)',
-                        color: 'white',
-                        fontSize: 10,
+                        height: 16,
+                        borderRadius: 2,
+                        backgroundColor: 'var(--danger-light)',
+                        color: 'var(--danger)',
+                        border: '1px solid rgba(255,59,92,0.3)',
+                        fontSize: 9,
+                        fontFamily: 'var(--font-mono)',
                         fontWeight: 700,
                         padding: '0 4px',
                       }}
@@ -197,10 +283,10 @@ export function Sidebar() {
         </nav>
 
         {/* Divider */}
-        <div style={{ height: 1, backgroundColor: 'rgba(255,255,255,0.1)', margin: '0 8px' }} />
+        <div style={{ height: 1, backgroundColor: 'var(--border)', margin: '0 12px' }} />
 
         {/* Bottom section */}
-        <div style={{ padding: '12px 8px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: 4 }}>
           {/* User info — only when expanded */}
           <AnimatePresence>
             {!collapsed && (
@@ -213,36 +299,70 @@ export function Sidebar() {
                   display: 'flex',
                   alignItems: 'center',
                   gap: 10,
-                  padding: '8px 12px',
+                  padding: '10px 12px',
                   overflow: 'hidden',
+                  border: '1px solid var(--border)',
+                  borderRadius: 4,
+                  marginBottom: 6,
+                  backgroundColor: 'var(--surface)',
                 }}
               >
-                <Avatar className="shrink-0" style={{ width: 32, height: 32 }}>
-                  <AvatarFallback style={{ fontSize: 12 }}>{initials}</AvatarFallback>
-                </Avatar>
+                <div style={{ position: 'relative', flexShrink: 0 }}>
+                  <Avatar style={{ width: 32, height: 32, border: '1px solid var(--border-accent)' }}>
+                    <AvatarFallback
+                      style={{
+                        fontSize: 11,
+                        backgroundColor: 'var(--surface-elevated)',
+                        color: 'var(--accent)',
+                        fontFamily: 'var(--font-mono)',
+                        fontWeight: 700,
+                      }}
+                    >
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      bottom: -1,
+                      right: -1,
+                      width: 8,
+                      height: 8,
+                      borderRadius: '50%',
+                      backgroundColor: 'var(--accent)',
+                      border: '2px solid var(--surface)',
+                      boxShadow: '0 0 6px var(--accent)',
+                    }}
+                  />
+                </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <p
                     style={{
-                      color: 'white',
-                      fontSize: 13,
-                      fontWeight: 500,
+                      color: 'var(--text-primary)',
+                      fontSize: 12,
+                      fontWeight: 600,
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
+                      letterSpacing: '0.01em',
                     }}
                   >
                     {user?.name ?? 'Admin'}
                   </p>
                   <p
                     style={{
-                      color: 'rgba(255,255,255,0.4)',
-                      fontSize: 11,
+                      color: 'var(--accent)',
+                      fontSize: 10,
+                      fontFamily: 'var(--font-mono)',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      marginTop: 1,
                     }}
                   >
-                    {user?.roles?.[0]?.replace('_', ' ') ?? ''}
+                    [{user?.roles?.[0]?.replace('_', '.') ?? 'guest'}]
                   </p>
                 </div>
               </motion.div>
@@ -274,27 +394,32 @@ export function Sidebar() {
               alignItems: 'center',
               gap: 12,
               width: '100%',
-              padding: collapsed ? '10px 0' : '10px 12px',
+              padding: collapsed ? '10px 0' : '9px 12px',
               justifyContent: collapsed ? 'center' : 'flex-start',
-              borderRadius: 12,
+              borderRadius: 4,
               background: 'none',
-              border: 'none',
+              border: '1px solid transparent',
               cursor: 'pointer',
-              color: 'rgba(255,255,255,0.55)',
-              fontSize: 14,
+              color: 'var(--muted)',
+              fontSize: 12,
               fontWeight: 500,
-              transition: 'background-color 0.15s, color 0.15s',
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em',
+              transition: 'all 0.15s',
+              fontFamily: 'var(--font-display)',
             }}
             onMouseEnter={(e) => {
-              ;(e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.08)'
-              ;(e.currentTarget as HTMLElement).style.color = 'white'
+              ;(e.currentTarget as HTMLElement).style.backgroundColor = 'var(--danger-light)'
+              ;(e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,59,92,0.3)'
+              ;(e.currentTarget as HTMLElement).style.color = 'var(--danger)'
             }}
             onMouseLeave={(e) => {
               ;(e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'
-              ;(e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.55)'
+              ;(e.currentTarget as HTMLElement).style.borderColor = 'transparent'
+              ;(e.currentTarget as HTMLElement).style.color = 'var(--muted)'
             }}
           >
-            <LogOut style={{ width: 20, height: 20, flexShrink: 0 }} />
+            <LogOut style={{ width: 16, height: 16, flexShrink: 0 }} />
             <AnimatePresence>
               {!collapsed && (
                 <motion.span
@@ -320,17 +445,25 @@ export function Sidebar() {
               width: '100%',
               padding: '6px 0',
               background: 'none',
-              border: 'none',
+              border: '1px solid var(--border)',
+              borderRadius: 4,
               cursor: 'pointer',
-              color: 'rgba(255,255,255,0.3)',
-              transition: 'color 0.15s',
+              color: 'var(--muted)',
+              transition: 'all 0.15s',
+              marginTop: 4,
             }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'white' }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.3)' }}
+            onMouseEnter={(e) => {
+              ;(e.currentTarget as HTMLElement).style.color = 'var(--accent)'
+              ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border-accent)'
+            }}
+            onMouseLeave={(e) => {
+              ;(e.currentTarget as HTMLElement).style.color = 'var(--muted)'
+              ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'
+            }}
           >
             {collapsed
-              ? <ChevronRight style={{ width: 16, height: 16 }} />
-              : <ChevronLeft style={{ width: 16, height: 16 }} />
+              ? <ChevronRight style={{ width: 14, height: 14 }} />
+              : <ChevronLeft style={{ width: 14, height: 14 }} />
             }
           </button>
         </div>

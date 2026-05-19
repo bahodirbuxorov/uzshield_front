@@ -3,9 +3,8 @@
 import Link from 'next/link'
 import { useLocale, useTranslations } from 'next-intl'
 import { motion } from 'framer-motion'
-import { Mail, MessageSquare, Smartphone, Send, MousePointer, GraduationCap, MoreHorizontal, Play } from 'lucide-react'
+import { Mail, MessageSquare, Smartphone, Send, MousePointer, GraduationCap, Play } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { fmtPercent, formatDate } from '@/lib/utils/formatters'
 import type { Campaign, CampaignStatus, CampaignChannel } from '@/lib/types/campaign'
 
@@ -15,20 +14,20 @@ const CHANNEL_ICONS: Record<CampaignChannel, React.ElementType> = {
   sms: Smartphone,
 }
 
-const STATUS_COLORS: Record<CampaignStatus, { bg: string; text: string; label: string }> = {
-  active: { bg: 'var(--success-light)', text: 'var(--success)', label: 'Faol' },
-  running: { bg: 'var(--success-light)', text: 'var(--success)', label: 'Faol' },
-  paused: { bg: 'var(--warning-light)', text: 'var(--warning)', label: "To'xtatilgan" },
-  completed: { bg: 'var(--surface-secondary)', text: 'var(--muted)', label: 'Yakunlangan' },
-  draft: { bg: '#F1F5F9', text: '#475569', label: 'Qoralama' },
+const STATUS_COLORS: Record<CampaignStatus, { bg: string; text: string; border: string; label: string }> = {
+  active:    { bg: 'rgba(0,255,148,0.10)',  text: '#00FF94', border: 'rgba(0,255,148,0.35)', label: 'LIVE' },
+  running:   { bg: 'rgba(0,255,148,0.10)',  text: '#00FF94', border: 'rgba(0,255,148,0.35)', label: 'LIVE' },
+  paused:    { bg: 'rgba(255,176,32,0.12)', text: '#FFB020', border: 'rgba(255,176,32,0.35)', label: 'PAUSED' },
+  completed: { bg: 'var(--surface-secondary)', text: 'var(--muted)', border: 'var(--border)', label: 'DONE' },
+  draft:     { bg: 'var(--surface-secondary)', text: 'var(--text-secondary)', border: 'var(--border)', label: 'DRAFT' },
 }
 
 const STATUS_STRIP: Record<CampaignStatus, string> = {
-  active: 'var(--success)',
-  running: 'var(--success)',
-  paused: 'var(--warning)',
+  active:    'var(--accent)',
+  running:   'var(--accent)',
+  paused:    'var(--warning)',
   completed: 'var(--muted)',
-  draft: 'var(--border)',
+  draft:     'var(--border-strong)',
 }
 
 interface CampaignCardProps {
@@ -40,6 +39,10 @@ export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
   const t = useTranslations('campaigns')
   const locale = useLocale()
   const status = STATUS_COLORS[campaign.status] || STATUS_COLORS.draft
+  const stripColor = STATUS_STRIP[campaign.status]
+
+  // fake hex id from campaign id
+  const idHex = String(campaign.id ?? '0000').slice(-4).padStart(4, '0').toUpperCase()
 
   return (
     <motion.div
@@ -47,27 +50,40 @@ export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05, duration: 0.3, ease: 'easeOut' }}
       style={{ height: '100%' }}
+      whileHover={{ y: -2 }}
     >
       <Card
+        className="cyber-corners"
         style={{
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
-          transition: 'box-shadow 0.2s, transform 0.2s',
+          transition: 'border-color 0.2s, box-shadow 0.2s',
           cursor: 'default',
+          position: 'relative',
         }}
         onMouseEnter={(e) => {
-          ;(e.currentTarget as HTMLElement).style.boxShadow = '0 8px 24px rgba(0,0,0,0.1)'
-          ;(e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'
+          ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border-accent)'
+          ;(e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-card-hover)'
         }}
         onMouseLeave={(e) => {
-          ;(e.currentTarget as HTMLElement).style.boxShadow = ''
-          ;(e.currentTarget as HTMLElement).style.transform = ''
+          ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'
+          ;(e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-card)'
         }}
       >
-        {/* Status strip top */}
-        <div style={{ height: 4, backgroundColor: STATUS_STRIP[campaign.status], flexShrink: 0 }} />
+        {/* Glowing left strip */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            width: 2,
+            backgroundColor: stripColor,
+            boxShadow: `0 0 12px ${stripColor}`,
+          }}
+        />
 
         <CardContent
           style={{
@@ -80,47 +96,61 @@ export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
         >
           {/* Header */}
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
-            <Link
-              href={`/${locale}/campaigns/${campaign.id}`}
-              style={{
-                fontWeight: 600,
-                fontSize: 14,
-                color: 'var(--text-primary)',
-                textDecoration: 'none',
-                lineHeight: 1.4,
-                flex: 1,
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--accent)' }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)' }}
-            >
-              {campaign.name}
-            </Link>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 10,
+                  color: 'var(--muted)',
+                  letterSpacing: '0.1em',
+                  display: 'block',
+                  marginBottom: 4,
+                }}
+              >
+                CMP-{idHex}
+              </span>
+              <Link
+                href={`/${locale}/campaigns/${campaign.id}`}
+                style={{
+                  fontWeight: 600,
+                  fontSize: 14,
+                  color: 'var(--text-primary)',
+                  textDecoration: 'none',
+                  lineHeight: 1.4,
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  transition: 'color 0.15s',
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--accent)' }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)' }}
+              >
+                {campaign.name}
+              </Link>
+            </div>
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 4,
-                padding: '3px 10px',
-                borderRadius: 20,
+                gap: 5,
+                padding: '3px 8px',
+                borderRadius: 3,
                 backgroundColor: status.bg,
-                fontSize: 11,
-                fontWeight: 600,
+                border: `1px solid ${status.border}`,
+                fontFamily: 'var(--font-mono)',
+                fontSize: 10,
+                fontWeight: 700,
                 color: status.text,
                 whiteSpace: 'nowrap',
                 flexShrink: 0,
+                letterSpacing: '0.08em',
               }}
             >
-              {campaign.status === 'active' && (
+              {(campaign.status === 'active' || campaign.status === 'running') && (
                 <span
-                  style={{
-                    width: 6, height: 6, borderRadius: '50%',
-                    backgroundColor: status.text, flexShrink: 0,
-                    animation: 'pulse 2s infinite',
-                  }}
+                  className="live-dot"
+                  style={{ width: 5, height: 5, backgroundColor: status.text }}
                 />
               )}
               {status.label}
@@ -136,24 +166,31 @@ export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
                   key={ch}
                   style={{
                     display: 'flex', alignItems: 'center', gap: 4,
-                    padding: '3px 8px', borderRadius: 6,
+                    padding: '3px 8px', borderRadius: 3,
                     backgroundColor: 'var(--surface-secondary)',
-                    fontSize: 11, color: 'var(--text-secondary)',
+                    border: '1px solid var(--border)',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 10, color: 'var(--text-secondary)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.06em',
                   }}
                 >
-                  <Icon style={{ width: 12, height: 12 }} />
-                  <span style={{ textTransform: 'capitalize' }}>{ch}</span>
+                  <Icon style={{ width: 11, height: 11 }} />
+                  <span>{ch}</span>
                 </div>
               )
             })}
             <div
               style={{
                 marginLeft: 'auto',
-                fontSize: 11,
+                fontFamily: 'var(--font-mono)',
+                fontSize: 10,
                 color: 'var(--muted)',
                 padding: '3px 8px',
-                borderRadius: 6,
+                borderRadius: 3,
                 border: '1px solid var(--border)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
               }}
             >
               {t('difficulty.' + campaign.difficulty as Parameters<typeof t>[0])}
@@ -173,16 +210,33 @@ export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
             {[
               { Icon: Send, label: t('form.sent'), value: campaign.sentCount ?? 0, color: 'var(--text-primary)' },
               { Icon: MousePointer, label: t('form.clicked'), value: campaign.clickRate != null ? fmtPercent(campaign.clickRate) : '0%', color: 'var(--danger)' },
-              { Icon: GraduationCap, label: t('form.trained'), value: campaign.completedTrainingCount ?? 0, color: 'var(--success)' },
+              { Icon: GraduationCap, label: t('form.trained'), value: campaign.completedTrainingCount ?? 0, color: 'var(--accent)' },
             ].map(({ Icon, label, value, color }) => (
               <div key={label} style={{ textAlign: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 3, marginBottom: 4 }}>
-                  <Icon style={{ width: 11, height: 11, color: 'var(--muted)' }} />
-                  <span style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  <Icon style={{ width: 10, height: 10, color: 'var(--muted)' }} />
+                  <span
+                    style={{
+                      fontSize: 9,
+                      color: 'var(--muted)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.1em',
+                      fontFamily: 'var(--font-mono)',
+                    }}
+                  >
                     {label}
                   </span>
                 </div>
-                <p style={{ fontSize: 15, fontWeight: 700, color, margin: 0, fontFamily: 'var(--font-display)' }}>
+                <p
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 700,
+                    color,
+                    margin: 0,
+                    fontFamily: 'var(--font-mono)',
+                    fontVariantNumeric: 'tabular-nums',
+                  }}
+                >
                   {value}
                 </p>
               </div>
@@ -190,32 +244,47 @@ export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
-            <p style={{ fontSize: 11, color: 'var(--muted)', margin: 0 }}>
+            <p
+              style={{
+                fontSize: 10,
+                color: 'var(--muted)',
+                margin: 0,
+                fontFamily: 'var(--font-mono)',
+                letterSpacing: '0.04em',
+              }}
+            >
               {formatDate(campaign.startedAt || campaign.starts_at || campaign.created_at)}
             </p>
             <Link
               href={`/${locale}/campaigns/${campaign.id}`}
               style={{
                 display: 'flex', alignItems: 'center', gap: 4,
-                fontSize: 12, color: 'var(--accent)',
-                textDecoration: 'none', fontWeight: 500,
-                padding: '4px 10px', borderRadius: 6,
-                border: '1px solid var(--border)',
+                fontSize: 10,
+                fontFamily: 'var(--font-mono)',
+                color: 'var(--accent)',
+                textDecoration: 'none',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                padding: '5px 10px',
+                borderRadius: 3,
+                border: '1px solid var(--border-accent)',
+                backgroundColor: 'var(--accent-tint)',
                 transition: 'all 0.15s',
               }}
               onMouseEnter={(e) => {
                 ;(e.currentTarget as HTMLElement).style.backgroundColor = 'var(--accent)'
-                ;(e.currentTarget as HTMLElement).style.color = 'white'
-                ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'
+                ;(e.currentTarget as HTMLElement).style.color = '#021A0E'
+                ;(e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-glow-accent)'
               }}
               onMouseLeave={(e) => {
-                ;(e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'
+                ;(e.currentTarget as HTMLElement).style.backgroundColor = 'var(--accent-tint)'
                 ;(e.currentTarget as HTMLElement).style.color = 'var(--accent)'
-                ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'
+                ;(e.currentTarget as HTMLElement).style.boxShadow = ''
               }}
             >
-              <Play style={{ width: 11, height: 11 }} />
-              Ko&apos;rish
+              <Play style={{ width: 10, height: 10 }} />
+              inspect
             </Link>
           </div>
         </CardContent>

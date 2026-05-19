@@ -32,12 +32,31 @@ export function TopVulnerableEmployees({ employees, loading }: TopVulnerableEmpl
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">{t('topVulnerable')}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: '50%',
+              backgroundColor: 'var(--danger)',
+              boxShadow: 'var(--shadow-glow-danger)',
+            }}
+          />
+          {t('topVulnerable')}
+        </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-2">
         {employees.length === 0 ? (
-          <p style={{ fontSize: 13, color: 'var(--muted)', textAlign: 'center', padding: '16px 0' }}>
-            Ma&apos;lumot yo&apos;q
+          <p
+            style={{
+              fontSize: 12,
+              color: 'var(--muted)',
+              textAlign: 'center',
+              padding: '16px 0',
+              fontFamily: 'var(--font-mono)',
+            }}
+          >
+            {'// no data'}
           </p>
         ) : (
           employees.map((emp, i) => {
@@ -46,22 +65,86 @@ export function TopVulnerableEmployees({ employees, loading }: TopVulnerableEmpl
               <Link
                 key={emp.id}
                 href={`/${locale}/employees/${emp.id}`}
-                className="flex items-center gap-3 group"
+                className="group"
                 aria-label={`View employee ${emp.name}`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 12,
+                  padding: '8px 10px',
+                  borderRadius: 4,
+                  border: '1px solid transparent',
+                  textDecoration: 'none',
+                  transition: 'all 0.15s',
+                }}
+                onMouseEnter={(e) => {
+                  ;(e.currentTarget as HTMLElement).style.backgroundColor = 'var(--surface-secondary)'
+                  ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'
+                }}
+                onMouseLeave={(e) => {
+                  ;(e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'
+                  ;(e.currentTarget as HTMLElement).style.borderColor = 'transparent'
+                }}
               >
-                <span className="text-xs text-[var(--muted)] w-4 shrink-0">{i + 1}</span>
-                <Avatar className="w-8 h-8 shrink-0">
-                  <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+                <span
+                  style={{
+                    fontSize: 10,
+                    fontFamily: 'var(--font-mono)',
+                    color: i < 3 ? 'var(--danger)' : 'var(--muted)',
+                    width: 18,
+                    flexShrink: 0,
+                    fontWeight: 700,
+                    letterSpacing: '0.05em',
+                  }}
+                >
+                  #{String(i + 1).padStart(2, '0')}
+                </span>
+                <Avatar
+                  className="shrink-0"
+                  style={{ width: 28, height: 28, border: '1px solid var(--border)' }}
+                >
+                  <AvatarFallback
+                    style={{
+                      fontSize: 10,
+                      backgroundColor: 'var(--surface-elevated)',
+                      color: 'var(--text-secondary)',
+                      fontFamily: 'var(--font-mono)',
+                      fontWeight: 600,
+                    }}
+                  >
+                    {initials}
+                  </AvatarFallback>
                 </Avatar>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors truncate">
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 500,
+                      color: 'var(--text-primary)',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      margin: 0,
+                    }}
+                  >
                     {emp.name}
                   </p>
-                  <p className="text-xs text-[var(--muted)] truncate">
+                  <p
+                    style={{
+                      fontSize: 10,
+                      color: 'var(--muted)',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      margin: 0,
+                      fontFamily: 'var(--font-mono)',
+                      letterSpacing: '0.04em',
+                    }}
+                  >
                     {emp.department?.name ?? emp.position ?? ''}
                   </p>
                 </div>
-                <Badge variant={emp.status === 'active' ? 'success' : 'secondary'} style={{ fontSize: 11 }}>
+                <Badge variant={emp.status === 'active' ? 'success' : 'secondary'}>
                   {emp.status}
                 </Badge>
               </Link>

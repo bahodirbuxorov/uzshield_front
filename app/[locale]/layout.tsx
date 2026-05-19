@@ -1,20 +1,26 @@
 import type { Metadata } from 'next'
-import { Sora, DM_Sans, Noto_Sans } from 'next/font/google'
+import { Space_Grotesk, Inter, JetBrains_Mono, Noto_Sans } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
-import { getMessages, getLocale } from 'next-intl/server'
+import { getMessages } from 'next-intl/server'
 import { cyrillicLocales } from '@/i18n/config'
 import { Providers } from '@/components/Providers'
 import '@/app/globals.css'
 
-const sora = Sora({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-display',
   display: 'swap',
 })
 
-const dmSans = DM_Sans({
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-body',
+  display: 'swap',
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
   display: 'swap',
 })
 
@@ -27,10 +33,10 @@ const notoSans = Noto_Sans({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | UzShield',
-    default: 'UzShield — Cybersecurity Awareness',
+    template: '%s · UzShield',
+    default: 'UzShield — Cyber Defense Console',
   },
-  description: 'Xodimlarni fishing hujumlaridan himoya qiling | Protect employees from phishing attacks',
+  description: 'Xodimlarni fishing hujumlaridan himoya qiling | Cyber threat awareness platform',
 }
 
 export default async function LocaleLayout({
@@ -47,7 +53,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${sora.variable} ${dmSans.variable} ${notoSans.variable}`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${notoSans.variable}`}
     >
       <body
         style={{

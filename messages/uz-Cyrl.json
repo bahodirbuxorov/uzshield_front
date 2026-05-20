@@ -56,6 +56,7 @@
     "tagline": "Ходимларни фишинг ҳужумларидан ҳимоя қилинг",
     "loginButton": "Тизимга кириш",
     "invalidCredentials": "Емайл ёки парол нотўғри",
+    "networkError": "АПИ га уланиб бўлмади. КОРС ёки бэкенд уланишини текширинг.",
     "emailPlaceholder": "admin@oxupax.uz",
     "passwordPlaceholder": "Паролингизни киритинг",
     "showPassword": "Паролни кўрсатиш",

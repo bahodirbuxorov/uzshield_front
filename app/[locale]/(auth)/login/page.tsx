@@ -16,6 +16,7 @@ import { Label } from '@/components/ui/label'
 
 export default function LoginPage() {
   const t = useTranslations('auth')
+  const tCommon = useTranslations('common')
   const locale = useLocale()
   const router = useRouter()
   const { setAuth } = useAuthStore()
@@ -66,8 +67,22 @@ export default function LoginPage() {
       setAuth(user, token)
       toast.success('access granted · ' + user.name)
       router.push(`/${locale}/dashboard`)
-    } catch {
-      toast.error(t('invalidCredentials'))
+    } catch (err) {
+      // Distinguish a real 422 ("invalid credentials") from network / CORS
+      // failures so a misconfigured backend doesn't silently masquerade as a
+      // bad password. axios populates `response` only when the server replied;
+      // a CORS-blocked or unreachable backend leaves it undefined.
+      const ax = err as { response?: { status?: number; data?: { message?: string } }; message?: string }
+      if (ax?.response?.status === 422 || ax?.response?.status === 401) {
+        toast.error(t('invalidCredentials'))
+      } else if (ax?.response?.status) {
+        toast.error(`HTTP ${ax.response.status} · ${ax.response.data?.message ?? tCommon('error')}`)
+      } else {
+        toast.error(t('networkError'))
+        // surface details in the console for the dev to inspect
+        // eslint-disable-next-line no-console
+        console.error('[login] network/CORS failure', err)
+      }
     }
   }
 
